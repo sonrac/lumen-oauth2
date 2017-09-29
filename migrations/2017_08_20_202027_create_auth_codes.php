@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 /**
  * Class CreateAuthCodes
- * Auth codes table migration
+ * Auth codes table migration.
  *
  * @author Donii Sergii <doniysa@gmail.com>
  */

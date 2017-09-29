@@ -12,7 +12,7 @@ use Illuminate\Console\Command;
 
 /**
  * Class GenerateKeys
- * Generate oauth2 server keys
+ * Generate oauth2 server keys.
  *
  * @package sonrac\lumenRest\commands
  *
@@ -41,14 +41,14 @@ class GenerateKeys extends Command
                                 {--passphrase= : Enter passphrase (will be replace value in .env). If 0 generated without phrase}
                                 ';
     /**
-     * {@inheritdoc}
+     * Key path.
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */
     protected $keyPath = 'framework/keys';
 
     /**
-     * Oauth2 server config
+     * Oauth2 server config.
      *
      * @var null|array
      */
@@ -75,7 +75,7 @@ class GenerateKeys extends Command
     }
 
     /**
-     * Trigger command
+     * Trigger command.
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */
@@ -115,7 +115,7 @@ class GenerateKeys extends Command
     }
 
     /**
-     * Generate private outh2 key
+     * Generate private outh2 key.
      *
      * @param null|string $phrase Secret phrase
      *
@@ -135,7 +135,7 @@ class GenerateKeys extends Command
     }
 
     /**
-     * Generate public oauth2 server key
+     * Generate public oauth2 server key.
      *
      * @param string|null $phrase Secret phrase
      *

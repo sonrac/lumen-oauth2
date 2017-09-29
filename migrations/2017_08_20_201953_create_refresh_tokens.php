@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 /**
  * Class CreateRefreshToken
- * Refresh token table migration
+ * Refresh token table migration.
  *
  * @author Donii Sergii <doniysa@gmail.com>
  */

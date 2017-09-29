@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 /**
  * Class CreateUsers
- * Create user table migration
+ * Create user table migration.
  *
  * @author Donii Sergii <doniysa@gmail.com>
  */

@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 /**
  * Class CreateClients
- * Clients table migration
+ * Clients table migration.
  *
  * @author Donii Sergii <doniysa@gmail.com>
  */

@@ -28,6 +28,7 @@ use sonrac\lumenRest\models\User;
 
 /**
  * Class Oauth2ServiceProvider
+ * Oauth2 service provider.
  *
  * @package App\Providers
  *
@@ -42,7 +43,7 @@ class Oauth2ServiceProvider extends ServiceProvider
     public function register()
     {
         app()->configure('oauth2');
-        /**
+        /*
          * Entities bind
          */
         $this->app->bind('League\\OAuth2\\Server\\Entities\\AccessTokenEntityInterface', AccessToken::class);
@@ -52,7 +53,7 @@ class Oauth2ServiceProvider extends ServiceProvider
         $this->app->bind('League\\OAuth2\\Server\\Entities\\ScopeEntityInterface', Scope::class);
         $this->app->bind('League\\OAuth2\\Server\\Entities\\UserEntityInterface', User::class);
 
-        /**
+        /*
          * bind repositories
          */
         $this->app->bind('League\\OAuth2\\Server\\Repositories\\AccessTokenRepositoryInterface', function () {
@@ -78,14 +79,6 @@ class Oauth2ServiceProvider extends ServiceProvider
     protected function bindAuthorizationServer()
     {
         $this->app->singleton('oauth2.server', function ($app) {
-            /**
-             * use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
-             * use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
-             * use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
-             * use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
-             * use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
-             */
-
             $privateKey = config('oauth2.keyPath') . '/' . config('oauth2.privateKeyName');
             $encryptionKey = config('oauth2.keyPath') . '/' . config('oauth2.publicKeyName');
 

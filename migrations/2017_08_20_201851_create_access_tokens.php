@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 /**
  * Class CreateAccessToken
- * Access token table migration
+ * Access token table migration.
  *
  * @author Donii Sergii <doniysa@gmail.com>
  */
