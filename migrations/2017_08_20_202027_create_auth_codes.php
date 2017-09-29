@@ -24,10 +24,11 @@ class CreateAuthCodes extends Migration
         Schema::create('auth_codes', function (Blueprint $table) {
             $table->increments('id');
             $table->string('code', 1000);
-            $table->unsignedInteger('user_id');
+            $table->unsignedInteger('user_id')->nullable();
             $table->unsignedInteger('client_id')->notNull();
             $table->unsignedInteger('revoked')->defaultValue(false);
-            $table->string('redirect_uri');
+            $table->string('redirect_uri')->nullable();
+            $table->string('code_scopes');
             $table->bigInteger('expires_at')->notNull();
             $table->bigInteger('created_at')->nullable();
             $table->bigInteger('updated_at')->nullable();
