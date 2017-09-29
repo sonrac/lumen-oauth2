@@ -25,7 +25,8 @@ class CreateRefreshTokens extends Migration
             $table->increments('id');
             $table->string('access_token');
             $table->string('refresh_token');
-            $table->bigInteger('expiry_date');
+            $table->string('revoked')->defaultValue(false);
+            $table->bigInteger('expires_at');
             $table->bigInteger('created_at')->nullable();
             $table->bigInteger('updated_at')->nullable();
 

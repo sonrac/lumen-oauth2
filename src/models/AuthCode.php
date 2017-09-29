@@ -35,12 +35,30 @@ class AuthCode extends Model implements AuthCodeEntityInterface
 {
     use UnixTimestampsTrait;
 
+
+    /**
+     * {@inheritdoc}
+     */
     protected $table = 'auth_codes';
+
+    /**
+     * {@inheritdoc}
+     */
     protected $fillable = [
         'redirect_uri', 'client_id', 'user_id',
         'created_at', 'updated_at', 'code', 'expires_at',
     ];
 
+    /**
+     * {@inheritdoc}
+     */
+    protected $attributes = [
+        'revoked' => false,
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
     protected $primaryKey = 'code';
 
     /**

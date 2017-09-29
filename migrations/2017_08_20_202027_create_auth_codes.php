@@ -26,7 +26,9 @@ class CreateAuthCodes extends Migration
             $table->string('code', 1000);
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('client_id')->notNull();
+            $table->unsignedInteger('revoked')->defaultValue(false);
             $table->string('redirect_uri');
+            $table->bigInteger('expires_at')->notNull();
             $table->bigInteger('created_at')->nullable();
             $table->bigInteger('updated_at')->nullable();
 

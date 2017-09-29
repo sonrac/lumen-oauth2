@@ -28,7 +28,7 @@ class CreateAccessTokens extends Migration
             $table->string('grant_type', 50)->notNull();
             $table->string('token_scopes', 5000)->notNull();
             $table->bigInteger('expires_at')->notNull();
-            $table->boolean('revoked')->notNull()->default(false);
+            $table->boolean('revoked')->default(false);
             $table->primary(['access_token']);
             $table->text('scopes')->nullable();
             $table->bigInteger('created_at')->nullable();

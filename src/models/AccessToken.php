@@ -24,7 +24,7 @@ use sonrac\lumenRest\traits\UnixTimestampsTrait;
  * @property int                                         $client_id    Client ID
  * @property string                                      $grant_type   Token grant type
  * @property int                                         $user_id      User ID
- * @property boolean                                     $revoke       Is access token revoked
+ * @property boolean                                     $revoked      Is access token revoked
  * @property \sonrac\lumenRest\models\Scope[]|Collection $token_scopes Access token scopes
  * @property int                                         $expires_at   Expire at
  *
@@ -42,23 +42,97 @@ class AccessToken extends Model implements AccessTokenEntityInterface
         UnixTimestampsTrait,
         EntityTrait;
 
+    /**
+     * Client credentials type
+     *
+     * @cont
+     * @type int
+     */
     const TYPE_CLIENT_CREDENTIALS = 'client_credentials';
+
+    /**
+     * Authorization code type
+     *
+     * @cont
+     * @type int
+     */
     const TYPE_AUTHORIZATION_CODE = 'authorization_code';
+
+    /**
+     * Authorization response authorization code
+     *
+     * @cont
+     * @type int
+     */
     const RESPONSE_AUTHORIZATION_CODE = 'code';
+
+    /**
+     * Password type
+     *
+     * @cont
+     * @type int
+     */
     const TYPE_PASSWORD = 'password';
+
+    /**
+     * Implicit response
+     *
+     * @cont
+     * @type int
+     */
     const RESPONSE_IMPLICIT = 'token';
+
+    /**
+     * Refresh token type
+     *
+     * @cont
+     * @type int
+     */
     const TYPE_REFRESH_TOKEN = 'refresh_token';
+
+    /**
+     * {@inheritdoc}
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
     public $unixTimestamps = true;
+
+    /**
+     * {@inheritdoc}
+     */
     public $timestamps = false;
+
+    /**
+     * {@inheritdoc}
+     */
     protected $fillable = [
         'id', 'access_token', 'client_id', 'user_id', 'grant_type', 'created_at',
         'token_scopes', 'updated_at', 'revoked', 'expires_at',
     ];
+
+    /**
+     * {@inheritdoc}
+     */
     protected $hidden = [
         'expires_at',
     ];
+
+    /**
+     * {@inheritdoc}
+     */
     protected $primaryKey = 'access_token';
+
+    /**
+     * {@inheritdoc}
+     */
     protected $table = 'access_tokens';
+
+    /**
+     * {@inheritdoc}
+     */
+    protected $attributes = [
+        'revoked' => false,
+    ];
 
     /**
      * {@inheritdoc}

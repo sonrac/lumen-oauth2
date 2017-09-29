@@ -15,7 +15,7 @@ use sonrac\lumenRest\tests\TestCase;
 
 class AccessTokenTest extends TestCase
 {
-    protected $_seeds = ['users', 'clients', 'scopes'];
+    protected $_seeds = ['users', 'clients'];
 
     /**
      * Scopes test
