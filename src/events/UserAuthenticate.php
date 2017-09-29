@@ -8,8 +8,8 @@
 
 namespace sonrac\lumenRest\events;
 
-use sonrac\lumenRest\models\User;
 use League\OAuth2\Server\Entities\UserEntityInterface;
+use sonrac\lumenRest\models\User;
 
 /**
  * Class UserAuthenticate

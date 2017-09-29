@@ -5,7 +5,6 @@
 
 namespace sonrac\lumenRest\models\repositories;
 
-use sonrac\lumenRest\models\AuthCode;
 use League\OAuth2\Server\Entities\AuthCodeEntityInterface;
 use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
 
@@ -19,12 +18,20 @@ use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
  */
 class AuthCodeRepository implements AuthCodeRepositoryInterface
 {
+    /** @var \League\OAuth2\Server\Entities\AuthCodeEntityInterface|\sonrac\lumenRest\models\AuthCode */
+    protected $_authCode = null;
+
+    public function __construct(AuthCodeEntityInterface $authCode)
+    {
+        $this->_authCode = $authCode;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function getNewAuthCode()
     {
-        return new AuthCode();
+        return $this->_authCode;
     }
 
     /**
@@ -32,7 +39,7 @@ class AuthCodeRepository implements AuthCodeRepositoryInterface
      */
     public function persistNewAuthCode(AuthCodeEntityInterface $authCodeEntity)
     {
-        // TODO: Implement persistNewAuthCode() method.
+        $authCodeEntity->save();
     }
 
     /**
@@ -40,7 +47,11 @@ class AuthCodeRepository implements AuthCodeRepositoryInterface
      */
     public function revokeAuthCode($codeId)
     {
-        // TODO: Implement revokeAuthCode() method.
+        \DB::table('auth_codes')
+            ->where('code', '=', $codeId)
+            ->update([
+                'revoked' => true,
+            ]);
     }
 
     /**
@@ -48,7 +59,12 @@ class AuthCodeRepository implements AuthCodeRepositoryInterface
      */
     public function isAuthCodeRevoked($codeId)
     {
-        // TODO: Implement isAuthCodeRevoked() method.
+        if ($token = $this->_authCode->find($codeId)) {
+            /** @var $token \sonrac\lumenRest\models\AuthCode */
+            return $token->revoked;
+        }
+
+        return false;
     }
 
 }

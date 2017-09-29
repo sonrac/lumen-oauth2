@@ -8,7 +8,6 @@
 
 namespace sonrac\lumenRest\events;
 
-use sonrac\lumenRest\models\AccessToken;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 
 /**

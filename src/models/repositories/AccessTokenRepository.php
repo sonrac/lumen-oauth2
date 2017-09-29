@@ -5,11 +5,11 @@
 
 namespace sonrac\lumenRest\models\repositories;
 
-use sonrac\lumenRest\events\TokenCreatedEvent;
 use Illuminate\Events\Dispatcher;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
+use sonrac\lumenRest\events\TokenCreatedEvent;
 
 /**
  * Class AccessTokenRepository
@@ -78,6 +78,7 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
             'user_id'      => $accessTokenEntity->getUserIdentifier(),
             'client_id'    => $accessTokenEntity->getClient()->getIdentifier(),
             'revoked'      => false,
+            'grant_type'   => 1,
             'created_at'   => new \DateTime,
             'updated_at'   => new \DateTime,
             'expires_at'   => $accessTokenEntity->getExpiryDateTime(),
@@ -91,7 +92,7 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
      */
     public function revokeAccessToken($tokenId)
     {
-        \DB::table('access_token')
+        \DB::table('access_tokens')
             ->where('access_token', '=', $tokenId)
             ->update([
                 'revoked' => true,
@@ -106,6 +107,7 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
         if ($token = $this->_token->find($tokenId)) {
             return $token->revoked;
         }
+
         return false;
     }
 }

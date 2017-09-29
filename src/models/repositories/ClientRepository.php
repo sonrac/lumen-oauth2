@@ -5,8 +5,8 @@
 
 namespace sonrac\lumenRest\models\repositories;
 
-use sonrac\lumenRest\models\Client;
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
+use sonrac\lumenRest\models\Client;
 
 /**
  * Class ClientRepository

@@ -21,39 +21,6 @@ use DateTime;
  */
 trait UnixTimestampsTrait
 {
-    /***
-     * @param \Illuminate\Database\Eloquent\Model|UnixTimestampsTrait $model
-     * @param string                                                  $attribute
-     * @param \DateTime|\Carbon\Carbon|int|string                     $value
-     * @param bool                                                    $unixFormat
-     *
-     * @return bool
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
-     */
-    protected static function setModelTimeAttribute($model, $attribute, $value, $unixFormat = false)
-    {
-        if (is_numeric($value)) {
-            $value = Carbon::createFromTimestampUTC($value);
-        }
-
-        if (!is_object($value) && !($value = strtotime($value))) {
-
-            if (!in_array($attribute, $model->getTimestampAutoFillAttributes())) {
-                return false;
-            }
-            $value = Carbon::now();
-        }
-
-        if ($unixFormat) {
-            $model->attributes[$attribute] = $value->getTimestamp();
-        } else {
-            $model->setAttribute($attribute, $value);
-        }
-
-        return true;
-    }
-
     /**
      * Boot timestamp model
      *
@@ -89,6 +56,39 @@ trait UnixTimestampsTrait
         static::saved($callbackSaved);
     }
 
+    /***
+     * @param \Illuminate\Database\Eloquent\Model|UnixTimestampsTrait $model
+     * @param string                                                  $attribute
+     * @param \DateTime|\Carbon\Carbon|int|string                     $value
+     * @param bool                                                    $unixFormat
+     *
+     * @return bool
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    protected static function setModelTimeAttribute($model, $attribute, $value, $unixFormat = false)
+    {
+        if (is_numeric($value)) {
+            $value = Carbon::createFromTimestampUTC($value);
+        }
+
+        if (!is_object($value) && !($value = strtotime($value))) {
+
+            if (!in_array($attribute, $model->getTimestampAutoFillAttributes())) {
+                return false;
+            }
+            $value = Carbon::now();
+        }
+
+        if ($unixFormat) {
+            $model->attributes[$attribute] = $value->getTimestamp();
+        } else {
+            $model->setAttribute($attribute, $value);
+        }
+
+        return true;
+    }
+
     /**
      * Unix timestamp check enable
      *
@@ -96,7 +96,8 @@ trait UnixTimestampsTrait
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */
-    public function unixTimeStampsEnable() {
+    public function unixTimeStampsEnable()
+    {
         return property_exists($this, 'unixTimestamps') && $this->unixTimestamps;
     }
 
@@ -169,16 +170,6 @@ trait UnixTimestampsTrait
     }
 
     /**
-     * Set updated_at attribute
-     *
-     * @param int|string|Carbon|DateTime $time
-     */
-    public function setUpdatedAt($time)
-    {
-        $this->setDate('updated_at', $time);
-    }
-
-    /**
      * Set date for column in object style
      *
      * @param string                     $column
@@ -214,6 +205,16 @@ trait UnixTimestampsTrait
         return ((string)(int)$timestamp === $timestamp)
             && ($timestamp <= PHP_INT_MAX)
             && ($timestamp >= ~PHP_INT_MAX);
+    }
+
+    /**
+     * Set updated_at attribute
+     *
+     * @param int|string|Carbon|DateTime $time
+     */
+    public function setUpdatedAt($time)
+    {
+        $this->setDate('updated_at', $time);
     }
 
     /**
@@ -263,7 +264,8 @@ trait UnixTimestampsTrait
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */
-    public function getTimestampAutoFillAttributes() {
+    public function getTimestampAutoFillAttributes()
+    {
         return ['created_at', 'updated_at'];
     }
 }

@@ -15,10 +15,10 @@ return [
     'privateKeyName'             => env('OAUTH_PRIVATE_KEY_NAME', 'private.key'),
     'passPhrase'                 => env('OAUTH_PASS_PHRASE', ''), // May be overwrite by .env
     'params'                     => [
-        'scope_param'     => env('SCOPE_PARAM', 'scopes'),
-        'default_scope'   => env('DEFAULT_SCOPE', 'default'),
-        'state_param'     => env('STATE_PARAM', 'state'),
-        'scope_delimiter' => env('SCOPE_DELIMITER', ','),
+        'scope_param'     => env('OAUTH_SCOPE_PARAM', 'scopes'),
+        'default_scope'   => env('OAUTH_DEFAULT_SCOPE', 'default'),
+        'state_param'     => env('OAUTH_STATE_PARAM', 'state'),
+        'scope_delimiter' => env('OAUTH_SCOPE_DELIMITER', ','),
     ],
     'access_token_ttl'           => env('OAUTH_ACCESS_TOKEN_TTL', 'PT1H'),
     'refresh_token_ttl'          => env('OAUTH_REFRESH_TOKEN_TTL', 'P5M'),
@@ -37,7 +37,7 @@ return [
             'class' => \League\OAuth2\Server\Grant\ImplicitGrant::class,
         ],
         'code'          => [
-            'class'    => \League\OAuth2\Server\Grant\ImplicitGrant::class,
+            'class'    => \League\OAuth2\Server\Grant\AuthCodeGrant::class,
             'code_ttl' => env('OAUTH_CODE_TTL', 'PT10M'),
         ],
     ],
@@ -46,5 +46,5 @@ return [
         'email'   => 'User email scope',
         'basic'   => 'Base user info scope',
     ],
-    'enable_scope_exception'     => false,
+    'enable_scope_exception'     => env('OAUTH_ENABLE_SCOPE_EXCEPTION', false),
 ];

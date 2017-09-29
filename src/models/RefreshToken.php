@@ -9,17 +9,17 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
+use sonrac\lumenRest\traits\UnixTimestampsTrait;
 
 
 /**
  * Class RefreshToken
  * Refresh tokens model
  *
- * @property int                          $id            ID
- * @property string                       $access_token  Access token
- * @property string                       $refresh_token Refresh token
- * @property boolean                      $revoked       Is revoked
- * @property Carbon|\DateTime|string|null $expire_date   Expire refresh date
+ * @property string                       $access_token   Access token
+ * @property string                       $refresh_token  Refresh token
+ * @property boolean                      $revoked        Is revoked
+ * @property Carbon|\DateTime|string|null $expires_at     Expire refresh date
  *
  * @package sonrac\lumenRest\models
  *
@@ -27,6 +27,8 @@ use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
  */
 class RefreshToken extends Model implements RefreshTokenEntityInterface
 {
+    use UnixTimestampsTrait;
+
     /**
      * {@inheritdoc}
      */
@@ -35,14 +37,17 @@ class RefreshToken extends Model implements RefreshTokenEntityInterface
     /**
      * {@inheritdoc}
      */
-    protected $fillable = ['access_token', 'refresh_token', 'expiry_date', 'revoked', 'created_at', 'updated_at'];
+    protected $fillable = ['access_token', 'refresh_token',
+        'expires_at', 'revoked', 'created_at', 'updated_at'];
+
+    protected $primaryKey = 'access_token';
 
     /**
      * {@inheritdoc}
      */
     public function getIdentifier()
     {
-        return $this->id;
+        return $this->access_token;
     }
 
     /**
@@ -50,7 +55,7 @@ class RefreshToken extends Model implements RefreshTokenEntityInterface
      */
     public function setIdentifier($identifier)
     {
-        $this->id = $identifier;
+        $this->access_token = $identifier;
     }
 
     /**
@@ -58,7 +63,7 @@ class RefreshToken extends Model implements RefreshTokenEntityInterface
      */
     public function getExpiryDateTime()
     {
-        return $this->expire_date;
+        return $this->expires_at;
     }
 
     /**
@@ -66,7 +71,7 @@ class RefreshToken extends Model implements RefreshTokenEntityInterface
      */
     public function setExpiryDateTime(\DateTime $dateTime)
     {
-        $this->expire_date = $dateTime;
+        $this->expires_at = $dateTime;
     }
 
     /**
@@ -85,5 +90,25 @@ class RefreshToken extends Model implements RefreshTokenEntityInterface
     public function getAccessToken()
     {
         return $this->access_token;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    public function getTimestampAutoFillAttributes()
+    {
+        return ['created_at', 'updated_at', 'expires_at'];
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    public function getTimestampAttributes()
+    {
+        return ['created_at', 'updated_at', 'expires_at'];
     }
 }

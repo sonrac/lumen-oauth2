@@ -8,12 +8,12 @@
 
 namespace Tests\units;
 
-use sonrac\lumenRest\traits\UnixTimestampsTrait;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Schema\Blueprint;
 use sonrac\lumenRest\tests\TestCase;
+use sonrac\lumenRest\traits\UnixTimestampsTrait;
 
 /**
  * Class TimestampsTest
@@ -21,7 +21,7 @@ use sonrac\lumenRest\tests\TestCase;
  *
  * @package Tests\Units
  *
- * @author Donii Sergii <doniysa@gmail.com>
+ * @author  Donii Sergii <doniysa@gmail.com>
  */
 class TimestampsTest extends TestCase
 {
@@ -32,7 +32,7 @@ class TimestampsTest extends TestCase
      */
     public function touch()
     {
-        if (! $this->usesUnixTimestamps()) {
+        if (!$this->usesUnixTimestamps()) {
             return false;
         }
 
@@ -41,7 +41,8 @@ class TimestampsTest extends TestCase
         return $this->save();
     }
 
-    public function usesUnixTimestamps() {
+    public function usesUnixTimestamps()
+    {
         return property_exists($this, 'unitTimestamps') && $this->unixTimestamps;
     }
 
@@ -59,7 +60,7 @@ class TimestampsTest extends TestCase
             $table->string('name');
             $table->bigInteger('created_at');
             $table->bigInteger('updated_at');
-            $table->bigInteger('last_login');
+            $table->bigInteger('last_login')->nullable();
         });
     }
 
@@ -72,11 +73,11 @@ class TimestampsTest extends TestCase
     {
         \DB::table('test')
             ->insert([
-                'id' => 1,
+                'id'         => 1,
                 'created_at' => (new DateTime())->modify('-5 days')->getTimestamp(),
                 'updated_at' => (new DateTime())->getTimestamp(),
                 'last_login' => (new DateTime())->getTimestamp(),
-                'name' => 'test',
+                'name'       => 'test',
             ]);
 
         $model = new BaseModel();
@@ -96,24 +97,8 @@ class TimestampsTest extends TestCase
     }
 
     /**
-     * Test auto fill attributes
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
-     */
-    public function testAutoFill() {
-        $model = new BaseModel();
-        $model->name = 'third test model';
-        $this->assertTrue($model->save());
-        foreach ($model->getTimestampAttributes() as $timestampAttribute) {
-            if (in_array($timestampAttribute, $model->getTimestampAutoFillAttributes())) {
-                $this->assertInstanceOf(Carbon::class, $model->getAttribute($timestampAttribute));
-            }
-        }
-    }
-
-    /**
      * @param BaseModel $model
-     * @param string $name
+     * @param string    $name
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */
@@ -122,6 +107,23 @@ class TimestampsTest extends TestCase
         foreach (['2017-2-2', (new DateTime()), (new Carbon()), '1504281861', 1504281861] as $value) {
             $model->$name = $value;
             $this->assertInstanceOf(Carbon::class, $model->$name);
+        }
+    }
+
+    /**
+     * Test auto fill attributes
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    public function testAutoFill()
+    {
+        $model = new BaseModel();
+        $model->name = 'third test model';
+        $this->assertTrue($model->save());
+        foreach ($model->getTimestampAttributes() as $timestampAttribute) {
+            if (in_array($timestampAttribute, $model->getTimestampAutoFillAttributes())) {
+                $this->assertInstanceOf(Carbon::class, $model->getAttribute($timestampAttribute));
+            }
         }
     }
 
@@ -141,24 +143,21 @@ class TimestampsTest extends TestCase
  * Class BaseModel
  * Base model timestamps
  *
- * @property int $id
- * @property string $name
+ * @property int                         $id
+ * @property string                      $name
  * @property string|Carbon|DateTime|null $last_login
  *
  * @package Tests\Units
  *
- * @author Donii Sergii <doniysa@gmail.com>
+ * @author  Donii Sergii <doniysa@gmail.com>
  */
 class BaseModel extends Model
 {
     use UnixTimestampsTrait;
 
-    protected $table = 'test';
-
     public $timestamps = false;
-
     public $unixTimestamps = true;
-
+    protected $table = 'test';
     protected $fillable = ['last_login', 'created_at', 'updated_at', 'name'];
 
     public function getTimestampAttributes()

@@ -5,21 +5,24 @@
 
 namespace sonrac\lumenRest\models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
 use League\OAuth2\Server\Entities\AuthCodeEntityInterface;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
-use League\OAuth2\Server\Entities\Traits\TokenEntityTrait;
+use League\OAuth2\Server\Entities\ScopeEntityInterface;
+use sonrac\lumenRest\traits\UnixTimestampsTrait;
 
 /**
  * Class AuthCode
  * Auth codes model
  *
- * @property int    $id
- * @property string $code
- * @property int    $client_id
- * @property int    $user_id
- * @property string $redirect_uri
+ * @property int    $id           ID
+ * @property string $code         Code
+ * @property int    $client_id    Client ID
+ * @property int    $user_id      User ID
+ * @property bool   $revoked      Is revoked
+ * @property int    $expires_at   Expire at
+ * @property string $redirect_uri Redirect uri
  *
  * @property User   $user
  * @property Client $clientApp
@@ -30,26 +33,77 @@ use League\OAuth2\Server\Entities\Traits\TokenEntityTrait;
  */
 class AuthCode extends Model implements AuthCodeEntityInterface
 {
-    use TokenEntityTrait;
+    use UnixTimestampsTrait;
 
     protected $table = 'auth_codes';
-    protected $fillable = ['redirect_uri', 'client_id', 'user_id'];
+    protected $fillable = [
+        'redirect_uri', 'client_id', 'user_id',
+        'created_at', 'updated_at', 'code', 'expires_at',
+    ];
 
+    protected $primaryKey = 'code';
+
+    /**
+     * {@inheritdoc}
+     */
     protected static function boot()
     {
-        static::registerModelEvent('booted', function ($model) {
-            /** @var $model AuthCode */
-            $model->getCodeAttribute();
-        });
-
         parent::boot();
-    }
 
-    public function getCodeAttribute()
-    {
-        if (!$this->code) {
-            $this->code = Str::random(52);
-        }
+        $serializeScopes = function ($model) {
+            /** @var $model \sonrac\lumenRest\models\AccessToken */
+
+            if (!isset($model->attributes['code_scopes'])) {
+                $model->attributes['code_scopes'] = '';
+            }
+
+            $scopes = '';
+            if (is_object($model->attributes['code_scopes']) || is_array($model->attributes['code_scopes'])) {
+                foreach ($model->attributes['code_scopes'] as $code_scopes) {
+                    /** @var $code_scopes \sonrac\lumenRest\models\Scope */
+                    if (is_array($code_scopes)) {
+                        $scopes .= ' ' . explode(' ', $code_scopes);
+                        continue;
+                    }
+                    if (is_object($code_scopes)) {
+                        $scopes .= ' ' . trim($code_scopes->name);
+                    } else {
+                        $scopes .= ' ' . trim($code_scopes);
+                    }
+                }
+            }
+
+            $model->attributes['code_scopes'] = trim($scopes);
+        };
+
+        $deserializeScopes = function ($model) {
+            /** @var \sonrac\lumenRest\models\AccessToken $model */
+            if (!isset($model->attributes['code_scopes'])) {
+                $model->attributes['code_scopes'] = '';
+            }
+            if ($model->attributes['code_scopes'] && is_string($model->attributes['code_scopes'])) {
+                $scopeClass = get_class(app(ScopeEntityInterface::class));
+                $scopes = explode(' ', $model->attributes['code_scopes']);
+                $finalScopes = new Collection();
+                foreach ($scopes as $scope) {
+                    $scope = trim($scope);
+
+                    if ($scope) {
+                        $finalScopes->add((new $scopeClass(['name' => $scope])));
+                    }
+                }
+
+                $model->attributes['code_scopes'] = $finalScopes;
+            }
+        };
+
+        static::creating($serializeScopes);
+        static::updating($serializeScopes);
+
+        static::created($deserializeScopes);
+        static::retrieved($deserializeScopes);
+        static::updated($deserializeScopes);
+
     }
 
     /**
@@ -73,7 +127,7 @@ class AuthCode extends Model implements AuthCodeEntityInterface
      */
     public function getIdentifier()
     {
-        return $this->id;
+        return $this->code;
     }
 
     /**
@@ -81,7 +135,7 @@ class AuthCode extends Model implements AuthCodeEntityInterface
      */
     public function setIdentifier($identifier)
     {
-        $this->id = $identifier;
+        $this->code = $identifier;
     }
 
     /**
@@ -107,7 +161,7 @@ class AuthCode extends Model implements AuthCodeEntityInterface
      */
     public function setClient(ClientEntityInterface $client)
     {
-        $this->client = $client;
+        $this->client_id = $client->getIdentifier();
         $this->setRelation('clientApp', $client);
     }
 
@@ -119,5 +173,73 @@ class AuthCode extends Model implements AuthCodeEntityInterface
     public function user()
     {
         return $this->hasOne(Client::class, 'user_id', 'id');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setExpiryDateTime(\DateTime $dateTime)
+    {
+        $this->expires_at = $dateTime;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTimestampAttributes()
+    {
+        return ['created_at', 'updated_at', 'expires_at'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTimestampAutoFillAttributes()
+    {
+        return ['created_at', 'updated_at', 'expires_at'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setUserIdentifier($identifier)
+    {
+        $this->user_id = $identifier;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUserIdentifier()
+    {
+        return $this->user_id;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getExpiryDateTime()
+    {
+        return $this->expires_at;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addScope(ScopeEntityInterface $scope)
+    {
+        if (!isset($this->attributes['code_scopes'])) {
+            $this->attributes['code_scopes'] = [];
+        }
+        /** @var $scope \sonrac\lumenRest\models\Scope */
+        $this->attributes['code_scopes'][$scope->getIdentifier()] = $scope->name;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getScopes()
+    {
+        return isset($this->attributes['code_scopes']) ? $this->attributes['code_scopes'] : '';
     }
 }

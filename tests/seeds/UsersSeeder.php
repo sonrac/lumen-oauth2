@@ -26,7 +26,7 @@ class UsersSeeder extends AbstractFakerSeeder
         \DB::table('users')->delete();
 
         $data = [];
-        for($i = 1; $i < 20; $i++) {
+        for ($i = 1; $i < 20; $i++) {
             $data[] = [
                 'id'          => $i,
                 'username'    => 'test_user_' . $i,

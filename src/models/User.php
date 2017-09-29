@@ -5,7 +5,6 @@
 
 namespace sonrac\lumenRest\models;
 
-use sonrac\lumenRest\traits\UnixTimestampsTrait;
 use Carbon\Carbon;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
@@ -13,18 +12,19 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Lumen\Auth\Authorizable;
 use League\OAuth2\Server\Entities\UserEntityInterface;
+use sonrac\lumenRest\traits\UnixTimestampsTrait;
 
 /**
  * Class User
  * User class
  *
- * @property int               $id
- * @property string            $username
- * @property string            $first_name
- * @property string            $last_name
- * @property string            $email
- * @property string            $password
- * @property int|string|Carbon $last_login
+ * @property int               $id         ID
+ * @property string            $username   Username
+ * @property string            $first_name First name
+ * @property string            $last_name  Last name
+ * @property string            $email      Email
+ * @property string            $password   Password
+ * @property int|string|Carbon $last_login Last login date
  *
  * @package sonrac\lumenRest\models
  *
@@ -44,7 +44,7 @@ class User extends Model implements UserEntityInterface, AuthenticatableContract
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'created_at', 'updated_at', 'last_login', 'first_name', 'last_name', 'last_login'
+        'name', 'email', 'created_at', 'updated_at', 'last_login', 'first_name', 'last_name', 'last_login',
     ];
 
     /**

@@ -17,30 +17,30 @@ use sonrac\lumenRest\tests\TestCase;
  */
 class AuthTest extends TestCase
 {
-    protected $_seeds = ['scopes', 'users', 'clients'];
+    protected $_seeds = ['users', 'clients'];
 
-//    /**
-//     * Test client credentials
-//     *
-//     * @author Donii Sergii <doniysa@gmail.com>
-//     */
-//    public function testsClientCredential()
-//    {
-//        $reqData = [
-//            'grant_type'    => AccessToken::TYPE_CLIENT_CREDENTIALS,
-//            'client_id'     => 1,
-//            'client_secret' => ClientsSeeder::SECRET_KEYS[0],
-//            'scope'         => 'default',
-//            'redirect_uri'  => ClientsSeeder::REDIRECT_URI_TEST_CLIENT,
-//        ];
-//        /** @var \Tests\Functional\AuthTest $data */
-//        $data = $this->post('/oauth/access_token', $reqData);
-//
-//        $resp = json_decode($data->response->getContent(), true);
-//
-//        $this->assertArrayHasKey('access_token', $resp);
-//        $this->assertEquals('Bearer', $resp['token_type']);
-//    }
+    /**
+     * Test client credentials
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    public function testsClientCredential()
+    {
+        $reqData = [
+            'grant_type'    => AccessToken::TYPE_CLIENT_CREDENTIALS,
+            'client_id'     => 1,
+            'client_secret' => ClientsSeeder::SECRET_KEYS[0],
+            'scope'         => 'default',
+            'redirect_uri'  => ClientsSeeder::REDIRECT_URI_TEST_CLIENT,
+        ];
+        /** @var \Tests\Functional\AuthTest $data */
+        $data = $this->post('/oauth/access_token', $reqData);
+
+        $resp = json_decode($data->response->getContent(), true);
+
+        $this->assertArrayHasKey('access_token', $resp);
+        $this->assertEquals('Bearer', $resp['token_type']);
+    }
 
     /**
      * Password client grant auth test
@@ -69,32 +69,31 @@ class AuthTest extends TestCase
 
         return $resp['refresh_token'];
     }
-//
-//    /**
-//     * Password client grant auth test
-//     *
-//     * @author Donii Sergii <doniysa@gmail.com>
-//     */
-//    public function testImplicitClient()
-//    {
-//        $reqData = [
-//            'grant_type'    => AccessToken::TYPE_IMPLICIT,
-//            'client_id'     => 1,
-//            'client_secret' => ClientsSeeder::SECRET_KEYS[0],
-//            'scope'         => 'default',
-//            'redirect_uri'  => ClientsSeeder::REDIRECT_URI_TEST_CLIENT,
-//            'username'      => 'test_user_1',
-//            'password'      => 'test_user_1',
-//        ];
-//        /** @var \Tests\Functional\AuthTest $data */
-//        $data = $this->post('/oauth/access_token', $reqData);
-//
-//        $resp = json_decode($data->response->getContent(), true);
-//
-//        $this->assertArrayHasKey('access_token', $resp);
-//        $this->assertEquals('Bearer', $resp['token_type']);
-//        $this->assertArrayHasKey('refresh_token', $resp);
-//    }
+
+    /**
+     * Password client grant auth test
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    public function testImplicitClient()
+    {
+        $reqData = [
+            'response_type' => AccessToken::RESPONSE_IMPLICIT,
+            'client_id'     => 1,
+            'scope'         => 'default',
+            'redirect_uri'  => ClientsSeeder::REDIRECT_URI_TEST_CLIENT,
+        ];
+        /** @var \Tests\Functional\AuthTest $data */
+        $data = $this->get('/authorize?' . http_build_query($reqData));
+
+        $data->seeHeader('location');
+        $url = parse_url($data->response->headers->get('location'));
+
+        $this->assertContains('access_token', $url['fragment'], true);
+        $this->assertContains('bearer', $url['fragment'], true);
+        $this->assertContains('token_type', $url['fragment'], true);
+        $this->assertContains('expires_in', $url['fragment'], true);
+    }
 
     /**
      * Password client grant auth test
@@ -117,10 +116,67 @@ class AuthTest extends TestCase
 
         $resp = json_decode($data->response->getContent(), true);
 
-        if (!isset($resp['access_token'])) {
-            var_dump($reqData, $resp);
-            exit;
-        }
+        $this->assertArrayHasKey('access_token', $resp);
+        $this->assertEquals('Bearer', $resp['token_type']);
+        $this->assertArrayHasKey('refresh_token', $resp);
+    }
+
+    /**
+     * Test auth code
+     *
+     * @return string
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    public function testGetAuthCode()
+    {
+        $reqData = [
+            'response_type' => AccessToken::RESPONSE_AUTHORIZATION_CODE,
+            'client_id'     => 1,
+            'client_secret' => ClientsSeeder::SECRET_KEYS[0],
+            'scope'         => 'default',
+            'state'         => 213,
+        ];
+        /** @var \Tests\Functional\AuthTest $data */
+        $data = $this->get('/authorize?' . http_build_query($reqData));
+
+        $data->seeHeader('location');
+        $data->seeStatusCode(302);
+        $url = parse_url($data->response->headers->get('location'));
+
+        $this->assertContains('code', $url['query'], true);
+        $this->assertContains('state', $url['query'], true);
+
+        parse_str($url['query'], $parts);
+
+        $this->assertArrayHasKey('code', $parts);
+        $this->assertArrayHasKey('state', $parts);
+
+        return $parts['code'];
+    }
+
+    /**
+     * Test authenticate with code
+     *
+     * @param string $code
+     *
+     * @depends testGetAuthCode
+     *
+     * @author  Donii Sergii <doniysa@gmail.com>
+     */
+    public function testAuthWithCode($code)
+    {
+        $reqData = [
+            'grant_type'    => AccessToken::TYPE_AUTHORIZATION_CODE,
+            'code'          => $code,
+            'client_id'     => 1,
+            'client_secret' => ClientsSeeder::SECRET_KEYS[0],
+            'scope'         => 'default',
+        ];
+        /** @var \Tests\Functional\AuthTest $data */
+        $data = $this->post('/oauth/access_token', $reqData);
+
+        $resp = json_decode($data->response->getContent(), true);
 
         $this->assertArrayHasKey('access_token', $resp);
         $this->assertEquals('Bearer', $resp['token_type']);

@@ -8,10 +8,10 @@
 
 namespace sonrac\lumenRest\events;
 
-use sonrac\lumenRest\models\AccessToken;
-use sonrac\lumenRest\models\RefreshToken;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
+use sonrac\lumenRest\models\AccessToken;
+use sonrac\lumenRest\models\RefreshToken;
 
 /**
  * Class TokenRefreshedEvent

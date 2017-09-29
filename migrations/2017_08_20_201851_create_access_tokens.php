@@ -26,12 +26,14 @@ class CreateAccessTokens extends Migration
             $table->unsignedInteger('client_id')->nullable();
             $table->string('access_token', 1024)->notNull();
             $table->string('grant_type', 50)->notNull();
-            $table->bigInteger('expire_date_time')->notNull();
+            $table->string('token_scopes', 5000)->notNull();
+            $table->bigInteger('expires_at')->notNull();
             $table->boolean('revoked')->notNull()->default(false);
             $table->primary(['access_token']);
+            $table->text('scopes')->nullable();
             $table->bigInteger('created_at')->nullable();
             $table->bigInteger('updated_at')->nullable();
-
+            $table->index(['token_scopes']);
             $table->foreign(['user_id'])
                 ->references(['id'])
                 ->on('users')

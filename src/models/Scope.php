@@ -21,10 +21,12 @@ use League\OAuth2\Server\Entities\ScopeEntityInterface;
  */
 class Scope extends Model implements ScopeEntityInterface
 {
-
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
     protected $fillable = ['name', 'description'];
-
-    protected $table = 'scopes';
 
     /**
      * {@inheritdoc}
@@ -34,4 +36,27 @@ class Scope extends Model implements ScopeEntityInterface
         return $this->name;
     }
 
+    /**
+     * Set name attribute
+     *
+     * @param string $name
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    public function setNameColumn($name)
+    {
+        $this->setNameAttribute($name);
+    }
+
+    /**
+     * Set name attribute
+     *
+     * @param string $name
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    public function setNameAttribute($name)
+    {
+        $this->attributes['name'] = is_object($name) ? $name->name : $name;
+    }
 }

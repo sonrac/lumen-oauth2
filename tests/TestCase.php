@@ -5,14 +5,9 @@
 
 namespace sonrac\lumenRest\tests;
 
-use Illuminate\Filesystem\Filesystem;
-use Laravel\Lumen\Application;
 use Laravel\Lumen\Testing\DatabaseMigrations;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 use Laravel\Lumen\Testing\TestCase as LumenTestCase;
-use sonrac\lumenRest\Oauth2ServiceProvider;
-use sonrac\lumenRest\tests\app\Kernel;
-
 
 /**
  * Class TestCase
@@ -27,6 +22,8 @@ class TestCase extends LumenTestCase
     use DatabaseTransactions,
         DatabaseMigrations;
 
+    protected $_seeds = [];
+
     /**
      * Boots the application.
      *
@@ -37,24 +34,37 @@ class TestCase extends LumenTestCase
         $this->app = require __DIR__ . '/app/app.php';
 
         $this->artisan('migrate', [
-            '--path' => __DIR__ . '/../migrations'
+            '--path' => __DIR__ . '/../migrations',
         ]);
 
         return $this->app;
     }
 
-    /**
-     * run package database migrations
-     *
-     * @return void
-     */
-    public function migrate()
+    public function setUp()
     {
-        $fileSystem = new Filesystem();
+        $this->init();
 
-        foreach($fileSystem->files(__DIR__ . "/../src/migrations") as $file)
-        {
+        parent::setUp();
 
+        $this->artisan('generate:keys');
+
+        if (is_array($this->_seeds) && count($this->_seeds)) {
+            foreach ($this->_seeds as $seed) {
+                $this->artisan('db:seed', [
+                    '--class' => '\\sonrac\\lumenRest\\tests\\seeds\\' . ucfirst($seed) . 'Seeder',
+                ]);
+            }
+        }
+    }
+
+    protected function init()
+    {
+        if (!is_dir($dir = __DIR__ . '/app/database/migrations')) {
+            symlink(__DIR__ . '/../migrations', $dir);
+        }
+
+        if (!is_file($file = __DIR__ . '/out/database.sqlite')) {
+            file_put_contents($file, '');
         }
     }
 }

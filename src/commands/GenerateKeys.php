@@ -31,7 +31,7 @@ class GenerateKeys extends Command
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */
-    public $name = 'generate:keys {--force?} {--passphrase=}';
+    public $name = 'generate:keys {--force?} {--passphrase=} {--disable-out?}';
     /**
      * {@inheritdoc}
      */
@@ -105,15 +105,13 @@ class GenerateKeys extends Command
 
             $this->generatePrivateKey($phrase);
             $this->generatePublicKey($phrase);
-        } else {
-            echo "Keys already generated. Use --force flag for regenerate" . PHP_EOL;
         }
 
         if ($disableOut) {
             ob_clean();
         }
 
-        exec('chmod 660 ' . config('oauth2.key_path') . '/*.key');
+        exec('chmod 660 ' . config('oauth2.keyPath') . '/*.key');
     }
 
     /**

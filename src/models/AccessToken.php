@@ -5,7 +5,7 @@
 
 namespace sonrac\lumenRest\models;
 
-use sonrac\lumenRest\traits\UnixTimestampsTrait;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
@@ -14,21 +14,23 @@ use League\OAuth2\Server\Entities\ScopeEntityInterface;
 use League\OAuth2\Server\Entities\Traits\AccessTokenTrait;
 use League\OAuth2\Server\Entities\Traits\EntityTrait;
 use League\OAuth2\Server\Entities\UserEntityInterface;
+use sonrac\lumenRest\traits\UnixTimestampsTrait;
 
 /**
  * Class AccessToken
+ * Access token model
  *
- * @property string                       $access_token
- * @property int                          $client_id
- * @property string                       $grant_type
- * @property int                          $user_id
- * @property boolean                      $revoke
- * @property int                          $expire_date_time
+ * @property string                                      $access_token Access token
+ * @property int                                         $client_id    Client ID
+ * @property string                                      $grant_type   Token grant type
+ * @property int                                         $user_id      User ID
+ * @property boolean                                     $revoke       Is access token revoked
+ * @property \sonrac\lumenRest\models\Scope[]|Collection $token_scopes Access token scopes
+ * @property int                                         $expires_at   Expire at
  *
- * @property \sonrac\lumenRest\models\Client           $client
- * @property \sonrac\lumenRest\models\Scope|Collection $scopes
- *
- * @property User                         $user
+ * Relations:
+ * @property \sonrac\lumenRest\models\Client             $client       Client
+ * @property User                                        $user         User
  *
  * @package sonrac\lumenRest\models
  *
@@ -41,22 +43,22 @@ class AccessToken extends Model implements AccessTokenEntityInterface
         EntityTrait;
 
     const TYPE_CLIENT_CREDENTIALS = 'client_credentials';
-    const TYPE_AUTHORIZATION_CODE = 'code';
+    const TYPE_AUTHORIZATION_CODE = 'authorization_code';
+    const RESPONSE_AUTHORIZATION_CODE = 'code';
     const TYPE_PASSWORD = 'password';
-    const TYPE_IMPLICIT = 'token';
+    const RESPONSE_IMPLICIT = 'token';
     const TYPE_REFRESH_TOKEN = 'refresh_token';
-
-    protected $fillable = [
-        'id', 'access_token', 'client_id', 'user_id', 'grant_type', 'created_at', 'updated_at', 'revoked'
-    ];
-
-    protected $hidden = [
-        'expire_date_time',
-    ];
-
     public $unixTimestamps = true;
-
     public $timestamps = false;
+    protected $fillable = [
+        'id', 'access_token', 'client_id', 'user_id', 'grant_type', 'created_at',
+        'token_scopes', 'updated_at', 'revoked', 'expires_at',
+    ];
+    protected $hidden = [
+        'expires_at',
+    ];
+    protected $primaryKey = 'access_token';
+    protected $table = 'access_tokens';
 
     /**
      * {@inheritdoc}
@@ -65,17 +67,52 @@ class AccessToken extends Model implements AccessTokenEntityInterface
     {
         parent::boot();
 
-        static::created(function ($model) {
+        $serializeScopes = function ($model) {
             /** @var $model \sonrac\lumenRest\models\AccessToken */
-        });
 
-        static::updated(function ($model) {
-            /** @var $model \sonrac\lumenRest\models\AccessToken */
-        });
+            if (!isset($model->attributes['token_scopes'])) {
+                $model->attributes['token_scopes'] = '';
+            }
 
-        static::deleted(function ($model) {
-            /** @var $model \sonrac\lumenRest\models\AccessToken */
-        });
+            $scopes = '';
+            if (is_object($model->attributes['token_scopes']) || is_array($model->attributes['token_scopes'])) {
+                foreach ($model->attributes['token_scopes'] as $token_scope) {
+                    /** @var $token_scope \sonrac\lumenRest\models\Scope */
+                    $scopes .= ' ' . trim($token_scope->name);
+                }
+            }
+
+            $model->attributes['token_scopes'] = trim($scopes);
+        };
+
+        $deserializeScopes = function ($model) {
+            /** @var \sonrac\lumenRest\models\AccessToken $model */
+            if (!isset($model->attributes['token_scopes'])) {
+                $model->attributes['token_scopes'] = '';
+            }
+            if ($model->attributes['token_scopes'] && is_string($model->attributes['token_scopes'])) {
+                $scopeClass = get_class(app(ScopeEntityInterface::class));
+                $scopes = explode(' ', $model->attributes['token_scopes']);
+                $finalScopes = new Collection();
+                foreach ($scopes as $scope) {
+                    $scope = trim($scope);
+
+                    if ($scope) {
+                        $finalScopes->add((new $scopeClass(['name' => $scope])));
+                    }
+                }
+
+                $model->attributes['token_scopes'] = $finalScopes;
+            }
+        };
+
+        static::creating($serializeScopes);
+        static::updating($serializeScopes);
+
+        static::created($deserializeScopes);
+        static::retrieved($deserializeScopes);
+        static::updated($deserializeScopes);
+
     }
 
     /**
@@ -111,12 +148,11 @@ class AccessToken extends Model implements AccessTokenEntityInterface
      */
     public function addScope(ScopeEntityInterface $scope)
     {
-        if (!$this->scopes) {
-            $this->setRelation('scopes', new Collection([]));
+        if (!isset($this->attributes['token_scopes'])) {
+            $this->attributes['token_scopes'] = [];
         }
-
         /** @var $scope \sonrac\lumenRest\models\Scope */
-        $this->scopes[$scope->name] = $scope;
+        $this->attributes['token_scopes'][$scope->getIdentifier()] = $scope->name;
     }
 
     /**
@@ -164,7 +200,11 @@ class AccessToken extends Model implements AccessTokenEntityInterface
      */
     public function getExpiryDateTime()
     {
-        return $this->attributes['expire_date_time'];
+        if (!$this->attributes['expires_at']) {
+            $this->attributes['expires_at'] = Carbon::now()->modify('+3600 seconds');
+        }
+
+        return $this->attributes['expires_at'];
     }
 
     /**
@@ -172,7 +212,7 @@ class AccessToken extends Model implements AccessTokenEntityInterface
      */
     public function getScopes()
     {
-        return $this->scopes;
+        return isset($this->attributes['token_scopes']) ? $this->attributes['token_scopes'] : '';
     }
 
     /**
@@ -180,7 +220,7 @@ class AccessToken extends Model implements AccessTokenEntityInterface
      */
     public function setExpiryDateTime(\DateTime $dateTime)
     {
-        $this->setDate('expire_date_time', $dateTime);;
+        $this->setDate('expires_at', $dateTime);;
     }
 
     /**
@@ -210,16 +250,22 @@ class AccessToken extends Model implements AccessTokenEntityInterface
     }
 
     /**
-     * Scopes relationship
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * {@inheritdoc}
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */
-    public function scopes()
+    public function getTimestampAutoFillAttributes()
     {
-        return $this->belongsToMany(get_class(app(ScopeEntityInterface::class)),
-            'access_token_scopes', 'access_token', 'scope',
-            'access_token', 'name');
+        return ['created_at', 'updated_at', 'expires_at'];
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    public function getTimestampAttributes()
+    {
+        return ['created_at', 'updated_at', 'expires_at'];
     }
 }

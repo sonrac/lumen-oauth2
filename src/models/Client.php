@@ -10,18 +10,17 @@ use Illuminate\Database\Eloquent\Model;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Entities\UserEntityInterface;
+use sonrac\lumenRest\traits\UnixTimestampsTrait;
 
 /**
  * Class AccessToken
  *
- * @property int                $id
- * @property int                $user_id
- * @property string             $name
- * @property string             $secret_key
- * @property string             $redirect_uri
- * @property Carbon|string|null $last_login
- * @property Carbon|string|null $created_at
- * @property Carbon|string|null $updated_at
+ * @property int                $id           ID
+ * @property int                $user_id      User ID
+ * @property string             $name         Name
+ * @property string             $secret_key   Secret key
+ * @property string             $redirect_uri Redirect URI
+ * @property Carbon|string|null $last_login   Last login
  *
  * @package sonrac\lumenRest\models
  *
@@ -29,6 +28,8 @@ use League\OAuth2\Server\Entities\UserEntityInterface;
  */
 class Client extends Model implements ClientEntityInterface
 {
+    use UnixTimestampsTrait;
+
     protected $fillable = [
         'user_id', 'redirect_uri', 'last_login', 'name', 'created_at', 'updated_at',
     ];

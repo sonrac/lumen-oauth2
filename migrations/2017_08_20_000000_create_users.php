@@ -28,7 +28,7 @@ class CreateUsers extends Migration
             $table->string('password')->notNUll();
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
-            $table->tinyInteger('is_active')->notNull()->defaultValue(1);
+            $table->tinyInteger('is_active')->nullable()->defaultValue(1);
             $table->bigInteger('last_login')->nullable();
             $table->bigInteger('register_at')->notNull();
             $table->bigInteger('created_at')->nullable();

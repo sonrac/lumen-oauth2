@@ -26,7 +26,7 @@ class CreateClients extends Migration
             $table->unsignedInteger('user_id')->nullable();
             $table->string('name', 1024);
             $table->string('secret_key', 1024);
-            $table->tinyInteger('is_active')->notNull()->defaultValue(1);
+            $table->tinyInteger('is_active')->nullable()->defaultValue(1);
             $table->string('redirect_url')->nullable();
             $table->bigInteger('last_login')->nullable();
             $table->bigInteger('created_at')->nullable();

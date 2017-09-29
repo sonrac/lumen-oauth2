@@ -5,10 +5,10 @@
 
 namespace sonrac\lumenRest\models\repositories;
 
-use sonrac\lumenRest\models\RefreshToken;
 use Illuminate\Support\Str;
 use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
 use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
+use sonrac\lumenRest\models\RefreshToken;
 
 
 /**
@@ -46,10 +46,7 @@ class RefreshTokenRepository implements RefreshTokenRepositoryInterface
      */
     public function persistNewRefreshToken(RefreshTokenEntityInterface $refreshTokenEntity)
     {
-        $this->_refreshToken->create([
-            'expire_date' => $refreshTokenEntity->getExpiryDateTime(),
-            'access_token' => $refreshTokenEntity->getAccessToken(),
-        ]);
+        $refreshTokenEntity->save();
     }
 
     /**
@@ -73,6 +70,7 @@ class RefreshTokenRepository implements RefreshTokenRepositoryInterface
         if ($token = $this->_refreshToken->find($tokenId)) {
             return $token->revoked;
         }
+
         return false;
     }
 

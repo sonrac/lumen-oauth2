@@ -5,6 +5,14 @@
 
 namespace sonrac\lumenRest;
 
+use Illuminate\Support\ServiceProvider;
+use League\OAuth2\Server\AuthorizationServer;
+use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
+use League\OAuth2\Server\Grant\PasswordGrant;
+use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
+use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
+use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
+use League\OAuth2\Server\Repositories\UserRepositoryInterface;
 use sonrac\lumenRest\models\AccessToken;
 use sonrac\lumenRest\models\AuthCode;
 use sonrac\lumenRest\models\Client;
@@ -17,14 +25,6 @@ use sonrac\lumenRest\models\repositories\ScopeRepository;
 use sonrac\lumenRest\models\repositories\UserRepository;
 use sonrac\lumenRest\models\Scope;
 use sonrac\lumenRest\models\User;
-use Illuminate\Support\ServiceProvider;
-use League\OAuth2\Server\AuthorizationServer;
-use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
-use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
-use League\OAuth2\Server\Grant\PasswordGrant;
-use League\OAuth2\Server\Grant\RefreshTokenGrant;
-use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
-use League\OAuth2\Server\Repositories\UserRepositoryInterface;
 
 /**
  * Class Oauth2ServiceProvider
@@ -56,10 +56,10 @@ class Oauth2ServiceProvider extends ServiceProvider
          * bind repositories
          */
         $this->app->bind('League\\OAuth2\\Server\\Repositories\\AccessTokenRepositoryInterface', function () {
-            return new AccessTokenRepository();
+            return app()->make(AccessTokenRepository::class);
         });
         $this->app->bind('League\\OAuth2\\Server\\Repositories\\AuthCodeRepositoryInterface', function () {
-            return new AuthCodeRepository();
+            return $this->app->make(AuthCodeRepository::class);
         });
         $this->app->bind('League\\OAuth2\\Server\\Repositories\\ClientRepositoryInterface', function () {
             return new ClientRepository();
@@ -67,9 +67,7 @@ class Oauth2ServiceProvider extends ServiceProvider
         $this->app->bind('League\\OAuth2\\Server\\Repositories\\RefreshTokenRepositoryInterface', function () {
             return new RefreshTokenRepository(app(RefreshTokenEntityInterface::class));
         });
-        $this->app->bind('League\\OAuth2\\Server\\Repositories\\ScopeRepositoryInterface', function () {
-            return new ScopeRepository();
-        });
+        $this->app->bind('League\\OAuth2\\Server\\Repositories\\ScopeRepositoryInterface', ScopeRepository::class);
         $this->app->bind('League\\OAuth2\\Server\\Repositories\\UserRepositoryInterface', function () {
             return new UserRepository();
         });
@@ -88,15 +86,16 @@ class Oauth2ServiceProvider extends ServiceProvider
              * use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
              */
 
-            $privateKey = config('oauth2.key_path') . '/' . config('oauth2.privateKeyName');
+            $privateKey = config('oauth2.keyPath') . '/' . config('oauth2.privateKeyName');
+            $encryptionKey = config('oauth2.keyPath') . '/' . config('oauth2.publicKeyName');
 
             /** @var $app \Laravel\Lumen\Application */
             $server = new AuthorizationServer(
                 new ClientRepository(),
                 app(AccessTokenRepository::class),
-                new ScopeRepository(),
+                app(ScopeRepositoryInterface::class),
                 $privateKey,
-                config('oauth2.encryption_key')
+                $encryptionKey
             );
 
             if ($clientConfig = config('oauth2.token_type.client')) {
@@ -120,6 +119,28 @@ class Oauth2ServiceProvider extends ServiceProvider
                     new $refreshConfig['class'](
                         app(RefreshTokenRepositoryInterface::class)
                     ),
+                    new \DateInterval(config('oauth2.access_token_ttl'))
+                );
+            }
+
+            if ($implicitConfig = config('oauth2.token_type.implicit')) {
+                $server->enableGrantType(
+                    new $implicitConfig['class'](
+                        new \DateInterval(config('oauth2.access_token_ttl'))
+                    )
+                );
+            }
+
+            if ($oauthCodeConfig = config('oauth2.token_type.code')) {
+                /** @var \League\OAuth2\Server\Grant\AuthCodeGrant $grant */
+                $grant = (new $oauthCodeConfig['class'](
+                    app(AuthCodeRepositoryInterface::class),
+                    app(RefreshTokenRepositoryInterface::class),
+                    new \DateInterval(config('oauth2.token_type.code.code_ttl'))
+                ));
+                $grant->setRefreshTokenTTL(new \DateInterval(config('oauth2.refresh_token_ttl')));
+                $server->enableGrantType(
+                    $grant,
                     new \DateInterval(config('oauth2.access_token_ttl'))
                 );
             }

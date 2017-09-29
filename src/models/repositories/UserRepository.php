@@ -5,12 +5,12 @@
 
 namespace sonrac\lumenRest\models\repositories;
 
-use sonrac\lumenRest\models\User;
 use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Facades\Hash;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Entities\UserEntityInterface;
 use League\OAuth2\Server\Repositories\UserRepositoryInterface;
-use Illuminate\Support\Facades\Hash;
+use sonrac\lumenRest\models\User;
 
 /**
  * Class UserRepository

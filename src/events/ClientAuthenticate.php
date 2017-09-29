@@ -8,8 +8,8 @@
 
 namespace sonrac\lumenRest\events;
 
-use sonrac\lumenRest\models\Client;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
+use sonrac\lumenRest\models\Client;
 
 /**
  * Class ClientAuthenticate
