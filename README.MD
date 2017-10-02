@@ -112,7 +112,29 @@ For using JWT token you need define JWT guard
 Example config:
 
 ```php
-
+'defaults' => [
+        'guard' => 'jwt'
+    ],
+    'guards' => [
+        'jwt' => [
+            'driver' => 'jwt',
+            'provider' => 'clients',
+        ],
+        'user' => [
+            'driver' => 'token',
+            'provider' => 'users',
+        ],
+    ],
+    'providers' => [
+        'clients' => [
+            'driver' => 'eloquent',
+            'model' => app(\League\OAuth2\Server\Entities\ClientEntityInterface::class),
+        ],
+        'users' => [
+            'driver' => 'eloquent',
+            'model' => app(\League\OAuth2\Server\Entities\UserEntityInterface::class),
+        ],
+    ],
 ```
 
 # Generate keys
