@@ -81,7 +81,7 @@ class Client extends Model implements ClientEntityInterface
      */
     public function user()
     {
-        return $this->belongsTo(get_class(app(UserEntityInterface::class)), 'id', 'user_id');
+        return $this->belongsTo(get_class(app(UserEntityInterface::class)), 'user_id', 'id');
     }
 
 }

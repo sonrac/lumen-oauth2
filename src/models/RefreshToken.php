@@ -32,18 +32,20 @@ class RefreshToken extends Model implements RefreshTokenEntityInterface
     /**
      * {@inheritdoc}
      */
+    public $incrementing = false;
+    /**
+     * {@inheritdoc}
+     */
     protected $table = 'refresh_tokens';
-
+    /**
+     * {@inheritdoc}
+     */
+    protected $primaryKey = 'access_token';
     /**
      * {@inheritdoc}
      */
     protected $fillable = ['access_token', 'refresh_token',
         'expires_at', 'revoked', 'created_at', 'updated_at'];
-
-    /**
-     * {@inheritdoc}
-     */
-    protected $primaryKey = 'access_token';
 
     /**
      * {@inheritdoc}
@@ -100,16 +102,6 @@ class RefreshToken extends Model implements RefreshTokenEntityInterface
     public function getAccessToken()
     {
         return $this->access_token;
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
-     */
-    public function getTimestampAutoFillAttributes()
-    {
-        return ['created_at', 'updated_at', 'expires_at'];
     }
 
     /**

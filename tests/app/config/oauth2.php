@@ -7,7 +7,6 @@
  */
 
 return [
-    'loadDefRoutsIfNeedle'       => env('LOAD_DEFAULT_ROUTES', true),
     'accessTokenParamName'       => env('ACCESS_TOKEN_PARAM_NAME', 'access_token'),
     'clientAccessTokenParamName' => env('CLIENT_ACCESS_TOKEN_PARAM_NAME', env('ACCESS_TOKEN_PARAM_NAME', 'access_token')),
     'keyPath'                    => env('OAUTH_KEY_PATH', storage_path('framework/keys')),

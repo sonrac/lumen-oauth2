@@ -26,27 +26,6 @@ use sonrac\lumenRest\traits\UnixTimestampsTrait;
 class TimestampsTest extends TestCase
 {
     /**
-     * Update the model's update timestamp.
-     *
-     * @return bool
-     */
-    public function touch()
-    {
-        if (!$this->usesUnixTimestamps()) {
-            return false;
-        }
-
-        $this->updateTimestamps();
-
-        return $this->save();
-    }
-
-    public function usesUnixTimestamps()
-    {
-        return property_exists($this, 'unitTimestamps') && $this->unixTimestamps;
-    }
-
-    /**
      * @inheritdoc
      *
      * @author Donii Sergii <doniysa@gmail.com>
@@ -105,8 +84,8 @@ class TimestampsTest extends TestCase
     private function _testSetAttribute($model, $name = 'created_at')
     {
         foreach (['2017-2-2', (new DateTime()), (new Carbon()), '1504281861', 1504281861] as $value) {
-            $model->$name = $value;
-            $this->assertInstanceOf(Carbon::class, $model->$name);
+            $this->assertTrue($model->setModelTimeAttribute($name, $value));
+            $this->assertInstanceOf(DateTime::class, $model->$name);
         }
     }
 
@@ -121,7 +100,7 @@ class TimestampsTest extends TestCase
         $model->name = 'third test model';
         $this->assertTrue($model->save());
         foreach ($model->getTimestampAttributes() as $timestampAttribute) {
-            if (in_array($timestampAttribute, $model->getTimestampAutoFillAttributes())) {
+            if (in_array($timestampAttribute, $model->getTimestampAttributes())) {
                 $this->assertInstanceOf(Carbon::class, $model->getAttribute($timestampAttribute));
             }
         }

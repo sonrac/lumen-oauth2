@@ -9,10 +9,14 @@ use Illuminate\Support\ServiceProvider;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
 use League\OAuth2\Server\Grant\PasswordGrant;
+use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
 use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
 use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
 use League\OAuth2\Server\Repositories\UserRepositoryInterface;
+use League\OAuth2\Server\ResourceServer;
+use Psr\Http\Message\ServerRequestInterface;
+use sonrac\lumenRest\guard\JWT;
 use sonrac\lumenRest\models\AccessToken;
 use sonrac\lumenRest\models\AuthCode;
 use sonrac\lumenRest\models\Client;
@@ -142,5 +146,29 @@ class Oauth2ServiceProvider extends ServiceProvider
         });
 
         $this->app->alias('oauth2.server', AuthorizationServer::class);
+
+        $this->bindResourceServer();
+    }
+
+    protected function bindResourceServer()
+    {
+        $resourceServer = new ResourceServer($this->app->make(AccessTokenRepositoryInterface::class),
+            config('oauth2.keyPath') . '/' . config('oauth2.publicKeyName'));
+        $this->app->singleton(ResourceServer::class, function () use ($resourceServer) {
+            return $resourceServer;
+        });
+
+        $this->app['auth']->extend('jwt', function ($app, $name, array $config) use ($resourceServer) {
+            $guard = new JWT(
+                $name,
+                $app['auth']->createUserProvider($config['provider']),
+                $resourceServer,
+                $app->make(ServerRequestInterface::class)
+            );
+            $app->refresh('request', $guard, 'setRequest');
+
+            // Return an instance of Illuminate\Contracts\Auth\Guard...
+            return $guard;
+        });
     }
 }

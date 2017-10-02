@@ -39,8 +39,11 @@ class AuthCode extends Model implements AuthCodeEntityInterface
     /**
      * {@inheritdoc}
      */
+    public $incrementing = false;
+    /**
+     * {@inheritdoc}
+     */
     protected $table = 'auth_codes';
-
     /**
      * {@inheritdoc}
      */
@@ -48,14 +51,12 @@ class AuthCode extends Model implements AuthCodeEntityInterface
         'redirect_uri', 'client_id', 'user_id',
         'created_at', 'updated_at', 'code', 'expires_at',
     ];
-
     /**
      * {@inheritdoc}
      */
     protected $attributes = [
         'revoked' => false,
     ];
-
     /**
      * {@inheritdoc}
      */
@@ -205,14 +206,6 @@ class AuthCode extends Model implements AuthCodeEntityInterface
      * {@inheritdoc}
      */
     public function getTimestampAttributes()
-    {
-        return ['created_at', 'updated_at', 'expires_at'];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getTimestampAutoFillAttributes()
     {
         return ['created_at', 'updated_at', 'expires_at'];
     }

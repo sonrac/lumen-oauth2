@@ -8,10 +8,13 @@ namespace sonrac\lumenRest\models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Lcobucci\JWT\Builder;
+use Lcobucci\JWT\Signer\Key;
+use Lcobucci\JWT\Signer\Rsa\Sha256;
+use League\OAuth2\Server\CryptKey;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Entities\ScopeEntityInterface;
-use League\OAuth2\Server\Entities\Traits\AccessTokenTrait;
 use League\OAuth2\Server\Entities\Traits\EntityTrait;
 use League\OAuth2\Server\Entities\UserEntityInterface;
 use sonrac\lumenRest\traits\UnixTimestampsTrait;
@@ -38,8 +41,7 @@ use sonrac\lumenRest\traits\UnixTimestampsTrait;
  */
 class AccessToken extends Model implements AccessTokenEntityInterface
 {
-    use AccessTokenTrait,
-        UnixTimestampsTrait,
+    use UnixTimestampsTrait,
         EntityTrait;
 
     /**
@@ -101,7 +103,10 @@ class AccessToken extends Model implements AccessTokenEntityInterface
      * {@inheritdoc}
      */
     public $timestamps = false;
-
+    /**
+     * {@inheritdoc}
+     */
+    public $incrementing = false;
     /**
      * {@inheritdoc}
      */
@@ -109,24 +114,20 @@ class AccessToken extends Model implements AccessTokenEntityInterface
         'id', 'access_token', 'client_id', 'user_id', 'grant_type', 'created_at',
         'token_scopes', 'updated_at', 'revoked', 'expires_at',
     ];
-
     /**
      * {@inheritdoc}
      */
     protected $hidden = [
         'expires_at',
     ];
-
     /**
      * {@inheritdoc}
      */
     protected $primaryKey = 'access_token';
-
     /**
      * {@inheritdoc}
      */
     protected $table = 'access_tokens';
-
     /**
      * {@inheritdoc}
      */
@@ -192,14 +193,6 @@ class AccessToken extends Model implements AccessTokenEntityInterface
     /**
      * {@inheritdoc}
      */
-    public function getIdentifier()
-    {
-        return $this->access_token;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function setIdentifier($identifier)
     {
         $this->access_token = $identifier;
@@ -240,7 +233,20 @@ class AccessToken extends Model implements AccessTokenEntityInterface
     {
         $this->client_id = $client->getIdentifier();
         $this->client = $client;
+
+        if ($this->client->user_id) {
+            $this->setUserIdentifier($this->client->user_id);
+        }
+
         $this->setRelation('client', $client);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setUserIdentifier($identifier)
+    {
+        $this->attributes['user_id'] = $identifier;
     }
 
     /**
@@ -256,53 +262,9 @@ class AccessToken extends Model implements AccessTokenEntityInterface
     /**
      * {@inheritdoc}
      */
-    public function getUserIdentifier()
-    {
-        return $this->user_id;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getClient()
-    {
-        return $this->client;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getExpiryDateTime()
-    {
-        if (!$this->attributes['expires_at']) {
-            $this->attributes['expires_at'] = Carbon::now()->modify('+3600 seconds');
-        }
-
-        return $this->attributes['expires_at'];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getScopes()
-    {
-        return isset($this->attributes['token_scopes']) ? $this->attributes['token_scopes'] : '';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function setExpiryDateTime(\DateTime $dateTime)
     {
         $this->setDate('expires_at', $dateTime);;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setUserIdentifier($identifier)
-    {
-        $this->attributes['user_id'] = $identifier;
     }
 
     /**
@@ -328,18 +290,84 @@ class AccessToken extends Model implements AccessTokenEntityInterface
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */
-    public function getTimestampAutoFillAttributes()
+    public function getTimestampAttributes()
     {
         return ['created_at', 'updated_at', 'expires_at'];
     }
 
+    public function convertToJWT(CryptKey $privateKey)
+    {
+        $scopes = $this->getScopes();
+
+        if (!empty($scopes) && is_array($scopes)) {
+
+            reset($scopes);
+            if (is_object(current($scopes))) {
+                $mergedScopes = '';
+                foreach ($scopes as $scope) {
+                    $mergedScopes .= ' ' . $scope->getIdentifier();
+                }
+                $scopes = trim($mergedScopes);
+            }
+        }
+
+        if (is_array($scopes)) {
+            $scopes = implode(' ', $scopes);
+        }
+
+        return (new Builder())
+            ->setAudience($this->getClient()->getIdentifier())
+            ->setId($this->getIdentifier(), true)
+            ->setIssuedAt(time())
+            ->setNotBefore(time())
+            ->setExpiration($this->getExpiryDateTime()->getTimestamp())
+            ->setSubject($this->getUserIdentifier())
+            ->set('scopes', $scopes)
+            ->sign(new Sha256(), new Key($privateKey->getKeyPath(), $privateKey->getPassPhrase()))
+            ->getToken();
+    }
+
     /**
      * {@inheritdoc}
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
      */
-    public function getTimestampAttributes()
+    public function getClient()
     {
-        return ['created_at', 'updated_at', 'expires_at'];
+        return $this->client;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getIdentifier()
+    {
+        return $this->access_token;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getExpiryDateTime()
+    {
+        if (!$this->attributes['expires_at']) {
+            $this->attributes['expires_at'] = Carbon::now()->modify('+3600 seconds');
+        }
+
+        return $this->attributes['expires_at'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUserIdentifier()
+    {
+        return $this->user_id ?? ($this->client ? $this->client->user_id : null);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getScopes()
+    {
+        return isset($this->attributes['token_scopes']) ? $this->attributes['token_scopes'] : '';
     }
 }

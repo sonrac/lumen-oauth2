@@ -5,6 +5,7 @@
 
 namespace Tests\Functional;
 
+use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use sonrac\lumenRest\models\AccessToken;
 use sonrac\lumenRest\tests\seeds\ClientsSeeder;
 use sonrac\lumenRest\tests\TestCase;
@@ -40,6 +41,8 @@ class AuthTest extends TestCase
 
         $this->assertArrayHasKey('access_token', $resp);
         $this->assertEquals('Bearer', $resp['token_type']);
+
+        return [$resp['access_token'], AccessToken::query()->get()->first()];
     }
 
     /**
@@ -181,5 +184,49 @@ class AuthTest extends TestCase
         $this->assertArrayHasKey('access_token', $resp);
         $this->assertEquals('Bearer', $resp['token_type']);
         $this->assertArrayHasKey('refresh_token', $resp);
+    }
+
+    /**
+     * Test successfully get protected oauth method
+     *
+     * @param string $token
+     *
+     * @depends testsClientCredential
+     *
+     * @author  Donii Sergii <doniysa@gmail.com>
+     */
+    public function testSuccessSecurityMiddleware($token)
+    {
+        $token[1]->save();
+        $this->post('/user-info', [], [
+            'authorization' => $token[0],
+        ])->seeJsonStructure(['user', 'client'])
+            ->seeStatusCode(200);
+    }
+
+    /**
+     * Test denied protected method access denied
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    public function testDeniedProtectedMethod()
+    {
+        $this->post('/user-info', [])
+            ->seeJsonStructure(['error', 'message', 'hint'])
+            ->seeStatusCode(401);
+    }
+
+    /**
+     * Test denied protected method with invalid access token
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    public function testDeniedProtectedMethodWithInvalidAccessToken()
+    {
+        $this->post('/user-info', [], [
+            'authorization' => 'asdeasdasdasdasdasd',
+        ])
+            ->seeJsonStructure(['error', 'message', 'hint'])
+            ->seeStatusCode(401);
     }
 }

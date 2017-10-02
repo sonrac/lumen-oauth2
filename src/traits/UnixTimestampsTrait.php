@@ -31,7 +31,7 @@ trait UnixTimestampsTrait
         $updates = function ($model, $unixFormat = false) {
             /** @var \Illuminate\Database\Eloquent\Model|UnixTimestampsTrait $model */
             foreach ($model->getTimestampAttributes() as $attribute) {
-                static::setModelTimeAttribute($model, $attribute, $model->{$attribute}, $unixFormat);
+                $model->setModelTimeAttribute($attribute, $model->{$attribute}, $unixFormat);
             }
         };
 
@@ -66,7 +66,7 @@ trait UnixTimestampsTrait
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */
-    protected static function setModelTimeAttribute($model, $attribute, $value, $unixFormat = false)
+    public function setModelTimeAttribute($attribute, $value, $unixFormat = false)
     {
         if (is_numeric($value)) {
             $value = Carbon::createFromTimestampUTC($value);
@@ -74,16 +74,16 @@ trait UnixTimestampsTrait
 
         if (!is_object($value) && !($value = strtotime($value))) {
 
-            if (!in_array($attribute, $model->getTimestampAutoFillAttributes())) {
+            if (!in_array($attribute, $this->getTimestampAttributes())) {
                 return false;
             }
             $value = Carbon::now();
         }
 
         if ($unixFormat) {
-            $model->attributes[$attribute] = $value->getTimestamp();
+            $this->attributes[$attribute] = $value->getTimestamp();
         } else {
-            $model->setAttribute($attribute, $value);
+            $this->setAttribute($attribute, $value);
         }
 
         return true;
@@ -255,17 +255,5 @@ trait UnixTimestampsTrait
     public function setLastLoginAttribute($time)
     {
         $this->setDate('last_login', $time);
-    }
-
-    /**
-     * Auto fill attributes
-     *
-     * @return array
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
-     */
-    public function getTimestampAutoFillAttributes()
-    {
-        return ['created_at', 'updated_at'];
     }
 }
