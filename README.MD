@@ -4,7 +4,17 @@
 # Installation
 
 ```bash
-composer require 
+composer require sonrac/lumen-league-oauth2
+```
+
+# Usages
+
+Resister service provider first:
+
+Add to your `bootstrap/app.php`
+
+```php
+$app->register(\sonrac\lumenRest\Oauth2ServiceProvider::class);
 ```
 
 # Description
@@ -103,4 +113,12 @@ Example config:
 
 ```php
 
+```
+
+# Generate keys
+
+For using SSL encryption generate keys first:
+
+```bash
+php artisan generate:keys
 ```
