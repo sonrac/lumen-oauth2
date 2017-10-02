@@ -152,13 +152,16 @@ class Oauth2ServiceProvider extends ServiceProvider
 
     protected function bindResourceServer()
     {
-        $resourceServer = new ResourceServer($this->app->make(AccessTokenRepositoryInterface::class),
-            config('oauth2.keyPath') . '/' . config('oauth2.publicKeyName'));
-        $this->app->singleton(ResourceServer::class, function () use ($resourceServer) {
-            return $resourceServer;
+        $this->app->singleton(ResourceServer::class, function () {
+            return  new ResourceServer($this->app->make(AccessTokenRepositoryInterface::class),
+                config('oauth2.keyPath') . '/' . config('oauth2.publicKeyName'));;
         });
 
-        $this->app['auth']->extend('jwt', function ($app, $name, array $config) use ($resourceServer) {
+        $this->app['auth']->extend('jwt', function ($app, $name, array $config) {
+
+            $resourceServer = new ResourceServer($this->app->make(AccessTokenRepositoryInterface::class),
+                config('oauth2.keyPath') . '/' . config('oauth2.publicKeyName'));
+
             $guard = new JWT(
                 $name,
                 $app['auth']->createUserProvider($config['provider']),

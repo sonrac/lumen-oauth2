@@ -32,6 +32,7 @@ class TestCase extends LumenTestCase
     public function createApplication()
     {
         $this->app = require __DIR__ . '/app/app.php';
+        $this->artisan('generate:keys');
 
         $this->artisan('migrate', [
             '--path' => __DIR__ . '/../migrations',
@@ -45,8 +46,6 @@ class TestCase extends LumenTestCase
         $this->init();
 
         parent::setUp();
-
-        $this->artisan('generate:keys');
 
         if (is_array($this->_seeds) && count($this->_seeds)) {
             foreach ($this->_seeds as $seed) {
