@@ -59,7 +59,7 @@ class Client extends Model implements ClientEntityInterface
      */
     public function getRedirectUri()
     {
-        return $this->attributes['redirect_url'];
+        return $this->attributes['redirect_uri'];
     }
 
     /**
