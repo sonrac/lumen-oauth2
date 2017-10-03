@@ -33,7 +33,7 @@ class ClientsSeeder extends Seeder
                 'secret_key'   => $SECRET_KEY,
                 'name'         => 'Test Client ' . $index,
                 'is_active'    => 1,
-                'redirect_url' => self::REDIRECT_URI_TEST_CLIENT,
+                'redirect_uri' => self::REDIRECT_URI_TEST_CLIENT,
                 'created_at'   => time(),
                 'updated_at'   => time(),
                 'last_login'   => time(),
