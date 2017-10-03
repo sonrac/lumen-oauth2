@@ -22,7 +22,7 @@ class CreateAccessTokens extends Migration
     public function up()
     {
         Schema::create('access_tokens', function (Blueprint $table) {
-            $table->unsignedInteger('user_id')->nullable();
+            $table->unsignedInteger('user_id');
             $table->unsignedInteger('client_id')->nullable();
             $table->string('access_token', 1024)->notNull();
             $table->string('grant_type', 50)->notNull();

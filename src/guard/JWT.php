@@ -22,12 +22,37 @@ class JWT implements Guard
 {
     use GuardHelpers, Macroable;
 
+    /**
+     * Guard name
+     *
+     * @var Guard
+     */
     protected $name;
-    protected $provider;
+
+    /**
+     * Request
+     *
+     * @var ServerRequestInterface
+     */
     protected $request;
-    protected $user;
+
+    /**
+     * Client application
+     *
+     * @var ClientEntityInterface
+     */
     protected $client;
 
+    /**
+     * JWT constructor.
+     *
+     * @param                        $name     Guard name
+     * @param UserProvider           $provider Provider
+     * @param ResourceServer         $server   Resource server
+     * @param ServerRequestInterface $request  Request
+     *
+     * @throws \League\OAuth2\Server\Exception\OAuthServerException
+     */
     public function __construct($name, UserProvider $provider, ResourceServer $server, ServerRequestInterface $request)
     {
         $this->name = $name;
@@ -38,43 +63,70 @@ class JWT implements Guard
         $this->client = app(ClientEntityInterface::class)->find($this->request->getAttribute('oauth_client_id'));
         if ($user = $this->request->getAttribute('oauth_user_id')) {
             $this->user = app(UserEntityInterface::class)->find($user);
-        } else if ($this->client && $this->client->user_id) {
-            $this->user = $this->client->user;
+        } else {
+            if ($this->client && $this->client->user_id) {
+                $this->user = $this->client->user;
+            }
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function check()
     {
-        return !is_null($this->client) || !is_null($this->user);
+        return !is_null($this->client) && !is_null($this->user);
     }
 
-    public function user()
-    {
-        return $this->user;
-    }
-
-    public function client()
-    {
-        return $this->client;
-    }
-
+    /**
+     * {@inheritdoc}
+     */
     public function id()
     {
         return $this->user ? $this->user->id : ($this->client ? $this->client->id : null);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function validate(array $credentials = [])
     {
-        // TODO Add validation for guard client by scopes
-
-        return true;
+        return $this->client() && $this->user();
     }
 
+    /**
+     * Get authorization client
+     *
+     * @return ClientEntityInterface
+     */
+    public function client()
+    {
+        return $this->client;
+    }
+
+    /**
+     * Get authenticate user
+     *
+     * @return UserEntityInterface|Authenticatable
+     */
+    public function user()
+    {
+        return $this->user;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function setUser(Authenticatable $user)
     {
         $this->user = $user;
     }
 
+    /**
+     * Set client
+     *
+     * @param ClientEntityInterface $client
+     */
     public function setClient(ClientEntityInterface $client)
     {
         $this->client = $client;
