@@ -10,10 +10,10 @@ before_install:
   - sudo pip install codecov
 
 install:
-  - travis_retry composer install --no-interaction --prefer-source --coverage-clover=coverage.xml
+  - travis_retry composer install --no-interaction --prefer-source
 
 script:
-  - vendor/bin/phpunit
+  - vendor/bin/phpunit --coverage-clover=coverage.xml
 
 after_success:
     - codecov

@@ -1,6 +1,7 @@
 [![Build Status](https://travis-ci.org/sonrac/lumen-oauth2.svg?branch=master)](https://travis-ci.org/sonrac/lumen-oauth2) 
 ![StyleCI](https://styleci.io/repos/105322873/shield?style=flat)
-
+![Codecov]()
+![VersionEYE](https://www.versioneye.com/user/projects/59d60bec368b0864f151d18c/badge.svg?style=flat-square)
 # Installation
 
 ```bash
