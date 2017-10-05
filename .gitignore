@@ -2,3 +2,8 @@ vendor/
 composer.lock
 .idea
 travis.log
+.env
+.env.testing
+.phpstorm.meta.php
+_ide_helper.php
+docker-compose.override.yml
