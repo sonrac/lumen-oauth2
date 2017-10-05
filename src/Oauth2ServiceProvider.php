@@ -83,8 +83,8 @@ class Oauth2ServiceProvider extends ServiceProvider
     protected function bindAuthorizationServer()
     {
         $this->app->singleton('oauth2.server', function ($app) {
-            $privateKey = config('oauth2.keyPath') . '/' . config('oauth2.privateKeyName');
-            $encryptionKey = config('oauth2.keyPath') . '/' . config('oauth2.publicKeyName');
+            $privateKey = config('oauth2.keyPath').'/'.config('oauth2.privateKeyName');
+            $encryptionKey = config('oauth2.keyPath').'/'.config('oauth2.publicKeyName');
 
             /** @var $app \Laravel\Lumen\Application */
             $server = new AuthorizationServer(

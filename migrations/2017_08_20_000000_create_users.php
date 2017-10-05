@@ -47,4 +47,5 @@ class CreateUsers extends Migration
     {
         Schema::dropIfExists('users');
     }
+
 }
