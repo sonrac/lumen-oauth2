@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: sonrac
- * Date: 9/4/17
- * Time: 4:50 PM
- */
 
 namespace sonrac\lumenRest\commands;
 
@@ -13,8 +7,6 @@ use Illuminate\Console\Command;
 /**
  * Class GenerateKeys
  * Generate oauth2 server keys.
- *
- * @package sonrac\lumenRest\commands
  *
  * @author  Donii Sergii <doniysa@gmail.com>
  */
@@ -100,7 +92,8 @@ class GenerateKeys extends Command
                 $configPath = storage_path() . '/../.env';
                 $content = file_exists($configPath) ? file_get_contents($configPath) : 'SERVER_PASS_PHRASE=';
 
-                file_put_contents($configPath, preg_replace('/^SERVER_PASS_PHRASE=(.+)?$/m', "SERVER_PASS_PHRASE={$phrase}", $content));
+                file_put_contents($configPath,
+                    preg_replace('/^SERVER_PASS_PHRASE=(.+)?$/m', "SERVER_PASS_PHRASE={$phrase}", $content));
             }
 
             $this->generatePrivateKey($phrase);

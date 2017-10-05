@@ -1,7 +1,13 @@
 [![Build Status](https://travis-ci.org/sonrac/lumen-oauth2.svg?branch=master)](https://travis-ci.org/sonrac/lumen-oauth2) 
-![StyleCI](https://styleci.io/repos/105322873/shield?style=flat)
-![Codecov]()
+![Scrutinizer](https://scrutinizer-ci.com/g/sonrac/lumen-oauth2/badges/quality-score.png?b=master)
+[![codecov](https://codecov.io/gh/sonrac/lumen-oauth2/branch/master/graph/badge.svg)](https://codecov.io/gh/sonrac/lumen-oauth2)
+![Packagist](https://poser.pugx.org/sonrac/lumen-league-oauth2/v/stable.svg)
+[![Latest Unstable Version](https://poser.pugx.org/sonrac/lumen-league-oauth2/v/unstable)](https://packagist.org/packages/sonrac/lumen-league-oauth2)
+![License](https://poser.pugx.org/laravel/framework/license.svg)
 ![VersionEYE](https://www.versioneye.com/user/projects/59d60bec368b0864f151d18c/badge.svg?style=flat-square)
+[![Total Downloads](https://poser.pugx.org/sonrac/lumen-league-oauth2/downloads)](https://packagist.org/packages/sonrac/lumen-league-oauth2)
+[![composer.lock](https://poser.pugx.org/sonrac/lumen-league-oauth2/composerlock)](https://packagist.org/packages/sonrac/lumen-league-oauth2)
+
 # Installation
 
 ```bash

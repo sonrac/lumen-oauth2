@@ -34,8 +34,6 @@ use sonrac\lumenRest\models\User;
  * Class Oauth2ServiceProvider
  * Oauth2 service provider.
  *
- * @package App\Providers
- *
  * @author  Donii Sergii <doniysa@gmail.com>
  */
 class Oauth2ServiceProvider extends ServiceProvider
@@ -153,7 +151,7 @@ class Oauth2ServiceProvider extends ServiceProvider
     protected function bindResourceServer()
     {
         $this->app->singleton(ResourceServer::class, function () {
-            return  new ResourceServer($this->app->make(AccessTokenRepositoryInterface::class),
+            return new ResourceServer($this->app->make(AccessTokenRepositoryInterface::class),
                 config('oauth2.keyPath') . '/' . config('oauth2.publicKeyName'));;
         });
 

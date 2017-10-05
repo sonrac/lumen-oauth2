@@ -7,3 +7,4 @@ travis.log
 .phpstorm.meta.php
 _ide_helper.php
 docker-compose.override.yml
+coverage.xml

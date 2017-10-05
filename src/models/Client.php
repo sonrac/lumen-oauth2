@@ -31,7 +31,13 @@ class Client extends Model implements ClientEntityInterface
     use UnixTimestampsTrait;
 
     protected $fillable = [
-        'user_id', 'redirect_uri', 'last_login', 'name', 'created_at', 'updated_at', 'secret_key'
+        'user_id',
+        'redirect_uri',
+        'last_login',
+        'name',
+        'created_at',
+        'updated_at',
+        'secret_key',
     ];
 
     protected $hidden = [

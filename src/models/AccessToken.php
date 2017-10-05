@@ -111,8 +111,16 @@ class AccessToken extends Model implements AccessTokenEntityInterface
      * {@inheritdoc}
      */
     protected $fillable = [
-        'id', 'access_token', 'client_id', 'user_id', 'grant_type', 'created_at',
-        'token_scopes', 'updated_at', 'revoked', 'expires_at',
+        'id',
+        'access_token',
+        'client_id',
+        'user_id',
+        'grant_type',
+        'created_at',
+        'token_scopes',
+        'updated_at',
+        'revoked',
+        'expires_at',
     ];
     /**
      * {@inheritdoc}

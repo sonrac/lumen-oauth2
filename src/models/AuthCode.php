@@ -48,8 +48,13 @@ class AuthCode extends Model implements AuthCodeEntityInterface
      * {@inheritdoc}
      */
     protected $fillable = [
-        'redirect_uri', 'client_id', 'user_id',
-        'created_at', 'updated_at', 'code', 'expires_at',
+        'redirect_uri',
+        'client_id',
+        'user_id',
+        'created_at',
+        'updated_at',
+        'code',
+        'expires_at',
     ];
     /**
      * {@inheritdoc}

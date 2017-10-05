@@ -44,8 +44,14 @@ class RefreshToken extends Model implements RefreshTokenEntityInterface
     /**
      * {@inheritdoc}
      */
-    protected $fillable = ['access_token', 'refresh_token',
-        'expires_at', 'revoked', 'created_at', 'updated_at'];
+    protected $fillable = [
+        'access_token',
+        'refresh_token',
+        'expires_at',
+        'revoked',
+        'created_at',
+        'updated_at',
+    ];
 
     /**
      * {@inheritdoc}

@@ -50,8 +50,7 @@ class ScopeRepository implements ScopeRepositoryInterface
         $grantType,
         ClientEntityInterface $clientEntity,
         $userIdentifier = null
-    )
-    {
+    ) {
         $finalScopes = [];
 
         foreach ($scopes as $scope) {

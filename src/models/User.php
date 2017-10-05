@@ -44,7 +44,14 @@ class User extends Model implements UserEntityInterface, AuthenticatableContract
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'created_at', 'updated_at', 'last_login', 'first_name', 'last_name', 'last_login',
+        'name',
+        'email',
+        'created_at',
+        'updated_at',
+        'last_login',
+        'first_name',
+        'last_name',
+        'last_login',
     ];
 
     /**
