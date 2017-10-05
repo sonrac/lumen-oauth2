@@ -6,14 +6,17 @@ php:
 
 sudo: false
 
+before_install:
+  - sudo pip install codecov
+
 install:
-  - travis_retry composer install --no-interaction --prefer-source
+  - travis_retry composer install --no-interaction --prefer-source --coverage-clover=coverage.xml
 
 script:
   - vendor/bin/phpunit
 
 after_success:
-    - bash <(curl -s https://codecov.io/bash)
+    - codecov
 
 notifications:
   slack:
