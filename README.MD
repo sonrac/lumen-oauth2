@@ -1,5 +1,7 @@
 [![Build Status](https://travis-ci.org/sonrac/lumen-oauth2.svg?branch=master)](https://travis-ci.org/sonrac/lumen-oauth2) 
+![Scrutinizer Build](https://scrutinizer-ci.com/g/sonrac/lumen-oauth2/badges/build.png?b=master)
 ![Scrutinizer](https://scrutinizer-ci.com/g/sonrac/lumen-oauth2/badges/quality-score.png?b=master)
+![Scrutinizer Code Coverage](https://scrutinizer-ci.com/g/sonrac/lumen-oauth2/badges/coverage.png?b=master)
 [![codecov](https://codecov.io/gh/sonrac/lumen-oauth2/branch/master/graph/badge.svg)](https://codecov.io/gh/sonrac/lumen-oauth2)
 ![Packagist](https://poser.pugx.org/sonrac/lumen-league-oauth2/v/stable.svg)
 [![Latest Unstable Version](https://poser.pugx.org/sonrac/lumen-league-oauth2/v/unstable)](https://packagist.org/packages/sonrac/lumen-league-oauth2)
