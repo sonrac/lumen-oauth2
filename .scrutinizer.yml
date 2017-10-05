@@ -3,7 +3,7 @@ build:
     override:
       - command: 'vendor/bin/phpunit --coverage-clover=coverage.xml'
         coverage:
-          file: 'some-file'
+          file: 'coverage.xml'
           format: 'clover'
 checks:
   php:
