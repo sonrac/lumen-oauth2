@@ -4,6 +4,7 @@
  */
 
 $app = new \Laravel\Lumen\Application(__DIR__);
+$app->configure('view');
 $app->withFacades();
 $app->withEloquent();
 

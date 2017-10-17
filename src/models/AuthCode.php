@@ -191,7 +191,7 @@ class AuthCode extends Model implements AuthCodeEntityInterface
      */
     public function user()
     {
-        return $this->hasOne(Client::class, 'user_id', 'id');
+        return $this->hasOne(get_class(app('League\OAuth2\Server\Entities\ClientEntityInterface')), 'user_id', 'id');
     }
 
     /**

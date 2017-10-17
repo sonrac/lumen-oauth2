@@ -5,6 +5,7 @@
 
 namespace sonrac\lumenRest\models\repositories;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
 use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
@@ -25,12 +26,12 @@ class RefreshTokenRepository implements RefreshTokenRepositoryInterface
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */
-    protected $_refreshToken = null;
+    protected $refreshToken = null;
 
     public function __construct(RefreshTokenEntityInterface $refreshToken)
     {
-        $this->_refreshToken = $refreshToken;
-        $this->_refreshToken->refresh_token = Str::random(64);
+        $this->refreshToken = $refreshToken;
+        $this->refreshToken->refresh_token = Str::random(64);
     }
 
     /**
@@ -38,7 +39,7 @@ class RefreshTokenRepository implements RefreshTokenRepositoryInterface
      */
     public function getNewRefreshToken()
     {
-        return $this->_refreshToken;
+        return $this->refreshToken;
     }
 
     /**
@@ -54,7 +55,7 @@ class RefreshTokenRepository implements RefreshTokenRepositoryInterface
      */
     public function revokeRefreshToken($tokenId)
     {
-        \DB::table('refresh_tokens')
+        DB::table('refresh_tokens')
             ->where('refresh_token', '=', $tokenId)
             ->update([
                 'revoked' => true,
@@ -67,7 +68,7 @@ class RefreshTokenRepository implements RefreshTokenRepositoryInterface
     public function isRefreshTokenRevoked($tokenId)
     {
         /** @var RefreshToken $token */
-        if ($token = $this->_refreshToken->find($tokenId)) {
+        if ($token = $this->refreshToken->find($tokenId)) {
             return $token->revoked;
         }
 
