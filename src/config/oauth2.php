@@ -8,7 +8,8 @@
 
 return [
     'accessTokenParamName'       => env('ACCESS_TOKEN_PARAM_NAME', 'access_token'),
-    'clientAccessTokenParamName' => env('CLIENT_ACCESS_TOKEN_PARAM_NAME', env('ACCESS_TOKEN_PARAM_NAME', 'access_token')),
+    'clientAccessTokenParamName' => env('CLIENT_ACCESS_TOKEN_PARAM_NAME',
+        env('ACCESS_TOKEN_PARAM_NAME', 'access_token')),
     'keyPath'                    => env('OAUTH_KEY_PATH', storage_path('framework/keys')),
     'publicKeyName'              => env('OAUTH_PUBLIC_KEY_NAME', 'public.key'),
     'privateKeyName'             => env('OAUTH_PRIVATE_KEY_NAME', 'private.key'),

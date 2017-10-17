@@ -41,8 +41,7 @@ class UserRepository implements UserRepositoryInterface
         $password,
         $grantType,
         ClientEntityInterface $clientEntity
-    )
-    {
+    ) {
         /** @var User|UserEntityInterface $class */
         $class = get_class($this->user);
 
