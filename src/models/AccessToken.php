@@ -376,6 +376,5 @@ class AccessToken extends Model implements AccessTokenEntityInterface
         static::created($deserializeScopes);
         static::retrieved($deserializeScopes);
         static::updated($deserializeScopes);
-
     }
 }
