@@ -131,5 +131,4 @@ class JWT implements Guard
     {
         $this->client = $client;
     }
-
 }

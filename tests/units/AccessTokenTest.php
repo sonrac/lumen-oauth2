@@ -8,7 +8,6 @@
 
 namespace tests\units;
 
-
 use Illuminate\Support\Str;
 use sonrac\lumenRest\models\AccessToken;
 use sonrac\lumenRest\tests\TestCase;
@@ -38,7 +37,7 @@ class AccessTokenTest extends TestCase
         $token = \DB::table('access_tokens')->get()->first();
 
         $this->assertEquals($key, $token->access_token);
-        $this->assertEquals($date->format("Y-m-d H:i:"), date("Y-m-d H:i:", $token->created_at));
+        $this->assertEquals($date->format('Y-m-d H:i:'), date('Y-m-d H:i:', $token->created_at));
 
         $token = AccessToken::query()
             ->where('access_token', '=', $key)

@@ -11,7 +11,6 @@ use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
 use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
 use sonrac\lumenRest\models\RefreshToken;
 
-
 /**
  * Class RefreshTokenRepository
  *
@@ -74,5 +73,4 @@ class RefreshTokenRepository implements RefreshTokenRepositoryInterface
 
         return false;
     }
-
 }

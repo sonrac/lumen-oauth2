@@ -27,7 +27,7 @@ use sonrac\lumenRest\traits\UnixTimestampsTrait;
  * @property int                                         $client_id    Client ID
  * @property string                                      $grant_type   Token grant type
  * @property int                                         $user_id      User ID
- * @property boolean                                     $revoked      Is access token revoked
+ * @property bool                                     $revoked      Is access token revoked
  * @property \sonrac\lumenRest\models\Scope[]|Collection $token_scopes Access token scopes
  * @property int                                         $expires_at   Expire at
  *
@@ -48,7 +48,7 @@ class AccessToken extends Model implements AccessTokenEntityInterface
      * Client credentials type
      *
      * @cont
-     * @type int
+     * @var int
      */
     const TYPE_CLIENT_CREDENTIALS = 'client_credentials';
 
@@ -56,7 +56,7 @@ class AccessToken extends Model implements AccessTokenEntityInterface
      * Authorization code type
      *
      * @cont
-     * @type int
+     * @var int
      */
     const TYPE_AUTHORIZATION_CODE = 'authorization_code';
 
@@ -64,7 +64,7 @@ class AccessToken extends Model implements AccessTokenEntityInterface
      * Authorization response authorization code
      *
      * @cont
-     * @type int
+     * @var int
      */
     const RESPONSE_AUTHORIZATION_CODE = 'code';
 
@@ -72,7 +72,7 @@ class AccessToken extends Model implements AccessTokenEntityInterface
      * Password type
      *
      * @cont
-     * @type int
+     * @var int
      */
     const TYPE_PASSWORD = 'password';
 
@@ -80,7 +80,7 @@ class AccessToken extends Model implements AccessTokenEntityInterface
      * Implicit response
      *
      * @cont
-     * @type int
+     * @var int
      */
     const RESPONSE_IMPLICIT = 'token';
 
@@ -88,7 +88,7 @@ class AccessToken extends Model implements AccessTokenEntityInterface
      * Refresh token type
      *
      * @cont
-     * @type int
+     * @var int
      */
     const TYPE_REFRESH_TOKEN = 'refresh_token';
 
@@ -171,7 +171,7 @@ class AccessToken extends Model implements AccessTokenEntityInterface
         if (!isset($this->attributes['token_scopes'])) {
             $this->attributes['token_scopes'] = [];
         }
-        /** @var $scope \sonrac\lumenRest\models\Scope */
+        /* @var $scope \sonrac\lumenRest\models\Scope */
         $this->attributes['token_scopes'][$scope->getIdentifier()] = $scope->name;
     }
 
@@ -217,7 +217,7 @@ class AccessToken extends Model implements AccessTokenEntityInterface
      */
     public function setExpiryDateTime(\DateTime $dateTime)
     {
-        $this->setDate('expires_at', $dateTime);;
+        $this->setDate('expires_at', $dateTime);
     }
 
     /**
@@ -253,7 +253,6 @@ class AccessToken extends Model implements AccessTokenEntityInterface
         $scopes = $this->getScopes();
 
         if (!empty($scopes) && is_array($scopes)) {
-
             reset($scopes);
             if (is_object(current($scopes))) {
                 $mergedScopes = '';
@@ -341,7 +340,7 @@ class AccessToken extends Model implements AccessTokenEntityInterface
             $scopes = '';
             if (is_object($model->attributes['token_scopes']) || is_array($model->attributes['token_scopes'])) {
                 foreach ($model->attributes['token_scopes'] as $token_scope) {
-                    /** @var $token_scope \sonrac\lumenRest\models\Scope */
+                    /* @var $token_scope \sonrac\lumenRest\models\Scope */
                     $scopes .= ' '.trim($token_scope->name);
                 }
             }

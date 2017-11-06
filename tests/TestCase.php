@@ -18,7 +18,6 @@ use Laravel\Lumen\Testing\TestCase as LumenTestCase;
  */
 class TestCase extends LumenTestCase
 {
-
     use DatabaseTransactions,
         DatabaseMigrations;
 
