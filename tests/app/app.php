@@ -3,7 +3,7 @@
  * @author Donii Sergii <doniysa@gmail.com>
  */
 
-$app = new \Laravel\Lumen\Application(__DIR__);
+$app = new \sonrac\lumenRest\tests\app\Application(__DIR__);
 $app->withFacades();
 $app->withEloquent();
 

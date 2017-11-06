@@ -5,6 +5,7 @@
 
 namespace sonrac\lumenRest\models\repositories;
 
+use Illuminate\Support\Facades\DB;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
@@ -75,7 +76,7 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
      */
     public function revokeAccessToken($tokenId)
     {
-        \DB::table('access_tokens')
+        DB::table('access_tokens')
             ->where('access_token', '=', $tokenId)
             ->update([
                 'revoked' => true,

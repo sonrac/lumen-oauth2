@@ -5,6 +5,7 @@
 
 namespace sonrac\lumenRest\models\repositories;
 
+use Illuminate\Support\Facades\DB;
 use League\OAuth2\Server\Entities\AuthCodeEntityInterface;
 use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
 
@@ -47,7 +48,7 @@ class AuthCodeRepository implements AuthCodeRepositoryInterface
      */
     public function revokeAuthCode($codeId)
     {
-        \DB::table('auth_codes')
+        DB::table('auth_codes')
             ->where('code', '=', $codeId)
             ->update([
                 'revoked' => true,

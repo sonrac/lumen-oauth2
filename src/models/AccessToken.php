@@ -146,61 +146,6 @@ class AccessToken extends Model implements AccessTokenEntityInterface
     /**
      * {@inheritdoc}
      */
-    protected static function boot()
-    {
-        parent::boot();
-
-        $serializeScopes = function ($model) {
-            /** @var $model \sonrac\lumenRest\models\AccessToken */
-
-            if (!isset($model->attributes['token_scopes'])) {
-                $model->attributes['token_scopes'] = '';
-            }
-
-            $scopes = '';
-            if (is_object($model->attributes['token_scopes']) || is_array($model->attributes['token_scopes'])) {
-                foreach ($model->attributes['token_scopes'] as $token_scope) {
-                    /** @var $token_scope \sonrac\lumenRest\models\Scope */
-                    $scopes .= ' ' . trim($token_scope->name);
-                }
-            }
-
-            $model->attributes['token_scopes'] = trim($scopes);
-        };
-
-        $deserializeScopes = function ($model) {
-            /** @var \sonrac\lumenRest\models\AccessToken $model */
-            if (!isset($model->attributes['token_scopes'])) {
-                $model->attributes['token_scopes'] = '';
-            }
-            if ($model->attributes['token_scopes'] && is_string($model->attributes['token_scopes'])) {
-                $scopeClass = get_class(app(ScopeEntityInterface::class));
-                $scopes = explode(' ', $model->attributes['token_scopes']);
-                $finalScopes = new Collection();
-                foreach ($scopes as $scope) {
-                    $scope = trim($scope);
-
-                    if ($scope) {
-                        $finalScopes->add((new $scopeClass(['name' => $scope])));
-                    }
-                }
-
-                $model->attributes['token_scopes'] = $finalScopes;
-            }
-        };
-
-        static::creating($serializeScopes);
-        static::updating($serializeScopes);
-
-        static::created($deserializeScopes);
-        static::retrieved($deserializeScopes);
-        static::updated($deserializeScopes);
-
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function setIdentifier($identifier)
     {
         $this->access_token = $identifier;
@@ -264,7 +209,7 @@ class AccessToken extends Model implements AccessTokenEntityInterface
      */
     public function user()
     {
-        return $this->hasOne(app(UserEntityInterface::class)->class, 'id', 'user_id');
+        return $this->hasOne(get_class(app(UserEntityInterface::class)), 'id', 'user_id');
     }
 
     /**
@@ -290,7 +235,7 @@ class AccessToken extends Model implements AccessTokenEntityInterface
      */
     public function client()
     {
-        return $this->hasOne(app(ClientEntityInterface::class)->class, 'id', 'client_id');
+        return $this->hasOne(get_class(app('League\OAuth2\Server\Entities\ClientEntityInterface')), 'id', 'client_id');
     }
 
     /**
@@ -313,7 +258,7 @@ class AccessToken extends Model implements AccessTokenEntityInterface
             if (is_object(current($scopes))) {
                 $mergedScopes = '';
                 foreach ($scopes as $scope) {
-                    $mergedScopes .= ' ' . $scope->getIdentifier();
+                    $mergedScopes .= ' '.$scope->getIdentifier();
                 }
                 $scopes = trim($mergedScopes);
             }
@@ -377,5 +322,59 @@ class AccessToken extends Model implements AccessTokenEntityInterface
     public function getScopes()
     {
         return isset($this->attributes['token_scopes']) ? $this->attributes['token_scopes'] : '';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        $serializeScopes = function ($model) {
+            /** @var $model \sonrac\lumenRest\models\AccessToken */
+
+            if (!isset($model->attributes['token_scopes'])) {
+                $model->attributes['token_scopes'] = '';
+            }
+
+            $scopes = '';
+            if (is_object($model->attributes['token_scopes']) || is_array($model->attributes['token_scopes'])) {
+                foreach ($model->attributes['token_scopes'] as $token_scope) {
+                    /** @var $token_scope \sonrac\lumenRest\models\Scope */
+                    $scopes .= ' '.trim($token_scope->name);
+                }
+            }
+
+            $model->attributes['token_scopes'] = trim($scopes);
+        };
+
+        $deserializeScopes = function ($model) {
+            /** @var \sonrac\lumenRest\models\AccessToken $model */
+            if (!isset($model->attributes['token_scopes'])) {
+                $model->attributes['token_scopes'] = '';
+            }
+            if ($model->attributes['token_scopes'] && is_string($model->attributes['token_scopes'])) {
+                $scopeClass = get_class(app(ScopeEntityInterface::class));
+                $scopes = explode(' ', $model->attributes['token_scopes']);
+                $finalScopes = new Collection();
+                foreach ($scopes as $scope) {
+                    $scope = trim($scope);
+
+                    if ($scope) {
+                        $finalScopes->add((new $scopeClass(['name' => $scope])));
+                    }
+                }
+
+                $model->attributes['token_scopes'] = $finalScopes;
+            }
+        };
+
+        static::creating($serializeScopes);
+        static::updating($serializeScopes);
+
+        static::created($deserializeScopes);
+        static::retrieved($deserializeScopes);
+        static::updated($deserializeScopes);
     }
 }

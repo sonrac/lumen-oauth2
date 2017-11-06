@@ -22,6 +22,18 @@ use sonrac\lumenRest\models\User;
 class UserRepository implements UserRepositoryInterface
 {
     /**
+     * User model
+     *
+     * @var UserEntityInterface
+     */
+    protected $user;
+
+    public function __construct(UserEntityInterface $user = null)
+    {
+        $this->user = $user ?? app(UserEntityInterface::class);
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getUserEntityByUserCredentials(
@@ -31,7 +43,7 @@ class UserRepository implements UserRepositoryInterface
         ClientEntityInterface $clientEntity
     ) {
         /** @var User|UserEntityInterface $class */
-        $class = get_class(app(UserEntityInterface::class));
+        $class = get_class($this->user);
 
         $user = $class::query()
             ->where(function ($q) use ($username) {
