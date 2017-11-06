@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\DB;
 use League\OAuth2\Server\Entities\AuthCodeEntityInterface;
 use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
 
-
 /**
  * Class AuthCodeRepository
  *
@@ -61,11 +60,10 @@ class AuthCodeRepository implements AuthCodeRepositoryInterface
     public function isAuthCodeRevoked($codeId)
     {
         if ($token = $this->_authCode->find($codeId)) {
-            /** @var $token \sonrac\lumenRest\models\AuthCode */
+            /* @var $token \sonrac\lumenRest\models\AuthCode */
             return $token->revoked;
         }
 
         return false;
     }
-
 }

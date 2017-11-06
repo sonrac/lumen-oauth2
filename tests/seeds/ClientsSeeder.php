@@ -8,7 +8,6 @@
 
 namespace sonrac\lumenRest\tests\seeds;
 
-
 use Illuminate\Database\Seeder;
 
 class ClientsSeeder extends Seeder
@@ -42,6 +41,5 @@ class ClientsSeeder extends Seeder
 
         \DB::table('clients')
             ->insert($data);
-
     }
 }

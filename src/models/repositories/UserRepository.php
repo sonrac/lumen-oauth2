@@ -47,7 +47,7 @@ class UserRepository implements UserRepositoryInterface
 
         $user = $class::query()
             ->where(function ($q) use ($username) {
-                /** @var $q Builder */
+                /* @var $q Builder */
                 return $q
                     ->where('username', '=', $username)
                     ->orWhere('email', '=', $username);
@@ -60,5 +60,4 @@ class UserRepository implements UserRepositoryInterface
 
         return $user;
     }
-
 }

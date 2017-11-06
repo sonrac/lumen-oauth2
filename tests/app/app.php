@@ -37,12 +37,10 @@ $app->router->post('/oauth/access_token', function (\Psr\Http\Message\ServerRequ
 
         // Try to respond to the request
         return $server->respondToAccessTokenRequest($request, $response);
-
     } catch (\League\OAuth2\Server\Exception\OAuthServerException $exception) {
 
         // All instances of OAuthServerException can be formatted into a HTTP response
         return $exception->generateHttpResponse($response);
-
     } catch (\Exception $exception) {
 
         // Unknown exception
@@ -50,7 +48,6 @@ $app->router->post('/oauth/access_token', function (\Psr\Http\Message\ServerRequ
         $body->write($exception->getMessage());
 
         return $response->withStatus(500)->withBody($body);
-
     }
 });
 $app->router->get('/authorize', function (\League\OAuth2\Server\AuthorizationServer $server,
@@ -82,7 +79,6 @@ $app->router->get('/authorize', function (\League\OAuth2\Server\AuthorizationSer
         $body->write($exception->getMessage());
 
         return $response->withStatus(500)->withBody($body);
-
     }
 });
 

@@ -11,14 +11,13 @@ use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
 use sonrac\lumenRest\traits\UnixTimestampsTrait;
 
-
 /**
  * Class RefreshToken
  * Refresh tokens model
  *
  * @property string                       $access_token   Access token
  * @property string                       $refresh_token  Refresh token
- * @property boolean                      $revoked        Is revoked
+ * @property bool                      $revoked        Is revoked
  * @property Carbon|\DateTime|string|null $expires_at     Expire refresh date
  *
  * @package sonrac\lumenRest\models
@@ -97,7 +96,7 @@ class RefreshToken extends Model implements RefreshTokenEntityInterface
      */
     public function setAccessToken(AccessTokenEntityInterface $accessToken)
     {
-        /** @var $accessToken AccessToken|AccessTokenEntityInterface */
+        /* @var $accessToken AccessToken|AccessTokenEntityInterface */
         $this->setRelation('token', $accessToken);
         $this->attributes['access_token'] = $accessToken->access_token;
     }
