@@ -73,7 +73,6 @@ trait UnixTimestampsTrait
         }
 
         if (!is_object($value) && !($value = strtotime($value))) {
-
             if (!in_array($attribute, $this->getTimestampAttributes())) {
                 return false;
             }
@@ -182,7 +181,7 @@ trait UnixTimestampsTrait
     private function setDate($column, $value)
     {
         if (is_string($value) || is_numeric($value)) {
-            if (static::isValidTimeStamp((string)$value)) {
+            if (static::isValidTimeStamp((string) $value)) {
                 return $this->attributes[$column] = (new Carbon())->setTimestamp($value);
             }
             $time = strtotime($value);
@@ -190,7 +189,7 @@ trait UnixTimestampsTrait
                 throw new \Exception('Invalid date');
             }
 
-            return $this->attributes[$column] = (new Carbon())->setTimestamp((int)$value);
+            return $this->attributes[$column] = (new Carbon())->setTimestamp((int) $value);
         }
 
         if ($value instanceof DateTime) {
@@ -202,7 +201,7 @@ trait UnixTimestampsTrait
 
     public static function isValidTimeStamp($timestamp)
     {
-        return ((string)(int)$timestamp === $timestamp)
+        return ((string) (int) $timestamp === $timestamp)
             && ($timestamp <= PHP_INT_MAX)
             && ($timestamp >= ~PHP_INT_MAX);
     }

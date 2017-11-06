@@ -59,5 +59,4 @@ class AuthMiddleware
 
         return $next($request, $response);
     }
-
 }

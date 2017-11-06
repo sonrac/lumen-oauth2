@@ -35,7 +35,6 @@ class AuthCode extends Model implements AuthCodeEntityInterface
 {
     use UnixTimestampsTrait;
 
-
     /**
      * {@inheritdoc}
      */
@@ -127,7 +126,6 @@ class AuthCode extends Model implements AuthCodeEntityInterface
         static::created($deserializeScopes);
         static::retrieved($deserializeScopes);
         static::updated($deserializeScopes);
-
     }
 
     /**
@@ -247,7 +245,7 @@ class AuthCode extends Model implements AuthCodeEntityInterface
         if (!isset($this->attributes['code_scopes'])) {
             $this->attributes['code_scopes'] = [];
         }
-        /** @var $scope \sonrac\lumenRest\models\Scope */
+        /* @var $scope \sonrac\lumenRest\models\Scope */
         $this->attributes['code_scopes'][$scope->getIdentifier()] = $scope->name;
     }
 

@@ -36,7 +36,7 @@ class ClientRepository implements ClientRepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getClientEntity($clientIdentifier, $grantType, $clientSecret = null, $mustValidateSecret = true)
     {
@@ -49,5 +49,4 @@ class ClientRepository implements ClientRepositoryInterface
 
         return $query->first();
     }
-
 }

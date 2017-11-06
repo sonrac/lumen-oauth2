@@ -8,7 +8,6 @@
 
 namespace sonrac\lumenRest\tests\seeds;
 
-
 use Faker\Generator;
 use Illuminate\Database\Seeder;
 

@@ -38,7 +38,7 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
      */
     public function getNewToken(ClientEntityInterface $clientEntity, array $scopes, $userIdentifier = null)
     {
-        /** @var \sonrac\lumenRest\models\AccessToken $token */
+        /* @var \sonrac\lumenRest\models\AccessToken $token */
         $this->_token->setClient($clientEntity);
         $this->_token->addScopes($scopes);
         $expiryDate = new \DateTime();

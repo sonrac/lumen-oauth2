@@ -26,7 +26,7 @@ use sonrac\lumenRest\traits\UnixTimestampsTrait;
 class TimestampsTest extends TestCase
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */
@@ -68,7 +68,7 @@ class TimestampsTest extends TestCase
 
         $this->assertTrue($model->save());
 
-        $m = (array)\DB::table('test')->where(['id' => $model->getAttribute('id')])->get()->first();
+        $m = (array) \DB::table('test')->where(['id' => $model->getAttribute('id')])->get()->first();
 
         $this->assertEquals(1504281861, $m['created_at']);
         $this->assertEquals(1504281861, $m['last_login']);
@@ -107,7 +107,7 @@ class TimestampsTest extends TestCase
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */
@@ -148,5 +148,4 @@ class BaseModel extends Model
     {
         return 'test';
     }
-
 }

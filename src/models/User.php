@@ -70,5 +70,4 @@ class User extends Model implements UserEntityInterface, AuthenticatableContract
     {
         return $this->id;
     }
-
 }

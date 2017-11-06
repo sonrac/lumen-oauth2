@@ -12,7 +12,7 @@
 */
 
 /**
- * @var $router \Laravel\Lumen\Routing\Router
+ * @var \Laravel\Lumen\Routing\Router
  */
 
 $router->get('/oauth/access_token', 'LoginController@accessToken');
