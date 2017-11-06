@@ -1,0 +1,6 @@
+ignore:
+  - "tests"
+  - "migrations"
+  - "container"
+  - "storage"
+  - "vendor"
