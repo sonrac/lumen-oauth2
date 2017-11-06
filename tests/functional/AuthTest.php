@@ -5,7 +5,6 @@
 
 namespace Tests\Functional;
 
-use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use sonrac\lumenRest\models\AccessToken;
 use sonrac\lumenRest\tests\seeds\ClientsSeeder;
 use sonrac\lumenRest\tests\TestCase;

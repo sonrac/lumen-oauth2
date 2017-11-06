@@ -8,7 +8,7 @@
 
 return [
     'defaults' => [
-        'guard' => 'jwt'
+        'guard' => 'jwt',
     ],
     'guards' => [
         'jwt' => [

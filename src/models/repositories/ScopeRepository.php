@@ -70,5 +70,4 @@ class ScopeRepository implements ScopeRepositoryInterface
 
         return $finalScopes;
     }
-
 }

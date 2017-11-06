@@ -32,5 +32,4 @@ class Application extends BaseApplication
             );
         });
     }
-
 }

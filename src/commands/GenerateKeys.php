@@ -87,7 +87,7 @@ class GenerateKeys extends Command
         if ($disableOut) {
             ob_start();
         }
-        if (!file_exists($this->keyPath . "/" . config('oauth2.privateKeyName')) || $force) {
+        if (!file_exists($this->keyPath . '/' . config('oauth2.privateKeyName')) || $force) {
             if ($phrase) {
                 $configPath = storage_path() . '/../.env';
                 $content = file_exists($configPath) ? file_get_contents($configPath) : 'SERVER_PASS_PHRASE=';
@@ -116,7 +116,7 @@ class GenerateKeys extends Command
      */
     protected function generatePrivateKey($phrase = null)
     {
-        $command = "openssl genrsa ";
+        $command = 'openssl genrsa ';
 
         if ($phrase) {
             $command .= " -passout pass:$phrase";
