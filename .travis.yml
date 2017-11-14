@@ -20,6 +20,7 @@ after_success:
     - codecov
 
 notifications:
+  email: false
   slack:
     rooms:
       - secure: "QUlGlPoIYKoefQINrTcKloeuMH14QIorR3IJ1VfwsemvKISfkHx33sxxkoSsfju0RfDK7aULk99IPW4Xxt+Og9JwhkijftJKWIkALmxttjNI3LBtjgRgYphOjYTmhwXZ9WbW/+H8Bn+BhneAfcl1SzknLMOpEFCbv7hyd9za3/zrA/xlO8tT2MqQWRdC2GuxkSXis97GQtPIMzbZG0yM/tZxupJDpK1X2EJjmroz4RORP+ZCUjz6h/TOzNIOm/gS/f7fixCiwt7xJ02ag6ygb6e2/b3HLFXz7TkTwTj9+uLIMHtanRbmKoYIn6//tOe8myPTRXIi61JktHN1y6GG9l8z17xU3Cfe8j2OKz9r7RXd70oztFwtxyiEq59r7voXaraxwQKf5C9Wo1do1lk0beMUd5tsjiZ/+siekVP0hpk+Ipn12ltxONGiH5CGKK9k3zrwNENykdFe6sAiPdk1GumEIRE7+z9EBIu/27DkqRKv7qU6wh3Xw6HWjt9x/4JGVtBqrc2Ac0bRxbDGSfHZGwa7Oi8nGz9bXEXSqeufHsoaSFHLVN7XmvTUct7uWSKpDRCxZhdOKmwNk+Pkzl62MuOGEL+YDqmyneU72KFEKOIHBFyTEph1MWw3KnJmATaEr+tafSS4kreUlNJ0szXd7o3cCtAHsZXaZPs5wqz+HGs="
