@@ -11,6 +11,7 @@ use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
 use League\OAuth2\Server\Grant\PasswordGrant;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
+use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
 use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
 use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
 use League\OAuth2\Server\Repositories\UserRepositoryInterface;
@@ -86,8 +87,8 @@ class Oauth2ServiceProvider extends ServiceProvider
 
             /** @var $app \Laravel\Lumen\Application */
             $server = new AuthorizationServer(
-                new ClientRepository(),
-                app(AccessTokenRepository::class),
+                app(ClientRepositoryInterface::class),
+                app(AccessTokenRepositoryInterface::class),
                 app(ScopeRepositoryInterface::class),
                 $privateKey,
                 $encryptionKey
