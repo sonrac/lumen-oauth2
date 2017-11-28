@@ -16,7 +16,6 @@ namespace sonrac\lumenRest\middleware;
  */
 class CorsMiddleware
 {
-
     /**
      * @param \Illuminate\Http\Request $request
      * @param \Closure                 $next
