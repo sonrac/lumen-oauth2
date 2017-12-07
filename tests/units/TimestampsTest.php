@@ -70,7 +70,7 @@ class TimestampsTest extends TestCase
 
         $this->assertTrue($model->save());
 
-        $m = (array)DB::table('test')->where(['id' => $model->getAttribute('id')])->get()->first();
+        $m = (array) DB::table('test')->where(['id' => $model->getAttribute('id')])->get()->first();
 
         $this->assertEquals(1504281861, $m['created_at']);
         $this->assertEquals(1504281861, $m['last_login']);
@@ -99,7 +99,8 @@ class TimestampsTest extends TestCase
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */
-    public function testUpdateModel() {
+    public function testUpdateModel()
+    {
         DB::table('test')
             ->insert([
                 'id'         => 1,
