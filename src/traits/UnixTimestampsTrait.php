@@ -22,6 +22,16 @@ use DateTime;
 trait UnixTimestampsTrait
 {
     /**
+     * Determine if the model uses timestamps.
+     *
+     * @return bool
+     */
+    public function usesTimestamps()
+    {
+        return false;
+    }
+
+    /**
      * Boot timestamp model
      *
      * @author Donii Sergii <doniysa@gmail.com>

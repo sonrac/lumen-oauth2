@@ -12,6 +12,8 @@ use Carbon\Carbon;
 use DateTime;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use sonrac\lumenRest\tests\TestCase;
 use sonrac\lumenRest\traits\UnixTimestampsTrait;
 
@@ -34,7 +36,7 @@ class TimestampsTest extends TestCase
     {
         parent::setUp();
 
-        \Schema::create('test', function (Blueprint $table) {
+        Schema::create('test', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
             $table->bigInteger('created_at');
@@ -50,7 +52,7 @@ class TimestampsTest extends TestCase
      */
     public function testTimestamp()
     {
-        \DB::table('test')
+        DB::table('test')
             ->insert([
                 'id'         => 1,
                 'created_at' => (new DateTime())->modify('-5 days')->getTimestamp(),
@@ -68,25 +70,11 @@ class TimestampsTest extends TestCase
 
         $this->assertTrue($model->save());
 
-        $m = (array) \DB::table('test')->where(['id' => $model->getAttribute('id')])->get()->first();
+        $m = (array)DB::table('test')->where(['id' => $model->getAttribute('id')])->get()->first();
 
         $this->assertEquals(1504281861, $m['created_at']);
         $this->assertEquals(1504281861, $m['last_login']);
         $this->assertEquals(1504281861, $m['updated_at']);
-    }
-
-    /**
-     * @param BaseModel $model
-     * @param string    $name
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
-     */
-    private function _testSetAttribute($model, $name = 'created_at')
-    {
-        foreach (['2017-2-2', (new DateTime()), (new Carbon()), '1504281861', 1504281861] as $value) {
-            $this->assertTrue($model->setModelTimeAttribute($name, $value));
-            $this->assertInstanceOf(DateTime::class, $model->$name);
-        }
     }
 
     /**
@@ -107,14 +95,53 @@ class TimestampsTest extends TestCase
     }
 
     /**
+     * Test update timestamp
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    public function testUpdateModel() {
+        DB::table('test')
+            ->insert([
+                'id'         => 1,
+                'created_at' => (new DateTime())->modify('-5 days')->getTimestamp(),
+                'updated_at' => (new DateTime())->getTimestamp(),
+                'last_login' => (new DateTime())->getTimestamp(),
+                'name'       => 'test',
+            ]);
+
+        $model = BaseModel::find(1);
+
+        $model->name = 'test name';
+        $this->_testSetAttribute($model);
+        $this->_testSetAttribute($model, 'updated_at');
+        $this->_testSetAttribute($model, 'last_login');
+
+        $this->assertTrue($model->update());
+    }
+
+    /**
      * {@inheritdoc}
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */
     public function tearDown()
     {
-        \Schema::drop('test');
+        Schema::drop('test');
         parent::tearDown();
+    }
+
+    /**
+     * @param BaseModel $model
+     * @param string    $name
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    private function _testSetAttribute($model, $name = 'created_at')
+    {
+        foreach (['2017-2-2', (new DateTime()), (new Carbon()), '1504281861', 1504281861] as $value) {
+            $this->assertTrue($model->setModelTimeAttribute($name, $value));
+            $this->assertInstanceOf(DateTime::class, $model->$name);
+        }
     }
 }
 
@@ -134,7 +161,7 @@ class BaseModel extends Model
 {
     use UnixTimestampsTrait;
 
-    public $timestamps = false;
+    public $timestamps = true;
     public $unixTimestamps = true;
     protected $table = 'test';
     protected $fillable = ['last_login', 'created_at', 'updated_at', 'name'];
