@@ -61,9 +61,9 @@ trait UnixTimestampsTrait
             $updates($model, true);
         };
 
-        static::saving($callbackSave);
-        static::retrieved($callbackSaved);
-        static::saved($callbackSaved);
+        self::saving($callbackSave);
+        self::retrieved($callbackSaved);
+        self::saved($callbackSaved);
     }
 
     /***
