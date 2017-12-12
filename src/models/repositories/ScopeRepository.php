@@ -6,8 +6,8 @@
 namespace sonrac\lumenRest\models\repositories;
 
 use League\OAuth2\Server\Entities\ClientEntityInterface;
-use League\OAuth2\Server\Entities\ScopeEntityInterface;
-use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
+use sonrac\lumenRest\contracts\ScopeEntityInterface;
+use sonrac\lumenRest\contracts\repositories\ScopeRepositoryInterface;
 
 /**
  * Class ScopeRepository
@@ -21,7 +21,7 @@ class ScopeRepository implements ScopeRepositoryInterface
     /**
      * Scope entity
      *
-     * @var \League\OAuth2\Server\Entities\ScopeEntityInterface|\sonrac\lumenRest\models\Scope
+     * @var \sonrac\lumenRest\contracts\ScopeEntityInterface|\sonrac\lumenRest\models\Scope
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */

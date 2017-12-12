@@ -8,7 +8,7 @@ namespace sonrac\lumenRest\models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
-use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
+use sonrac\lumenRest\contracts\RefreshTokenEntityInterface;
 use sonrac\lumenRest\traits\UnixTimestampsTrait;
 
 /**

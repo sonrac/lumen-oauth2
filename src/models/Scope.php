@@ -6,7 +6,7 @@
 namespace sonrac\lumenRest\models;
 
 use Illuminate\Database\Eloquent\Model;
-use League\OAuth2\Server\Entities\ScopeEntityInterface;
+use sonrac\lumenRest\contracts\ScopeEntityInterface;
 
 /**
  * Class Scope

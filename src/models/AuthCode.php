@@ -7,8 +7,9 @@ namespace sonrac\lumenRest\models;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-use League\OAuth2\Server\Entities\AuthCodeEntityInterface;
+use sonrac\lumenRest\contracts\AuthCodeEntityInterface;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
+use sonrac\lumenRest\contracts\ScopeEntityInterface as SEntityInterface;
 use League\OAuth2\Server\Entities\ScopeEntityInterface;
 use sonrac\lumenRest\traits\UnixTimestampsTrait;
 
@@ -105,7 +106,7 @@ class AuthCode extends Model implements AuthCodeEntityInterface
                 $model->attributes['code_scopes'] = '';
             }
             if ($model->attributes['code_scopes'] && is_string($model->attributes['code_scopes'])) {
-                $scopeClass = get_class(app(ScopeEntityInterface::class));
+                $scopeClass = get_class(app(SEntityInterface::class));
                 $scopes = explode(' ', $model->attributes['code_scopes']);
                 $finalScopes = new Collection();
                 foreach ($scopes as $scope) {
@@ -194,7 +195,7 @@ class AuthCode extends Model implements AuthCodeEntityInterface
      */
     public function user()
     {
-        return $this->hasOne(get_class(app('League\OAuth2\Server\Entities\ClientEntityInterface')), 'user_id', 'id');
+        return $this->hasOne(get_class(app('sonrac\lumenRest\contracts\ClientEntityInterface')), 'user_id', 'id');
     }
 
     /**

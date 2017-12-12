@@ -23,11 +23,11 @@ return [
     'providers' => [
         'clients' => [
             'driver' => 'eloquent',
-            'model' => app(\League\OAuth2\Server\Entities\ClientEntityInterface::class),
+            'model' => app(sonrac\lumenRest\contracts\ClientEntityInterface::class),
         ],
         'users' => [
             'driver' => 'eloquent',
-            'model' => app(\League\OAuth2\Server\Entities\UserEntityInterface::class),
+            'model' => app(sonrac\lumenRest\contracts\UserEntityInterface::class),
         ],
     ],
 ];

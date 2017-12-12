@@ -12,11 +12,12 @@ use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Signer\Key;
 use Lcobucci\JWT\Signer\Rsa\Sha256;
 use League\OAuth2\Server\CryptKey;
-use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
+use sonrac\lumenRest\contracts\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Entities\ScopeEntityInterface;
+use sonrac\lumenRest\contracts\ScopeEntityInterface as SEntityInterface;
 use League\OAuth2\Server\Entities\Traits\EntityTrait;
-use League\OAuth2\Server\Entities\UserEntityInterface;
+use sonrac\lumenRest\contracts\UserEntityInterface;
 use sonrac\lumenRest\traits\UnixTimestampsTrait;
 
 /**
@@ -231,11 +232,11 @@ class AccessToken extends Model implements AccessTokenEntityInterface
     /**
      * Client relationship
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne|\sonrac\lumenRest\models\Client|\League\OAuth2\Server\Entities\ClientEntityInterface
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne|\sonrac\lumenRest\models\Client|\sonrac\lumenRest\contracts\ClientEntityInterface
      */
     public function client()
     {
-        return $this->hasOne(get_class(app('League\OAuth2\Server\Entities\ClientEntityInterface')), 'id', 'client_id');
+        return $this->hasOne(get_class(app('sonrac\lumenRest\contracts\ClientEntityInterface')), 'id', 'client_id');
     }
 
     /**
@@ -354,7 +355,7 @@ class AccessToken extends Model implements AccessTokenEntityInterface
                 $model->attributes['token_scopes'] = '';
             }
             if ($model->attributes['token_scopes'] && is_string($model->attributes['token_scopes'])) {
-                $scopeClass = get_class(app(ScopeEntityInterface::class));
+                $scopeClass = get_class(app(SEntityInterface::class));
                 $scopes = explode(' ', $model->attributes['token_scopes']);
                 $finalScopes = new Collection();
                 foreach ($scopes as $scope) {

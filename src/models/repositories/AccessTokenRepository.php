@@ -7,8 +7,9 @@ namespace sonrac\lumenRest\models\repositories;
 
 use Illuminate\Support\Facades\DB;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
+use sonrac\lumenRest\contracts\AccessTokenEntityInterface as ATokenEntityInterface;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
-use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
+use sonrac\lumenRest\contracts\repositories\AccessTokenRepositoryInterface;
 
 /**
  * Class AccessTokenRepository
@@ -22,13 +23,13 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
     /**
      * Access token repository interface
      *
-     * @var \League\OAuth2\Server\Entities\AccessTokenEntityInterface|\sonrac\lumenRest\models\AccessToken
+     * @var \sonrac\lumenRest\contracts\AccessTokenEntityInterface|\sonrac\lumenRest\models\AccessToken
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */
     protected $_token;
 
-    public function __construct(AccessTokenEntityInterface $token)
+    public function __construct(ATokenEntityInterface $token)
     {
         $this->_token = $token;
     }

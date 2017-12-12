@@ -13,10 +13,12 @@ use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\UserProvider;
 use Illuminate\Support\Traits\Macroable;
-use League\OAuth2\Server\Entities\ClientEntityInterface;
-use League\OAuth2\Server\Entities\UserEntityInterface;
+use sonrac\lumenRest\contracts\ClientEntityInterface;
+use sonrac\lumenRest\contracts\UserEntityInterface;
 use League\OAuth2\Server\ResourceServer;
 use Psr\Http\Message\ServerRequestInterface;
+use sonrac\lumenRest\contracts\repositories\ClientRepositoryInterface;
+use sonrac\lumenRest\contracts\repositories\UserRepositoryInterface;
 
 class JWT implements Guard
 {
@@ -60,9 +62,9 @@ class JWT implements Guard
 
         $this->request = $server->validateAuthenticatedRequest($request);
 
-        $this->client = app(ClientEntityInterface::class)->find($this->request->getAttribute('oauth_client_id'));
+        $this->client = app(ClientRepositoryInterface::class)->getEntityByIdentifier($this->request->getAttribute('oauth_client_id'));
         if ($user = $this->request->getAttribute('oauth_user_id')) {
-            $this->user = app(UserEntityInterface::class)->find($user);
+            $this->user = app(UserRepositoryInterface::class)->getEntityByIdentifier($user);
         } else {
             if ($this->client && $this->client->user_id) {
                 $this->user = $this->client->user;

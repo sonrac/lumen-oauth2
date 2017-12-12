@@ -61,7 +61,7 @@ $app->router->get('/authorize', function (\League\OAuth2\Server\AuthorizationSer
         // You will probably want to redirect the user at this point to a login endpoint.
 
         // Once the user has logged in set the user on the AuthorizationRequest
-        $authRequest->setUser(app()->make(\League\OAuth2\Server\Entities\UserEntityInterface::class)); // an instance of UserEntityInterface
+        $authRequest->setUser(app()->make(\sonrac\lumenRest\contracts\UserEntityInterface::class)); // an instance of UserEntityInterface
 
         // At this point you should redirect the user to an authorization page.
         // This form will ask the user to approve the client and the scopes requested.
@@ -74,6 +74,7 @@ $app->router->get('/authorize', function (\League\OAuth2\Server\AuthorizationSer
         return $server->completeAuthorizationRequest($authRequest, $response);
     } catch (\Exception $exception) {
 
+        throw $exception;
         // Unknown exception
         $body = new \Zend\Diactoros\Stream('php://temp', 'r+');
         $body->write($exception->getMessage());

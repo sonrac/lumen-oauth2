@@ -5,9 +5,9 @@
 
 namespace sonrac\lumenRest\models\repositories;
 
-use League\OAuth2\Server\Entities\ClientEntityInterface;
+use sonrac\lumenRest\contracts\ClientEntityInterface;
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
-use sonrac\lumenRest\models\Client;
+use sonrac\lumenRest\contracts\repositories\ClientRepositoryInterface as CRepositoryInterface;
 
 /**
  * Class ClientRepository
@@ -30,9 +30,17 @@ class ClientRepository implements ClientRepositoryInterface
      *
      * @param ClientEntityInterface $client
      */
-    public function __construct(ClientEntityInterface $client = null)
+    public function __construct(CRepositoryInterface $client = null)
     {
         $this->client = $client ?? app(ClientEntityInterface::class);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getEntityByIdentifier($identifier)
+    {
+        return $this->client::find($identifier);
     }
 
     /**

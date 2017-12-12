@@ -7,7 +7,8 @@ namespace sonrac\lumenRest\models\repositories;
 
 use Illuminate\Support\Facades\DB;
 use League\OAuth2\Server\Entities\AuthCodeEntityInterface;
-use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
+use sonrac\lumenRest\contracts\repositories\AuthCodeRepositoryInterface;
+use sonrac\lumenRest\contracts\AuthCodeEntityInterface as ACodeEntityInterface;
 
 /**
  * Class AuthCodeRepository
@@ -18,10 +19,10 @@ use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
  */
 class AuthCodeRepository implements AuthCodeRepositoryInterface
 {
-    /** @var \League\OAuth2\Server\Entities\AuthCodeEntityInterface|\sonrac\lumenRest\models\AuthCode */
+    /** @var \sonrac\lumenRest\contracts\AuthCodeEntityInterface|\sonrac\lumenRest\models\AuthCode */
     protected $_authCode = null;
 
-    public function __construct(AuthCodeEntityInterface $authCode)
+    public function __construct(ACodeEntityInterface  $authCode)
     {
         $this->_authCode = $authCode;
     }

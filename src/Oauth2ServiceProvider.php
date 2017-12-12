@@ -7,14 +7,14 @@ namespace sonrac\lumenRest;
 
 use Illuminate\Support\ServiceProvider;
 use League\OAuth2\Server\AuthorizationServer;
-use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
+use sonrac\lumenRest\contracts\RefreshTokenEntityInterface;
 use League\OAuth2\Server\Grant\PasswordGrant;
-use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
-use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
-use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
-use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
-use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
-use League\OAuth2\Server\Repositories\UserRepositoryInterface;
+use sonrac\lumenRest\contracts\repositories\AccessTokenRepositoryInterface;
+use sonrac\lumenRest\contracts\repositories\AuthCodeRepositoryInterface;
+use sonrac\lumenRest\contracts\repositories\ClientRepositoryInterface;
+use sonrac\lumenRest\contracts\repositories\RefreshTokenRepositoryInterface;
+use sonrac\lumenRest\contracts\repositories\ScopeRepositoryInterface;
+use sonrac\lumenRest\contracts\repositories\UserRepositoryInterface;
 use League\OAuth2\Server\ResourceServer;
 use Psr\Http\Message\ServerRequestInterface;
 use sonrac\lumenRest\guard\JWT;
@@ -49,30 +49,30 @@ class Oauth2ServiceProvider extends ServiceProvider
         /*
          * Entities bind
          */
-        $this->app->bind('League\\OAuth2\\Server\\Entities\\AccessTokenEntityInterface', AccessToken::class);
-        $this->app->bind('League\\OAuth2\\Server\\Entities\\AuthCodeEntityInterface', AuthCode::class);
-        $this->app->bind('League\\OAuth2\\Server\\Entities\\ClientEntityInterface', Client::class);
-        $this->app->bind('League\\OAuth2\\Server\\Entities\\RefreshTokenEntityInterface', RefreshToken::class);
-        $this->app->bind('League\\OAuth2\\Server\\Entities\\ScopeEntityInterface', Scope::class);
-        $this->app->bind('League\\OAuth2\\Server\\Entities\\UserEntityInterface', User::class);
+        $this->app->bind('sonrac\\lumenRest\\contracts\\AccessTokenEntityInterface', AccessToken::class);
+        $this->app->bind('sonrac\\lumenRest\\contracts\\AuthCodeEntityInterface', AuthCode::class);
+        $this->app->bind('sonrac\\lumenRest\\contracts\\ClientEntityInterface', Client::class);
+        $this->app->bind('sonrac\\lumenRest\\contracts\\RefreshTokenEntityInterface', RefreshToken::class);
+        $this->app->bind('sonrac\\lumenRest\\contracts\\ScopeEntityInterface', Scope::class);
+        $this->app->bind('sonrac\\lumenRest\\contracts\\UserEntityInterface', User::class);
 
         /*
          * bind repositories
          */
-        $this->app->bind('League\\OAuth2\\Server\\Repositories\\AccessTokenRepositoryInterface', function () {
+        $this->app->bind('sonrac\\lumenRest\\contracts\\repositories\\AccessTokenRepositoryInterface', function () {
             return app()->make(AccessTokenRepository::class);
         });
-        $this->app->bind('League\\OAuth2\\Server\\Repositories\\AuthCodeRepositoryInterface', function () {
+        $this->app->bind('sonrac\\lumenRest\\contracts\\repositories\\AuthCodeRepositoryInterface', function () {
             return $this->app->make(AuthCodeRepository::class);
         });
-        $this->app->bind('League\\OAuth2\\Server\\Repositories\\ClientRepositoryInterface', function () {
+        $this->app->bind('sonrac\\lumenRest\\contracts\\repositories\\ClientRepositoryInterface', function () {
             return new ClientRepository();
         });
-        $this->app->bind('League\\OAuth2\\Server\\Repositories\\RefreshTokenRepositoryInterface', function () {
+        $this->app->bind('sonrac\\lumenRest\\contracts\\repositories\\RefreshTokenRepositoryInterface', function () {
             return new RefreshTokenRepository(app(RefreshTokenEntityInterface::class));
         });
-        $this->app->bind('League\\OAuth2\\Server\\Repositories\\ScopeRepositoryInterface', ScopeRepository::class);
-        $this->app->bind('League\\OAuth2\\Server\\Repositories\\UserRepositoryInterface', function () {
+        $this->app->bind('sonrac\\lumenRest\\contracts\\repositories\\ScopeRepositoryInterface', ScopeRepository::class);
+        $this->app->bind('sonrac\\lumenRest\\contracts\\repositories\\UserRepositoryInterface', function () {
             return new UserRepository();
         });
 
