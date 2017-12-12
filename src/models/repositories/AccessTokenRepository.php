@@ -7,8 +7,8 @@ namespace sonrac\lumenRest\models\repositories;
 
 use Illuminate\Support\Facades\DB;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
-use sonrac\lumenRest\contracts\AccessTokenEntityInterface as ATokenEntityInterface;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
+use sonrac\lumenRest\contracts\AccessTokenEntityInterface as ATokenEntityInterface;
 use sonrac\lumenRest\contracts\repositories\AccessTokenRepositoryInterface;
 
 /**

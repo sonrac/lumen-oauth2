@@ -7,9 +7,9 @@ namespace sonrac\lumenRest\models\repositories;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use League\OAuth2\Server\Entities\RefreshTokenEntityInterface as RTokenEntityInterface;
 use sonrac\lumenRest\contracts\RefreshTokenEntityInterface;
 use sonrac\lumenRest\contracts\repositories\RefreshTokenRepositoryInterface;
-use League\OAuth2\Server\Entities\RefreshTokenEntityInterface as RTokenEntityInterface;
 use sonrac\lumenRest\models\RefreshToken;
 
 /**

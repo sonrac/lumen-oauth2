@@ -7,8 +7,8 @@ namespace sonrac\lumenRest\models\repositories;
 
 use Illuminate\Support\Facades\DB;
 use League\OAuth2\Server\Entities\AuthCodeEntityInterface;
-use sonrac\lumenRest\contracts\repositories\AuthCodeRepositoryInterface;
 use sonrac\lumenRest\contracts\AuthCodeEntityInterface as ACodeEntityInterface;
+use sonrac\lumenRest\contracts\repositories\AuthCodeRepositoryInterface;
 
 /**
  * Class AuthCodeRepository

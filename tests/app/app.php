@@ -73,7 +73,6 @@ $app->router->get('/authorize', function (\League\OAuth2\Server\AuthorizationSer
         // Return the HTTP redirect response
         return $server->completeAuthorizationRequest($authRequest, $response);
     } catch (\Exception $exception) {
-
         throw $exception;
         // Unknown exception
         $body = new \Zend\Diactoros\Stream('php://temp', 'r+');

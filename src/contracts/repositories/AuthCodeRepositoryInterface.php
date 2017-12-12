@@ -10,6 +10,7 @@
 namespace sonrac\lumenRest\contracts\repositories;
 
 use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface as ACodeRepositoryInterface;
+
 /**
  * Auth code storage interface.
  */

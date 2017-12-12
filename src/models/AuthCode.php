@@ -7,10 +7,10 @@ namespace sonrac\lumenRest\models;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-use sonrac\lumenRest\contracts\AuthCodeEntityInterface;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
-use sonrac\lumenRest\contracts\ScopeEntityInterface as SEntityInterface;
 use League\OAuth2\Server\Entities\ScopeEntityInterface;
+use sonrac\lumenRest\contracts\AuthCodeEntityInterface;
+use sonrac\lumenRest\contracts\ScopeEntityInterface as SEntityInterface;
 use sonrac\lumenRest\traits\UnixTimestampsTrait;
 
 /**

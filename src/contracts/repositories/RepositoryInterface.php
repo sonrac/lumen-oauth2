@@ -10,6 +10,7 @@
 namespace sonrac\lumenRest\contracts\repositories;
 
 use League\OAuth2\Server\Repositories\RepositoryInterface as RInterface;
+
 /**
  * Repository interface.
  */

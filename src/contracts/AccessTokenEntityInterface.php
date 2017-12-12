@@ -16,5 +16,4 @@ use League\OAuth2\Server\Entities\AccessTokenEntityInterface as ATokenEntityInte
  */
 interface AccessTokenEntityInterface extends ATokenEntityInterface
 {
-
 }
