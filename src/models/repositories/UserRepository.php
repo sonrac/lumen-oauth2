@@ -8,9 +8,9 @@ namespace sonrac\lumenRest\models\repositories;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\Hash;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
-use sonrac\lumenRest\contracts\UserEntityInterface as UEntityInterface;
 use League\OAuth2\Server\Entities\UserEntityInterface;
 use sonrac\lumenRest\contracts\repositories\UserRepositoryInterface;
+use sonrac\lumenRest\contracts\UserEntityInterface as UEntityInterface;
 use sonrac\lumenRest\models\User;
 
 /**
@@ -35,13 +35,12 @@ class UserRepository implements UserRepositoryInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function getEntityByIdentifier($identifier)
     {
         return $this->user::find($identifier);
     }
-
 
     /**
      * {@inheritdoc}

@@ -12,11 +12,11 @@ use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Signer\Key;
 use Lcobucci\JWT\Signer\Rsa\Sha256;
 use League\OAuth2\Server\CryptKey;
-use sonrac\lumenRest\contracts\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Entities\ScopeEntityInterface;
-use sonrac\lumenRest\contracts\ScopeEntityInterface as SEntityInterface;
 use League\OAuth2\Server\Entities\Traits\EntityTrait;
+use sonrac\lumenRest\contracts\AccessTokenEntityInterface;
+use sonrac\lumenRest\contracts\ScopeEntityInterface as SEntityInterface;
 use sonrac\lumenRest\contracts\UserEntityInterface;
 use sonrac\lumenRest\traits\UnixTimestampsTrait;
 
