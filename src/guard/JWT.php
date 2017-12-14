@@ -67,7 +67,7 @@ class JWT implements Guard
             $this->user = app(UserRepositoryInterface::class)->getEntityByIdentifier($user);
         } else {
             if ($this->client && $this->client->user_id) {
-                $this->user = $this->client->user;
+                $this->user = app(UserRepositoryInterface::class)->getEntityByIdentifier($this->client->user_id);
             }
         }
     }
