@@ -16,7 +16,7 @@ use sonrac\lumenRest\traits\UnixTimestampsTrait;
 
 /**
  * Class User
- * User class
+ * User class.
  *
  * @property int               $id         ID
  * @property string            $username   Username
@@ -25,8 +25,6 @@ use sonrac\lumenRest\traits\UnixTimestampsTrait;
  * @property string            $email      Email
  * @property string            $password   Password
  * @property int|string|Carbon $last_login Last login date
- *
- * @package sonrac\lumenRest\models
  *
  * @author  Donii Sergii <doniysa@gmail.com>
  */

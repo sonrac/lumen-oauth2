@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: sonrac
  * Date: 9/1/17
- * Time: 5:48 PM
+ * Time: 5:48 PM.
  */
 
 namespace sonrac\lumenRest\traits;
@@ -12,12 +12,10 @@ use Carbon\Carbon;
 use DateTime;
 
 /**
- * Trait UnixTimestampsTrait
+ * Trait UnixTimestampsTrait.
  *
  * @property string|null|Carbon $created_at
  * @property string|null|Carbon $updated_at
- *
- * @package sonrac\lumenRest\traits
  */
 trait UnixTimestampsTrait
 {
@@ -32,7 +30,7 @@ trait UnixTimestampsTrait
     }
 
     /**
-     * Boot timestamp model
+     * Boot timestamp model.
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */
@@ -78,12 +76,12 @@ trait UnixTimestampsTrait
      */
     public function setModelTimeAttribute($attribute, $value, $unixFormat = false)
     {
-        if (is_numeric($value)) {
+        if (\is_numeric($value)) {
             $value = Carbon::createFromTimestampUTC($value);
         }
 
-        if (!is_object($value) && !($value = strtotime($value))) {
-            if (!in_array($attribute, $this->getTimestampAttributes())) {
+        if (!\is_object($value) && !($value = \strtotime($value))) {
+            if (!\in_array($attribute, $this->getTimestampAttributes())) {
                 return false;
             }
             $value = Carbon::now();
@@ -99,7 +97,7 @@ trait UnixTimestampsTrait
     }
 
     /**
-     * Unix timestamp check enable
+     * Unix timestamp check enable.
      *
      * @return bool
      *
@@ -107,7 +105,7 @@ trait UnixTimestampsTrait
      */
     public function unixTimeStampsEnable()
     {
-        return property_exists($this, 'unixTimestamps') && $this->unixTimestamps;
+        return \property_exists($this, 'unixTimestamps') && $this->unixTimestamps;
     }
 
     /**
@@ -119,7 +117,7 @@ trait UnixTimestampsTrait
     }
 
     /**
-     * Get created_at column
+     * Get created_at column.
      *
      * @return Carbon|null|string
      */
@@ -129,7 +127,7 @@ trait UnixTimestampsTrait
     }
 
     /**
-     * Get carbon object from timestamp attribute
+     * Get carbon object from timestamp attribute.
      *
      * @param string $attribute Attribute name
      *
@@ -141,7 +139,7 @@ trait UnixTimestampsTrait
             return $this->attributes[$attribute] = Carbon::now()->timestamp;
         }
 
-        if (is_string($this->attributes[$attribute]) && $timestamp = strtotime($this->attributes[$attribute])) {
+        if (\is_string($this->attributes[$attribute]) && $timestamp = \strtotime($this->attributes[$attribute])) {
             return $this->attributes[$attribute] = (new Carbon())->setTimestamp($timestamp);
         }
 
@@ -149,7 +147,7 @@ trait UnixTimestampsTrait
     }
 
     /**
-     * Get created_at column
+     * Get created_at column.
      *
      * @return Carbon|null|string
      */
@@ -159,7 +157,7 @@ trait UnixTimestampsTrait
     }
 
     /**
-     * Get created_at column
+     * Get created_at column.
      *
      * @return Carbon|null|string
      */
@@ -169,7 +167,7 @@ trait UnixTimestampsTrait
     }
 
     /**
-     * Set updated_at attribute
+     * Set updated_at attribute.
      *
      * @param int|string|Carbon|DateTime $time
      */
@@ -179,22 +177,22 @@ trait UnixTimestampsTrait
     }
 
     /**
-     * Set date for column in object style
+     * Set date for column in object style.
      *
      * @param string                     $column
      * @param string|int|Carbon|DateTime $value
      *
-     * @return Carbon
-     *
      * @throws \Exception
+     *
+     * @return Carbon
      */
     private function setDate($column, $value)
     {
-        if (is_string($value) || is_numeric($value)) {
+        if (\is_string($value) || \is_numeric($value)) {
             if (static::isValidTimeStamp((string) $value)) {
                 return $this->attributes[$column] = (new Carbon())->setTimestamp($value);
             }
-            $time = strtotime($value);
+            $time = \strtotime($value);
             if (!$time) {
                 throw new \Exception('Invalid date');
             }
@@ -217,7 +215,7 @@ trait UnixTimestampsTrait
     }
 
     /**
-     * Set updated_at attribute
+     * Set updated_at attribute.
      *
      * @param int|string|Carbon|DateTime $time
      */
@@ -227,7 +225,7 @@ trait UnixTimestampsTrait
     }
 
     /**
-     * Set created_at attribute
+     * Set created_at attribute.
      *
      * @param int|string|Carbon|DateTime $time
      */
@@ -237,7 +235,7 @@ trait UnixTimestampsTrait
     }
 
     /**
-     * Set created_at attribute
+     * Set created_at attribute.
      *
      * @param int|string|Carbon|DateTime $time
      */
@@ -247,7 +245,7 @@ trait UnixTimestampsTrait
     }
 
     /**
-     * Set last_login attribute
+     * Set last_login attribute.
      *
      * @param int|string|Carbon|DateTime $time
      */
@@ -257,7 +255,7 @@ trait UnixTimestampsTrait
     }
 
     /**
-     * Set last_login attribute
+     * Set last_login attribute.
      *
      * @param int|string|Carbon|DateTime $time
      */

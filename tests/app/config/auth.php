@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: Donii Sergii <doniysa@gmail.com>
  * Date: 10/2/17
- * Time: 1:16 PM
+ * Time: 1:16 PM.
  */
 
 return [
@@ -12,22 +12,22 @@ return [
     ],
     'guards' => [
         'jwt' => [
-            'driver' => 'jwt',
+            'driver'   => 'jwt',
             'provider' => 'clients',
         ],
         'user' => [
-            'driver' => 'token',
+            'driver'   => 'token',
             'provider' => 'users',
         ],
     ],
     'providers' => [
         'clients' => [
             'driver' => 'eloquent',
-            'model' => app(sonrac\lumenRest\contracts\ClientEntityInterface::class),
+            'model'  => app(sonrac\lumenRest\contracts\ClientEntityInterface::class),
         ],
         'users' => [
             'driver' => 'eloquent',
-            'model' => app(sonrac\lumenRest\contracts\UserEntityInterface::class),
+            'model'  => app(sonrac\lumenRest\contracts\UserEntityInterface::class),
         ],
     ],
 ];

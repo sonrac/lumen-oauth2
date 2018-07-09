@@ -11,20 +11,19 @@ use sonrac\lumenRest\contracts\AuthCodeEntityInterface as ACodeEntityInterface;
 use sonrac\lumenRest\contracts\repositories\AuthCodeRepositoryInterface;
 
 /**
- * Class AuthCodeRepository
+ * Class AuthCodeRepository.
  *
- * @package sonrac\lumenRest\models\repositories
  *
  * @author  Donii Sergii <doniysa@gmail.com>
  */
 class AuthCodeRepository implements AuthCodeRepositoryInterface
 {
     /** @var \sonrac\lumenRest\contracts\AuthCodeEntityInterface|\sonrac\lumenRest\models\AuthCode */
-    protected $_authCode = null;
+    protected $authCode = null;
 
     public function __construct(ACodeEntityInterface  $authCode)
     {
-        $this->_authCode = $authCode;
+        $this->authCode = $authCode;
     }
 
     /**
@@ -32,7 +31,7 @@ class AuthCodeRepository implements AuthCodeRepositoryInterface
      */
     public function getNewAuthCode()
     {
-        return $this->_authCode;
+        return $this->authCode;
     }
 
     /**
@@ -60,7 +59,7 @@ class AuthCodeRepository implements AuthCodeRepositoryInterface
      */
     public function isAuthCodeRevoked($codeId)
     {
-        if ($token = $this->_authCode->find($codeId)) {
+        if ($token = $this->authCode->find($codeId)) {
             /* @var $token \sonrac\lumenRest\models\AuthCode */
             return $token->revoked;
         }

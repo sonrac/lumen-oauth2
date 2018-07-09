@@ -15,7 +15,6 @@ class CreateRefreshTokens extends Migration
     /**
      * Run the migrations.
      *
-     * @return void
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */
@@ -41,7 +40,6 @@ class CreateRefreshTokens extends Migration
     /**
      * Reverse the migrations.
      *
-     * @return void
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */

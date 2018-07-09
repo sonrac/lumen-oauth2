@@ -10,16 +10,15 @@ use sonrac\lumenRest\contracts\repositories\ScopeRepositoryInterface;
 use sonrac\lumenRest\contracts\ScopeEntityInterface;
 
 /**
- * Class ScopeRepository
+ * Class ScopeRepository.
  *
- * @package sonrac\lumenRest\models\repositories
  *
  * @author  Donii Sergii <doniysa@gmail.com>
  */
 class ScopeRepository implements ScopeRepositoryInterface
 {
     /**
-     * Scope entity
+     * Scope entity.
      *
      * @var \sonrac\lumenRest\contracts\ScopeEntityInterface|\sonrac\lumenRest\models\Scope
      *
@@ -54,9 +53,9 @@ class ScopeRepository implements ScopeRepositoryInterface
         $finalScopes = [];
 
         foreach ($scopes as $scope) {
-            if (!is_object($scope)) {
-                $class = get_class($this->scope);
-                if (is_array($scope)) {
+            if (!\is_object($scope)) {
+                $class = \get_class($this->scope);
+                if (\is_array($scope)) {
                     $finalScopes[] = new $class($scope);
                 } else {
                     $finalScopes[] = new $class(['name' => $scope]);

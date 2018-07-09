@@ -1,7 +1,10 @@
 <?php
+// phpcs:disable
+
 /**
  * @author Donii Sergii <doniysa@gmail.com>
  */
+
 
 $app = new \sonrac\lumenRest\tests\app\Application(__DIR__);
 $app->withFacades();
@@ -27,22 +30,20 @@ $app->routeMiddleware([
     'resource' => \sonrac\lumenRest\middleware\AuthMiddleware::class,
 ]);
 
-$app->router->post('/oauth/access_token', function (\Psr\Http\Message\ServerRequestInterface $request,
-                                                    \Psr\Http\Message\ResponseInterface $response) use ($app) {
-
+$app->router->post('/oauth/access_token', function (
+    \Psr\Http\Message\ServerRequestInterface $request,
+                                                    \Psr\Http\Message\ResponseInterface $response
+) use ($app) {
     /* @var \League\OAuth2\Server\AuthorizationServer $server */
     $server = $app->make(\League\OAuth2\Server\AuthorizationServer::class);
 
     try {
-
         // Try to respond to the request
         return $server->respondToAccessTokenRequest($request, $response);
     } catch (\League\OAuth2\Server\Exception\OAuthServerException $exception) {
-
         // All instances of OAuthServerException can be formatted into a HTTP response
         return $exception->generateHttpResponse($response);
     } catch (\Exception $exception) {
-
         // Unknown exception
         $body = new \Zend\Diactoros\Stream('php://temp', 'r+');
         $body->write($exception->getMessage());
@@ -50,9 +51,11 @@ $app->router->post('/oauth/access_token', function (\Psr\Http\Message\ServerRequ
         return $response->withStatus(500)->withBody($body);
     }
 });
-$app->router->get('/authorize', function (\League\OAuth2\Server\AuthorizationServer $server,
+$app->router->get('/authorize', function (
+    \League\OAuth2\Server\AuthorizationServer $server,
                                           \Psr\Http\Message\ServerRequestInterface $request,
-                                          \Psr\Http\Message\ResponseInterface $response) {
+                                          \Psr\Http\Message\ResponseInterface $response
+) {
     try {
         // Validate the HTTP request and return an AuthorizationRequest object.
         $authRequest = $server->validateAuthorizationRequest($request);
@@ -88,6 +91,7 @@ $app->router->group([
     $app->router->post('/user-info', function () use ($app) {
         $user = \Illuminate\Support\Facades\Auth::user();
         $client = \Illuminate\Support\Facades\Auth::client();
+
         return response()->json([
             'user'   => $user ? $user->getAttributes() : null,
             'client' => $client ? $client->getAttributes() : null,
@@ -96,3 +100,5 @@ $app->router->group([
 });
 
 return $app;
+
+// phpcs:enable

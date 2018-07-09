@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: Donii Sergii <doniysa@gmail.com>
  * Date: 10/2/17
- * Time: 1:01 PM
+ * Time: 1:01 PM.
  */
 
 namespace sonrac\lumenRest\middleware;
@@ -18,13 +18,12 @@ use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
  * Class AuthMiddleware
  * OAuth2 authenticate middleware.
  *
- * @package sonrac\lumenRest\middleware
  *
  * @author  Donii Sergii <doniysa@gmail.com>
  */
 class AuthMiddleware
 {
-    protected $_server;
+    protected $server;
 
     /**
      * AuthMiddleware constructor.
@@ -33,23 +32,23 @@ class AuthMiddleware
      */
     public function __construct(ResourceServer $server)
     {
-        $this->_server = $server;
+        $this->server = $server;
     }
 
     /**
      * Run the request filter.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \Closure                 $next
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure                 $next
      *
      * @return mixed
      */
     public function handle($request, Closure $next)
     {
         $response = app()->make(ResponseInterface::class);
-        $request = (new DiactorosFactory())->createRequest($request);
+        $request  = (new DiactorosFactory())->createRequest($request);
         try {
-            $request = $this->_server->validateAuthenticatedRequest($request);
+            $request = $this->server->validateAuthenticatedRequest($request);
         } catch (OAuthServerException $exception) {
             return $exception->generateHttpResponse($response);
         } catch (\Exception $exception) {

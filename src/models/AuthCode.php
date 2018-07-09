@@ -15,7 +15,7 @@ use sonrac\lumenRest\traits\UnixTimestampsTrait;
 
 /**
  * Class AuthCode
- * Auth codes model
+ * Auth codes model.
  *
  * @property int    $id           ID
  * @property string $code         Code
@@ -24,11 +24,8 @@ use sonrac\lumenRest\traits\UnixTimestampsTrait;
  * @property bool   $revoked      Is revoked
  * @property int    $expires_at   Expire at
  * @property string $redirect_uri Redirect uri
- *
  * @property User   $user
  * @property Client $clientApp
- *
- * @package sonrac\lumenRest\models
  *
  * @author  Donii Sergii <doniysa@gmail.com>
  */
@@ -76,28 +73,27 @@ class AuthCode extends Model implements AuthCodeEntityInterface
 
         $serializeScopes = function ($model) {
             /** @var $model \sonrac\lumenRest\models\AccessToken */
-
             if (!isset($model->attributes['code_scopes'])) {
                 $model->attributes['code_scopes'] = '';
             }
 
             $scopes = '';
-            if (is_object($model->attributes['code_scopes']) || is_array($model->attributes['code_scopes'])) {
+            if (\is_object($model->attributes['code_scopes']) || \is_array($model->attributes['code_scopes'])) {
                 foreach ($model->attributes['code_scopes'] as $code_scopes) {
                     /** @var $code_scopes \sonrac\lumenRest\models\Scope */
-                    if (is_array($code_scopes)) {
-                        $scopes .= ' ' . explode(' ', $code_scopes);
+                    if (\is_array($code_scopes)) {
+                        $scopes .= ' '.\explode(' ', $code_scopes);
                         continue;
                     }
-                    if (is_object($code_scopes)) {
-                        $scopes .= ' ' . trim($code_scopes->name);
+                    if (\is_object($code_scopes)) {
+                        $scopes .= ' '.\trim($code_scopes->name);
                     } else {
-                        $scopes .= ' ' . trim($code_scopes);
+                        $scopes .= ' '.\trim($code_scopes);
                     }
                 }
             }
 
-            $model->attributes['code_scopes'] = trim($scopes);
+            $model->attributes['code_scopes'] = \trim($scopes);
         };
 
         $deserializeScopes = function ($model) {
@@ -105,12 +101,12 @@ class AuthCode extends Model implements AuthCodeEntityInterface
             if (!isset($model->attributes['code_scopes'])) {
                 $model->attributes['code_scopes'] = '';
             }
-            if ($model->attributes['code_scopes'] && is_string($model->attributes['code_scopes'])) {
-                $scopeClass = get_class(app(SEntityInterface::class));
-                $scopes = explode(' ', $model->attributes['code_scopes']);
+            if ($model->attributes['code_scopes'] && \is_string($model->attributes['code_scopes'])) {
+                $scopeClass  = \get_class(app(SEntityInterface::class));
+                $scopes      = \explode(' ', $model->attributes['code_scopes']);
                 $finalScopes = new Collection();
                 foreach ($scopes as $scope) {
-                    $scope = trim($scope);
+                    $scope = \trim($scope);
 
                     if ($scope) {
                         $finalScopes->add((new $scopeClass(['name' => $scope])));
@@ -170,7 +166,7 @@ class AuthCode extends Model implements AuthCodeEntityInterface
     }
 
     /**
-     * Client model relation
+     * Client model relation.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
@@ -189,13 +185,13 @@ class AuthCode extends Model implements AuthCodeEntityInterface
     }
 
     /**
-     * User relation
+     * User relation.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function user()
     {
-        return $this->hasOne(get_class(app('sonrac\lumenRest\contracts\ClientEntityInterface')), 'user_id', 'id');
+        return $this->hasOne(\get_class(app('sonrac\lumenRest\contracts\ClientEntityInterface')), 'user_id', 'id');
     }
 
     /**

@@ -11,16 +11,16 @@ use sonrac\lumenRest\tests\TestCase;
 
 /**
  * Class AuthTest
- * Test AuthTest
+ * Test AuthTest.
  *
  * @author Donii Sergii <doniysa@gmail.com>
  */
 class AuthTest extends TestCase
 {
-    protected $_seeds = ['users', 'clients'];
+    protected $seeds = ['users', 'clients'];
 
     /**
-     * Test client credentials
+     * Test client credentials.
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */
@@ -36,7 +36,7 @@ class AuthTest extends TestCase
         /** @var \Tests\Functional\AuthTest $data */
         $data = $this->post('/oauth/access_token', $reqData);
 
-        $resp = json_decode($data->response->getContent(), true);
+        $resp = \json_decode($data->response->getContent(), true);
 
         $this->assertArrayHasKey('access_token', $resp);
         $this->assertEquals('Bearer', $resp['token_type']);
@@ -45,7 +45,7 @@ class AuthTest extends TestCase
     }
 
     /**
-     * Password client grant auth test
+     * Password client grant auth test.
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */
@@ -63,7 +63,7 @@ class AuthTest extends TestCase
         /** @var \Tests\Functional\AuthTest $data */
         $data = $this->post('/oauth/access_token', $reqData);
 
-        $resp = json_decode($data->response->getContent(), true);
+        $resp = \json_decode($data->response->getContent(), true);
 
         $this->assertArrayHasKey('access_token', $resp);
         $this->assertEquals('Bearer', $resp['token_type']);
@@ -73,7 +73,7 @@ class AuthTest extends TestCase
     }
 
     /**
-     * Password client grant auth test
+     * Password client grant auth test.
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */
@@ -86,23 +86,25 @@ class AuthTest extends TestCase
             'redirect_uri'  => ClientsSeeder::REDIRECT_URI_TEST_CLIENT,
         ];
         /** @var \Tests\Functional\AuthTest $data */
-        $data = $this->get('/authorize?' . http_build_query($reqData));
+        $data = $this->get('/authorize?'.\http_build_query($reqData));
 
         $data->seeHeader('location');
-        $url = parse_url($data->response->headers->get('location'));
+        $url = \parse_url($data->response->headers->get('location'));
 
         $this->assertContains('access_token', $url['fragment'], true);
-        $this->assertContains('bearer', $url['fragment'], true);
+        $this->assertContains('bearer', \mb_strtolower($url['fragment']), true);
         $this->assertContains('token_type', $url['fragment'], true);
         $this->assertContains('expires_in', $url['fragment'], true);
     }
 
     /**
-     * Password client grant auth test
+     * Password client grant auth test.
      *
      * @depends testPasswordClient
      *
      * @author  Donii Sergii <doniysa@gmail.com>
+     *
+     * @param mixed $token
      */
     public function testRefreshToken($token)
     {
@@ -116,7 +118,7 @@ class AuthTest extends TestCase
         /** @var \Tests\Functional\AuthTest $data */
         $data = $this->post('/oauth/access_token', $reqData);
 
-        $resp = json_decode($data->response->getContent(), true);
+        $resp = \json_decode($data->response->getContent(), true);
 
         $this->assertArrayHasKey('access_token', $resp);
         $this->assertEquals('Bearer', $resp['token_type']);
@@ -124,7 +126,7 @@ class AuthTest extends TestCase
     }
 
     /**
-     * Test auth code
+     * Test auth code.
      *
      * @return string
      *
@@ -140,16 +142,16 @@ class AuthTest extends TestCase
             'state'         => 213,
         ];
         /** @var \Tests\Functional\AuthTest $data */
-        $data = $this->get('/authorize?' . http_build_query($reqData));
+        $data = $this->get('/authorize?'.\http_build_query($reqData));
 
         $data->seeHeader('location');
         $data->seeStatusCode(302);
-        $url = parse_url($data->response->headers->get('location'));
+        $url = \parse_url($data->response->headers->get('location'));
 
         $this->assertContains('code', $url['query'], true);
         $this->assertContains('state', $url['query'], true);
 
-        parse_str($url['query'], $parts);
+        \parse_str($url['query'], $parts);
 
         $this->assertArrayHasKey('code', $parts);
         $this->assertArrayHasKey('state', $parts);
@@ -158,7 +160,7 @@ class AuthTest extends TestCase
     }
 
     /**
-     * Test authenticate with code
+     * Test authenticate with code.
      *
      * @param string $code
      *
@@ -178,7 +180,7 @@ class AuthTest extends TestCase
         /** @var \Tests\Functional\AuthTest $data */
         $data = $this->post('/oauth/access_token', $reqData);
 
-        $resp = json_decode($data->response->getContent(), true);
+        $resp = \json_decode($data->response->getContent(), true);
 
         $this->assertArrayHasKey('access_token', $resp);
         $this->assertEquals('Bearer', $resp['token_type']);
@@ -186,7 +188,7 @@ class AuthTest extends TestCase
     }
 
     /**
-     * Test successfully get protected oauth method
+     * Test successfully get protected oauth method.
      *
      * @param string $token
      *
@@ -204,7 +206,7 @@ class AuthTest extends TestCase
     }
 
     /**
-     * Test denied protected method access denied
+     * Test denied protected method access denied.
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */
@@ -216,7 +218,7 @@ class AuthTest extends TestCase
     }
 
     /**
-     * Test denied protected method with invalid access token
+     * Test denied protected method with invalid access token.
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */

@@ -68,13 +68,22 @@ class Oauth2ServiceProvider extends ServiceProvider
         $this->app->bind('sonrac\\lumenRest\\contracts\\repositories\\ClientRepositoryInterface', function () {
             return new ClientRepository();
         });
-        $this->app->bind('sonrac\\lumenRest\\contracts\\repositories\\RefreshTokenRepositoryInterface', function () {
-            return new RefreshTokenRepository(app(RefreshTokenEntityInterface::class));
-        });
-        $this->app->bind('sonrac\\lumenRest\\contracts\\repositories\\ScopeRepositoryInterface', ScopeRepository::class);
-        $this->app->bind('sonrac\\lumenRest\\contracts\\repositories\\UserRepositoryInterface', function () {
-            return new UserRepository();
-        });
+        $this->app->bind(
+            'sonrac\\lumenRest\\contracts\\repositories\\RefreshTokenRepositoryInterface',
+            function () {
+                return new RefreshTokenRepository(app(RefreshTokenEntityInterface::class));
+            }
+        );
+        $this->app->bind(
+            'sonrac\\lumenRest\\contracts\\repositories\\ScopeRepositoryInterface',
+            ScopeRepository::class
+        );
+        $this->app->bind(
+            'sonrac\\lumenRest\\contracts\\repositories\\UserRepositoryInterface',
+            function () {
+                return new UserRepository();
+            }
+        );
 
         $this->bindAuthorizationServer();
     }
@@ -82,8 +91,8 @@ class Oauth2ServiceProvider extends ServiceProvider
     protected function bindAuthorizationServer()
     {
         $this->app->singleton('oauth2.server', function ($app) {
-            $privateKey = config('oauth2.keyPath') . '/' . config('oauth2.privateKeyName');
-            $encryptionKey = config('oauth2.keyPath') . '/' . config('oauth2.publicKeyName');
+            $privateKey = config('oauth2.keyPath').'/'.config('oauth2.privateKeyName');
+            $encryptionKey = config('oauth2.keyPath').'/'.config('oauth2.publicKeyName');
 
             /** @var $app \Laravel\Lumen\Application */
             $server = new AuthorizationServer(
@@ -105,7 +114,8 @@ class Oauth2ServiceProvider extends ServiceProvider
                 $server->enableGrantType(
                     new PasswordGrant(
                         app(UserRepositoryInterface::class),
-                        app(RefreshTokenRepositoryInterface::class)),
+                        app(RefreshTokenRepositoryInterface::class)
+                    ),
                     new \DateInterval(config('oauth2.access_token_ttl'))
                 );
             }
@@ -152,13 +162,17 @@ class Oauth2ServiceProvider extends ServiceProvider
     protected function bindResourceServer()
     {
         $this->app->singleton(ResourceServer::class, function () {
-            return new ResourceServer($this->app->make(AccessTokenRepositoryInterface::class),
-                config('oauth2.keyPath') . '/' . config('oauth2.publicKeyName'));
+            return new ResourceServer(
+                $this->app->make(AccessTokenRepositoryInterface::class),
+                config('oauth2.keyPath').'/'.config('oauth2.publicKeyName')
+            );
         });
 
         $this->app['auth']->extend('jwt', function ($app, $name, array $config) {
-            $resourceServer = new ResourceServer($this->app->make(AccessTokenRepositoryInterface::class),
-                config('oauth2.keyPath') . '/' . config('oauth2.publicKeyName'));
+            $resourceServer = new ResourceServer(
+                $this->app->make(AccessTokenRepositoryInterface::class),
+                config('oauth2.keyPath').'/'.config('oauth2.publicKeyName')
+            );
 
             $guard = new JWT(
                 $name,

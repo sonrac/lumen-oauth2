@@ -3,16 +3,14 @@
  * Created by PhpStorm.
  * User: conci
  * Date: 9/29/17
- * Time: 2:32 PM
+ * Time: 2:32 PM.
  */
 
 namespace sonrac\lumenRest\middleware;
 
 /**
  * Class CorsMiddleware
- * Add Allow cross origin requests header middleware
- *
- * @package App\Http\Middleware
+ * Add Allow cross origin requests header middleware.
  */
 class CorsMiddleware
 {
@@ -30,7 +28,8 @@ class CorsMiddleware
         $response->headers->add([
             'Access-Control-Allow-Methods'  => 'HEAD, GET, POST, PUT, PATCH, DELETE',
             'Access-Control-Allow-Headers'  => $request->header('Access-Control-Request-Headers'),
-            'Access-Control-Expose-Headers' => 'location, bearer, cache-control, content-type, x-application-token, authorization',
+            'Access-Control-Expose-Headers' => 'location, bearer, cache-control, content-type, x-application-token, '.
+                'authorization',
             'Access-Control-Allow-Origin'   => '*',
         ]);
 

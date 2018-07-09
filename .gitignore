@@ -1,5 +1,4 @@
 vendor/
-composer.lock
 .idea
 travis.log
 .env
@@ -8,3 +7,5 @@ travis.log
 _ide_helper.php
 docker-compose.override.yml
 coverage.xml
+.php_cs.cache
+coverage

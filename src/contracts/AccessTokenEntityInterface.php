@@ -8,9 +8,8 @@ namespace sonrac\lumenRest\contracts;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface as ATokenEntityInterface;
 
 /**
- * Class AccessTokenEntityInterface
+ * Class AccessTokenEntityInterface.
  *
- * @package sonrac\lumenRest\contracts
  *
  * @author  Donii Sergii <doniysa@gmail.com>
  */

@@ -10,12 +10,10 @@ use sonrac\lumenRest\contracts\ScopeEntityInterface;
 
 /**
  * Class Scope
- * Scopes model
+ * Scopes model.
  *
  * @property string $name        Scope name
  * @property string $description Scope description
- *
- * @package sonrac\lumenRest\models
  *
  * @author  Donii Sergii <doniysa@gmail.com>
  */
@@ -37,7 +35,7 @@ class Scope extends Model implements ScopeEntityInterface
     }
 
     /**
-     * Set name attribute
+     * Set name attribute.
      *
      * @param string $name
      *
@@ -49,7 +47,7 @@ class Scope extends Model implements ScopeEntityInterface
     }
 
     /**
-     * Set name attribute
+     * Set name attribute.
      *
      * @param string $name
      *
@@ -57,6 +55,6 @@ class Scope extends Model implements ScopeEntityInterface
      */
     public function setNameAttribute($name)
     {
-        $this->attributes['name'] = is_object($name) ? $name->name : $name;
+        $this->attributes['name'] = \is_object($name) ? $name->name : $name;
     }
 }

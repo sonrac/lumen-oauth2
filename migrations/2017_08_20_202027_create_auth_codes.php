@@ -15,7 +15,6 @@ class CreateAuthCodes extends Migration
     /**
      * Run the migrations.
      *
-     * @return void
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */
@@ -49,7 +48,6 @@ class CreateAuthCodes extends Migration
     /**
      * Reverse the migrations.
      *
-     * @return void
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */

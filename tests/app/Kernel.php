@@ -8,9 +8,8 @@ namespace sonrac\lumenRest\tests\app;
 use sonrac\lumenRest\commands\GenerateKeys;
 
 /**
- * Class Kernel
+ * Class Kernel.
  *
- * @package sonrac\lumenRest\tests\app
  *
  * @author  Donii Sergii <doniysa@gmail.com>
  */

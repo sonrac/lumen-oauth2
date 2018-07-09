@@ -22,7 +22,7 @@ use sonrac\lumenRest\traits\UnixTimestampsTrait;
 
 /**
  * Class AccessToken
- * Access token model
+ * Access token model.
  *
  * @property string                                      $access_token Access token
  * @property int                                         $client_id    Client ID
@@ -36,8 +36,6 @@ use sonrac\lumenRest\traits\UnixTimestampsTrait;
  * @property \sonrac\lumenRest\models\Client             $client       Client
  * @property User                                        $user         User
  *
- * @package sonrac\lumenRest\models
- *
  * @author  Donii Sergii <doniysa@gmail.com>
  */
 class AccessToken extends Model implements AccessTokenEntityInterface
@@ -46,49 +44,55 @@ class AccessToken extends Model implements AccessTokenEntityInterface
         EntityTrait;
 
     /**
-     * Client credentials type
+     * Client credentials type.
      *
      * @cont
+     *
      * @var int
      */
     const TYPE_CLIENT_CREDENTIALS = 'client_credentials';
 
     /**
-     * Authorization code type
+     * Authorization code type.
      *
      * @cont
+     *
      * @var int
      */
     const TYPE_AUTHORIZATION_CODE = 'authorization_code';
 
     /**
-     * Authorization response authorization code
+     * Authorization response authorization code.
      *
      * @cont
+     *
      * @var int
      */
     const RESPONSE_AUTHORIZATION_CODE = 'code';
 
     /**
-     * Password type
+     * Password type.
      *
      * @cont
+     *
      * @var int
      */
     const TYPE_PASSWORD = 'password';
 
     /**
-     * Implicit response
+     * Implicit response.
      *
      * @cont
+     *
      * @var int
      */
     const RESPONSE_IMPLICIT = 'token';
 
     /**
-     * Refresh token type
+     * Refresh token type.
      *
      * @cont
+     *
      * @var int
      */
     const TYPE_REFRESH_TOKEN = 'refresh_token';
@@ -177,7 +181,7 @@ class AccessToken extends Model implements AccessTokenEntityInterface
     }
 
     /**
-     * Set client
+     * Set client.
      *
      * @param ClientEntityInterface $client
      *
@@ -186,7 +190,7 @@ class AccessToken extends Model implements AccessTokenEntityInterface
     public function setClient(ClientEntityInterface $client)
     {
         $this->client_id = $client->getIdentifier();
-        $this->client = $client;
+        $this->client    = $client;
 
         if ($this->client->user_id) {
             $this->setUserIdentifier($this->client->user_id);
@@ -204,13 +208,13 @@ class AccessToken extends Model implements AccessTokenEntityInterface
     }
 
     /**
-     * User relationship
+     * User relationship.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function user()
     {
-        return $this->hasOne(get_class(app(UserEntityInterface::class)), 'id', 'user_id');
+        return $this->hasOne(\get_class(app(UserEntityInterface::class)), 'id', 'user_id');
     }
 
     /**
@@ -230,13 +234,13 @@ class AccessToken extends Model implements AccessTokenEntityInterface
     }
 
     /**
-     * Client relationship
+     * Client relationship.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne|\sonrac\lumenRest\models\Client|\sonrac\lumenRest\contracts\ClientEntityInterface
      */
     public function client()
     {
-        return $this->hasOne(get_class(app('sonrac\lumenRest\contracts\ClientEntityInterface')), 'id', 'client_id');
+        return $this->hasOne(\get_class(app('sonrac\lumenRest\contracts\ClientEntityInterface')), 'id', 'client_id');
     }
 
     /**
@@ -253,26 +257,26 @@ class AccessToken extends Model implements AccessTokenEntityInterface
     {
         $scopes = $this->getScopes();
 
-        if (!empty($scopes) && is_array($scopes)) {
-            reset($scopes);
-            if (is_object(current($scopes))) {
+        if (!empty($scopes) && \is_array($scopes)) {
+            \reset($scopes);
+            if (\is_object(\current($scopes))) {
                 $mergedScopes = '';
                 foreach ($scopes as $scope) {
                     $mergedScopes .= ' '.$scope->getIdentifier();
                 }
-                $scopes = trim($mergedScopes);
+                $scopes = \trim($mergedScopes);
             }
         }
 
-        if (is_array($scopes)) {
-            $scopes = implode(' ', $scopes);
+        if (\is_array($scopes)) {
+            $scopes = \implode(' ', $scopes);
         }
 
         return (new Builder())
             ->setAudience($this->getClient()->getIdentifier())
             ->setId($this->getIdentifier(), true)
-            ->setIssuedAt(time())
-            ->setNotBefore(time())
+            ->setIssuedAt(\time())
+            ->setNotBefore(\time())
             ->setExpiration($this->getExpiryDateTime()->getTimestamp())
             ->setSubject($this->getUserIdentifier())
             ->set('scopes', $scopes)
@@ -333,20 +337,19 @@ class AccessToken extends Model implements AccessTokenEntityInterface
 
         $serializeScopes = function ($model) {
             /** @var $model \sonrac\lumenRest\models\AccessToken */
-
             if (!isset($model->attributes['token_scopes'])) {
                 $model->attributes['token_scopes'] = '';
             }
 
             $scopes = '';
-            if (is_object($model->attributes['token_scopes']) || is_array($model->attributes['token_scopes'])) {
+            if (\is_object($model->attributes['token_scopes']) || \is_array($model->attributes['token_scopes'])) {
                 foreach ($model->attributes['token_scopes'] as $token_scope) {
                     /* @var $token_scope \sonrac\lumenRest\models\Scope */
-                    $scopes .= ' '.trim($token_scope->name);
+                    $scopes .= ' '.\trim($token_scope->name);
                 }
             }
 
-            $model->attributes['token_scopes'] = trim($scopes);
+            $model->attributes['token_scopes'] = \trim($scopes);
         };
 
         $deserializeScopes = function ($model) {
@@ -354,12 +357,12 @@ class AccessToken extends Model implements AccessTokenEntityInterface
             if (!isset($model->attributes['token_scopes'])) {
                 $model->attributes['token_scopes'] = '';
             }
-            if ($model->attributes['token_scopes'] && is_string($model->attributes['token_scopes'])) {
-                $scopeClass = get_class(app(SEntityInterface::class));
-                $scopes = explode(' ', $model->attributes['token_scopes']);
+            if ($model->attributes['token_scopes'] && \is_string($model->attributes['token_scopes'])) {
+                $scopeClass  = \get_class(app(SEntityInterface::class));
+                $scopes      = \explode(' ', $model->attributes['token_scopes']);
                 $finalScopes = new Collection();
                 foreach ($scopes as $scope) {
-                    $scope = trim($scope);
+                    $scope = \trim($scope);
 
                     if ($scope) {
                         $finalScopes->add((new $scopeClass(['name' => $scope])));

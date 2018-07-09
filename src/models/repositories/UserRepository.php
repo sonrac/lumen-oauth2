@@ -14,16 +14,15 @@ use sonrac\lumenRest\contracts\UserEntityInterface as UEntityInterface;
 use sonrac\lumenRest\models\User;
 
 /**
- * Class UserRepository
+ * Class UserRepository.
  *
- * @package sonrac\lumenRest\models\repositories
  *
  * @author  Donii Sergii <doniysa@gmail.com>
  */
 class UserRepository implements UserRepositoryInterface
 {
     /**
-     * User model
+     * User model.
      *
      * @var UserEntityInterface
      */
@@ -52,7 +51,7 @@ class UserRepository implements UserRepositoryInterface
         ClientEntityInterface $clientEntity
     ) {
         /** @var User|UserEntityInterface $class */
-        $class = get_class($this->user);
+        $class = \get_class($this->user);
 
         $user = $class::query()
             ->where(function ($q) use ($username) {

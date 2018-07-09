@@ -13,7 +13,7 @@ use sonrac\lumenRest\contracts\UserEntityInterface;
 use sonrac\lumenRest\traits\UnixTimestampsTrait;
 
 /**
- * Class AccessToken
+ * Class AccessToken.
  *
  * @property int                $id           ID
  * @property int                $user_id      User ID
@@ -21,8 +21,6 @@ use sonrac\lumenRest\traits\UnixTimestampsTrait;
  * @property string             $secret_key   Secret key
  * @property string             $redirect_uri Redirect URI
  * @property Carbon|string|null $last_login   Last login
- *
- * @package sonrac\lumenRest\models
  *
  * @author  Donii Sergii <doniysa@gmail.com>
  */
@@ -75,11 +73,11 @@ class Client extends Model implements ClientEntityInterface
      */
     public function token()
     {
-        return $this->belongsTo(get_class(app(AccessTokenEntityInterface::class)), 'client_id', 'id');
+        return $this->belongsTo(\get_class(app(AccessTokenEntityInterface::class)), 'client_id', 'id');
     }
 
     /**
-     * User relationship
+     * User relationship.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne|User|\Illuminate\Database\Eloquent\Relations\BelongsTo
      *
@@ -87,6 +85,6 @@ class Client extends Model implements ClientEntityInterface
      */
     public function user()
     {
-        return $this->belongsTo(get_class(app(UserEntityInterface::class)), 'user_id', 'id');
+        return $this->belongsTo(\get_class(app(UserEntityInterface::class)), 'user_id', 'id');
     }
 }

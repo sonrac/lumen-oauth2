@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: Donii Sergii <doniysa@gmail.com>
  * Date: 9/20/17
- * Time: 5:17 PM
+ * Time: 5:17 PM.
  */
 
 namespace sonrac\lumenRest\tests\seeds;
@@ -30,12 +30,12 @@ class ClientsSeeder extends Seeder
                 'id'           => $index + 1,
                 'user_id'      => $index + 1,
                 'secret_key'   => $SECRET_KEY,
-                'name'         => 'Test Client ' . $index,
+                'name'         => 'Test Client '.$index,
                 'is_active'    => 1,
                 'redirect_uri' => self::REDIRECT_URI_TEST_CLIENT,
-                'created_at'   => time(),
-                'updated_at'   => time(),
-                'last_login'   => time(),
+                'created_at'   => \time(),
+                'updated_at'   => \time(),
+                'last_login'   => \time(),
             ];
         }
 

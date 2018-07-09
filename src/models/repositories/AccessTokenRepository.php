@@ -12,26 +12,25 @@ use sonrac\lumenRest\contracts\AccessTokenEntityInterface as ATokenEntityInterfa
 use sonrac\lumenRest\contracts\repositories\AccessTokenRepositoryInterface;
 
 /**
- * Class AccessTokenRepository
+ * Class AccessTokenRepository.
  *
- * @package sonrac\lumenRest\models\repositories
  *
  * @author  Donii Sergii <doniysa@gmail.com>
  */
 class AccessTokenRepository implements AccessTokenRepositoryInterface
 {
     /**
-     * Access token repository interface
+     * Access token repository interface.
      *
      * @var \sonrac\lumenRest\contracts\AccessTokenEntityInterface|\sonrac\lumenRest\models\AccessToken
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */
-    protected $_token;
+    protected $token;
 
     public function __construct(ATokenEntityInterface $token)
     {
-        $this->_token = $token;
+        $this->token = $token;
     }
 
     /**
@@ -40,16 +39,16 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
     public function getNewToken(ClientEntityInterface $clientEntity, array $scopes, $userIdentifier = null)
     {
         /* @var \sonrac\lumenRest\models\AccessToken $token */
-        $this->_token->setClient($clientEntity);
-        $this->_token->addScopes($scopes);
+        $this->token->setClient($clientEntity);
+        $this->token->addScopes($scopes);
         $expiryDate = new \DateTime();
-        $expiryDate->modify('+ ' . (new \DateInterval(config('oauth2.access_token_ttl', 'PT1H')))->s . ' seconds');
-        $this->_token->setExpiryDateTime($expiryDate);
+        $expiryDate->modify('+ '.(new \DateInterval(config('oauth2.access_token_ttl', 'PT1H')))->s.' seconds');
+        $this->token->setExpiryDateTime($expiryDate);
         if ($userIdentifier) {
-            $this->_token->setUserIdentifier($userIdentifier);
+            $this->token->setUserIdentifier($userIdentifier);
         }
 
-        return $this->_token;
+        return $this->token;
     }
 
     /**
@@ -63,13 +62,13 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
             'client_id'    => $accessTokenEntity->getClient()->getIdentifier(),
             'revoked'      => false,
             'grant_type'   => 1,
-            'created_at'   => new \DateTime,
-            'updated_at'   => new \DateTime,
+            'created_at'   => new \DateTime(),
+            'updated_at'   => new \DateTime(),
             'expires_at'   => $accessTokenEntity->getExpiryDateTime(),
         ];
-        $this->_token->create($attributes);
+        $this->token->create($attributes);
 
-        return $this->_token;
+        return $this->token;
     }
 
     /**
@@ -89,7 +88,7 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
      */
     public function isAccessTokenRevoked($tokenId)
     {
-        if ($token = $this->_token->find($tokenId)) {
+        if ($token = $this->token->find($tokenId)) {
             return $token->revoked;
         }
 

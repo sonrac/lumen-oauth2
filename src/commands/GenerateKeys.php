@@ -30,7 +30,8 @@ class GenerateKeys extends Command
     protected $signature = 'generate:keys 
                                 {--force : Force update server keys}
                                 {--disable-out : Disable output}
-                                {--passphrase= : Enter passphrase (will be replace value in .env). If 0 generated without phrase}
+                                {--passphrase= : Enter passphrase (will be replace value in .env). 
+                                        If 0 generated without phrase}
                                 ';
     /**
      * Key path.
@@ -59,9 +60,10 @@ class GenerateKeys extends Command
 
         $this->oauthConfig = config('oauth2') ?: [];
 
-        $this->keyPath = isset($this->oauthConfig['keyPath']) ? $this->oauthConfig['keyPath'] : storage_path($this->keyPath);
+        $this->keyPath = isset($this->oauthConfig['keyPath']) ? $this->oauthConfig['keyPath'] :
+            storage_path($this->keyPath);
 
-        if (!is_dir($this->keyPath) && !@mkdir($this->keyPath, 0777, true)) {
+        if (!\mkdir($this->keyPath, 0777, true) && !\is_dir($this->keyPath)) {
             throw new \Exception('Permission denied for server keys path create');
         }
     }
@@ -73,8 +75,8 @@ class GenerateKeys extends Command
      */
     public function handle()
     {
-        $force = $this->input->getOption('force');
-        $phrase = $this->input->getOption('passphrase');
+        $force      = $this->input->getOption('force');
+        $phrase     = $this->input->getOption('passphrase');
         $disableOut = $this->input->getOption('disable-out');
 
         if (!$force) {
@@ -85,15 +87,17 @@ class GenerateKeys extends Command
         }
 
         if ($disableOut) {
-            ob_start();
+            \ob_start();
         }
-        if (!file_exists($this->keyPath . '/' . config('oauth2.privateKeyName')) || $force) {
+        if (!\file_exists($this->keyPath.'/'.config('oauth2.privateKeyName')) || $force) {
             if ($phrase) {
-                $configPath = storage_path() . '/../.env';
-                $content = file_exists($configPath) ? file_get_contents($configPath) : 'SERVER_PASS_PHRASE=';
+                $configPath = storage_path().'/../.env';
+                $content    = \file_exists($configPath) ? \file_get_contents($configPath) : 'SERVER_PASS_PHRASE=';
 
-                file_put_contents($configPath,
-                    preg_replace('/^SERVER_PASS_PHRASE=(.+)?$/m', "SERVER_PASS_PHRASE={$phrase}", $content));
+                \file_put_contents(
+                    $configPath,
+                    \preg_replace('/^SERVER_PASS_PHRASE=(.+)?$/m', "SERVER_PASS_PHRASE={$phrase}", $content)
+                );
             }
 
             $this->generatePrivateKey($phrase);
@@ -101,10 +105,10 @@ class GenerateKeys extends Command
         }
 
         if ($disableOut) {
-            ob_clean();
+            \ob_clean();
         }
 
-        exec('chmod 660 ' . config('oauth2.keyPath') . '/*.key');
+        \exec('chmod 660 '.config('oauth2.keyPath').'/*.key');
     }
 
     /**
@@ -122,9 +126,9 @@ class GenerateKeys extends Command
             $command .= " -passout pass:$phrase";
         }
 
-        $command .= " -out {$this->keyPath}/" . config('oauth2.privateKeyName');
+        $command .= " -out {$this->keyPath}/".config('oauth2.privateKeyName');
 
-        exec($command);
+        \exec($command);
     }
 
     /**
@@ -136,14 +140,14 @@ class GenerateKeys extends Command
      */
     protected function generatePublicKey($phrase = null)
     {
-        $command = "openssl rsa -in {$this->keyPath}/" . config('oauth2.privateKeyName') . ' ';
+        $command = "openssl rsa -in {$this->keyPath}/".config('oauth2.privateKeyName').' ';
 
         if ($phrase) {
             $command .= " -passin pass:$phrase";
         }
 
-        $command .= " -pubout -out {$this->keyPath}/" . config('oauth2.publicKeyName');
+        $command .= " -pubout -out {$this->keyPath}/".config('oauth2.publicKeyName');
 
-        exec($command);
+        \exec($command);
     }
 }

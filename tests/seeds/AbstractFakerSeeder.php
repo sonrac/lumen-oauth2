@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: Donii Sergii <doniysa@gmail.com>
  * Date: 9/20/17
- * Time: 5:18 PM
+ * Time: 5:18 PM.
  */
 
 namespace sonrac\lumenRest\tests\seeds;

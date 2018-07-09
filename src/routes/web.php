@@ -14,7 +14,6 @@
 /**
  * @var \Laravel\Lumen\Routing\Router
  */
-
 $router->get('/oauth/access_token', 'LoginController@accessToken');
 $router->post('/oauth/access_token', 'LoginController@accessToken');
 $router->get('/', 'HomeController@info');

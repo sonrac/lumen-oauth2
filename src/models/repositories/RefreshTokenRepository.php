@@ -13,9 +13,8 @@ use sonrac\lumenRest\contracts\repositories\RefreshTokenRepositoryInterface;
 use sonrac\lumenRest\models\RefreshToken;
 
 /**
- * Class RefreshTokenRepository
+ * Class RefreshTokenRepository.
  *
- * @package sonrac\lumenRest\models\repositories
  *
  * @author  Donii Sergii <doniysa@gmail.com>
  */
@@ -30,7 +29,7 @@ class RefreshTokenRepository implements RefreshTokenRepositoryInterface
 
     public function __construct(RefreshTokenEntityInterface $refreshToken)
     {
-        $this->refreshToken = $refreshToken;
+        $this->refreshToken                = $refreshToken;
         $this->refreshToken->refresh_token = Str::random(64);
     }
 

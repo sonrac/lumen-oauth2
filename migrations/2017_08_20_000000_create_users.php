@@ -15,7 +15,6 @@ class CreateUsers extends Migration
     /**
      * Run the migrations.
      *
-     * @return void
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */
@@ -39,7 +38,6 @@ class CreateUsers extends Migration
     /**
      * Reverse the migrations.
      *
-     * @return void
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */

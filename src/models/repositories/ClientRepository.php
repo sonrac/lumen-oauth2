@@ -10,16 +10,15 @@ use sonrac\lumenRest\contracts\ClientEntityInterface;
 use sonrac\lumenRest\contracts\repositories\ClientRepositoryInterface as CRepositoryInterface;
 
 /**
- * Class ClientRepository
+ * Class ClientRepository.
  *
- * @package sonrac\lumenRest\models\repositories
  *
  * @author  Donii Sergii <doniysa@gmail.com>
  */
 class ClientRepository implements ClientRepositoryInterface
 {
     /**
-     * Client model
+     * Client model.
      *
      * @var ClientEntityInterface|null
      */
@@ -28,7 +27,7 @@ class ClientRepository implements ClientRepositoryInterface
     /**
      * ClientRepository constructor.
      *
-     * @param ClientEntityInterface $client
+     * @param \sonrac\lumenRest\contracts\ClientEntityInterface $client
      */
     public function __construct(CRepositoryInterface $client = null)
     {
@@ -40,7 +39,7 @@ class ClientRepository implements ClientRepositoryInterface
      */
     public function getEntityByIdentifier($identifier)
     {
-        return $this->client::find($identifier);
+        return $this->client->find($identifier);
     }
 
     /**

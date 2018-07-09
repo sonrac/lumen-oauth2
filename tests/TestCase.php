@@ -10,9 +10,8 @@ use Laravel\Lumen\Testing\DatabaseTransactions;
 use Laravel\Lumen\Testing\TestCase as LumenTestCase;
 
 /**
- * Class TestCase
+ * Class TestCase.
  *
- * @package sonrac\lumenRest
  *
  * @author  Donii Sergii <doniysa@gmail.com>
  */
@@ -21,7 +20,7 @@ class TestCase extends LumenTestCase
     use DatabaseTransactions,
         DatabaseMigrations;
 
-    protected $_seeds = [];
+    protected $seeds = [];
 
     /**
      * Boots the application.
@@ -30,11 +29,11 @@ class TestCase extends LumenTestCase
      */
     public function createApplication()
     {
-        $this->app = require __DIR__ . '/app/app.php';
+        $this->app = require __DIR__.'/app/app.php';
         $this->artisan('generate:keys');
 
         $this->artisan('migrate', [
-            '--path' => __DIR__ . '/../migrations',
+            '--path' => __DIR__.'/../migrations',
         ]);
 
         return $this->app;
@@ -46,10 +45,10 @@ class TestCase extends LumenTestCase
 
         parent::setUp();
 
-        if (is_array($this->_seeds) && count($this->_seeds)) {
-            foreach ($this->_seeds as $seed) {
+        if (\is_array($this->seeds) && \count($this->seeds)) {
+            foreach ($this->seeds as $seed) {
                 $this->artisan('db:seed', [
-                    '--class' => '\\sonrac\\lumenRest\\tests\\seeds\\' . ucfirst($seed) . 'Seeder',
+                    '--class' => '\\sonrac\\lumenRest\\tests\\seeds\\'.\ucfirst($seed).'Seeder',
                 ]);
             }
         }
@@ -57,12 +56,12 @@ class TestCase extends LumenTestCase
 
     protected function init()
     {
-        if (!is_dir($dir = __DIR__ . '/app/database/migrations')) {
-            symlink(__DIR__ . '/../migrations', $dir);
+        if (!\is_dir($dir = __DIR__.'/app/database/migrations')) {
+            \symlink(__DIR__.'/../migrations', $dir);
         }
 
-        if (!is_file($file = __DIR__ . '/out/database.sqlite')) {
-            file_put_contents($file, '');
+        if (!\is_file($file = __DIR__.'/out/database.sqlite')) {
+            \file_put_contents($file, '');
         }
     }
 }

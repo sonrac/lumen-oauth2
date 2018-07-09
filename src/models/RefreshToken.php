@@ -13,14 +13,12 @@ use sonrac\lumenRest\traits\UnixTimestampsTrait;
 
 /**
  * Class RefreshToken
- * Refresh tokens model
+ * Refresh tokens model.
  *
  * @property string                       $access_token   Access token
  * @property string                       $refresh_token  Refresh token
  * @property bool                      $revoked        Is revoked
  * @property Carbon|\DateTime|string|null $expires_at     Expire refresh date
- *
- * @package sonrac\lumenRest\models
  *
  * @author  Donii Sergii <doniysa@gmail.com>
  */

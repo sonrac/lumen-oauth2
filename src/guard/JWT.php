@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: Donii Sergii <doniysa@gmail.com>
  * Date: 10/2/17
- * Time: 1:32 PM
+ * Time: 1:32 PM.
  */
 
 namespace sonrac\lumenRest\guard;
@@ -25,21 +25,21 @@ class JWT implements Guard
     use GuardHelpers, Macroable;
 
     /**
-     * Guard name
+     * Guard name.
      *
      * @var Guard
      */
     protected $name;
 
     /**
-     * Request
+     * Request.
      *
      * @var ServerRequestInterface
      */
     protected $request;
 
     /**
-     * Client application
+     * Client application.
      *
      * @var ClientEntityInterface
      */
@@ -57,12 +57,13 @@ class JWT implements Guard
      */
     public function __construct($name, UserProvider $provider, ResourceServer $server, ServerRequestInterface $request)
     {
-        $this->name = $name;
+        $this->name     = $name;
         $this->provider = $provider;
 
         $this->request = $server->validateAuthenticatedRequest($request);
 
-        $this->client = app(ClientRepositoryInterface::class)->getEntityByIdentifier($this->request->getAttribute('oauth_client_id'));
+        $this->client = app(ClientRepositoryInterface::class)
+            ->getEntityByIdentifier($this->request->getAttribute('oauth_client_id'));
         if ($user = $this->request->getAttribute('oauth_user_id')) {
             $this->user = app(UserRepositoryInterface::class)->getEntityByIdentifier($user);
         } else {
@@ -77,7 +78,7 @@ class JWT implements Guard
      */
     public function check()
     {
-        return !is_null($this->client) && !is_null($this->user);
+        return null !== $this->client && null !== $this->user;
     }
 
     /**
@@ -97,7 +98,7 @@ class JWT implements Guard
     }
 
     /**
-     * Get authorization client
+     * Get authorization client.
      *
      * @return ClientEntityInterface
      */
@@ -107,7 +108,7 @@ class JWT implements Guard
     }
 
     /**
-     * Get authenticate user
+     * Get authenticate user.
      *
      * @return UserEntityInterface|Authenticatable
      */
@@ -125,7 +126,7 @@ class JWT implements Guard
     }
 
     /**
-     * Set client
+     * Set client.
      *
      * @param ClientEntityInterface $client
      */

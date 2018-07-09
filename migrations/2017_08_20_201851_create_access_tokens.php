@@ -15,7 +15,6 @@ class CreateAccessTokens extends Migration
     /**
      * Run the migrations.
      *
-     * @return void
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */
@@ -45,7 +44,6 @@ class CreateAccessTokens extends Migration
     /**
      * Reverse the migrations.
      *
-     * @return void
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */
