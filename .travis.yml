@@ -8,6 +8,7 @@ php:
 sudo: false
 
 before_install:
+  - rm composer.lock
   - sudo pip install codecov
 
 install:
