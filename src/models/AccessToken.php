@@ -190,7 +190,7 @@ class AccessToken extends Model implements AccessTokenEntityInterface
     public function setClient(ClientEntityInterface $client)
     {
         $this->client_id = $client->getIdentifier();
-        $this->client    = $client;
+        $this->client = $client;
 
         if ($this->client->user_id) {
             $this->setUserIdentifier($this->client->user_id);
@@ -358,8 +358,8 @@ class AccessToken extends Model implements AccessTokenEntityInterface
                 $model->attributes['token_scopes'] = '';
             }
             if ($model->attributes['token_scopes'] && \is_string($model->attributes['token_scopes'])) {
-                $scopeClass  = \get_class(app(SEntityInterface::class));
-                $scopes      = \explode(' ', $model->attributes['token_scopes']);
+                $scopeClass = \get_class(app(SEntityInterface::class));
+                $scopes = \explode(' ', $model->attributes['token_scopes']);
                 $finalScopes = new Collection();
                 foreach ($scopes as $scope) {
                     $scope = \trim($scope);

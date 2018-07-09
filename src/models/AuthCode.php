@@ -102,8 +102,8 @@ class AuthCode extends Model implements AuthCodeEntityInterface
                 $model->attributes['code_scopes'] = '';
             }
             if ($model->attributes['code_scopes'] && \is_string($model->attributes['code_scopes'])) {
-                $scopeClass  = \get_class(app(SEntityInterface::class));
-                $scopes      = \explode(' ', $model->attributes['code_scopes']);
+                $scopeClass = \get_class(app(SEntityInterface::class));
+                $scopes = \explode(' ', $model->attributes['code_scopes']);
                 $finalScopes = new Collection();
                 foreach ($scopes as $scope) {
                     $scope = \trim($scope);

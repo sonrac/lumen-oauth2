@@ -1,9 +1,8 @@
 <?php
 
-
 namespace sonrac\lumenRest\tests;
 
-/**
+/*
  * Class BaseModel
  */
 
@@ -24,10 +23,10 @@ class BaseModel extends Model
 {
     use UnixTimestampsTrait;
 
-    public $timestamps     = true;
+    public $timestamps = true;
     public $unixTimestamps = true;
-    protected $table       = 'test';
-    protected $fillable    = ['last_login', 'created_at', 'updated_at', 'name'];
+    protected $table = 'test';
+    protected $fillable = ['last_login', 'created_at', 'updated_at', 'name'];
 
     public function getTimestampAttributes()
     {

@@ -46,7 +46,7 @@ class AuthMiddleware
     public function handle($request, Closure $next)
     {
         $response = app()->make(ResponseInterface::class);
-        $request  = (new DiactorosFactory())->createRequest($request);
+        $request = (new DiactorosFactory())->createRequest($request);
         try {
             $request = $this->server->validateAuthenticatedRequest($request);
         } catch (OAuthServerException $exception) {

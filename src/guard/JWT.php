@@ -57,7 +57,7 @@ class JWT implements Guard
      */
     public function __construct($name, UserProvider $provider, ResourceServer $server, ServerRequestInterface $request)
     {
-        $this->name     = $name;
+        $this->name = $name;
         $this->provider = $provider;
 
         $this->request = $server->validateAuthenticatedRequest($request);

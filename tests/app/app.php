@@ -1,10 +1,10 @@
 <?php
+
 // phpcs:disable
 
 /**
  * @author Donii Sergii <doniysa@gmail.com>
  */
-
 
 $app = new \sonrac\lumenRest\tests\app\Application(__DIR__);
 $app->withFacades();
