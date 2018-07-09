@@ -5,7 +5,6 @@
 /**
  * @author Donii Sergii <doniysa@gmail.com>
  */
-
 $app = new \sonrac\lumenRest\tests\app\Application(__DIR__);
 $app->withFacades();
 $app->withEloquent();
@@ -100,5 +99,4 @@ $app->router->group([
 });
 
 return $app;
-
 // phpcs:enable

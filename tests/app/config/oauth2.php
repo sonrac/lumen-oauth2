@@ -15,7 +15,7 @@ return [
             'access_token'
         )
     ),
-    'keyPath'                    => env('OAUTH_KEY_PATH', storage_path('framework/keys')),
+    'keyPath'                    => env('OAUTH_KEY_PATH', \storage_path('framework/keys')),
     'publicKeyName'              => env('OAUTH_PUBLIC_KEY_NAME', 'public.key'),
     'privateKeyName'             => env('OAUTH_PRIVATE_KEY_NAME', 'private.key'),
     'passPhrase'                 => env('OAUTH_PASS_PHRASE', ''), // May be overwrite by .env

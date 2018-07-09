@@ -26,13 +26,15 @@ class GenerateKeys extends Command
     public $name = 'generate:keys {--force?} {--passphrase=} {--disable-out?}';
     /**
      * {@inheritdoc}
+     * // phpcs:disable
      */
     protected $signature = 'generate:keys 
                                 {--force : Force update server keys}
                                 {--disable-out : Disable output}
-                                {--passphrase= : Enter passphrase (will be replace value in .env). 
-                                        If 0 generated without phrase}
+                                {--passphrase= : Enter passphrase (will be replace value in .env). If 0 generated without phrase}
                                 ';
+    // phpcs:enable
+
     /**
      * Key path.
      *
@@ -60,10 +62,9 @@ class GenerateKeys extends Command
 
         $this->oauthConfig = config('oauth2') ?: [];
 
-        $this->keyPath = isset($this->oauthConfig['keyPath']) ? $this->oauthConfig['keyPath'] :
-            storage_path($this->keyPath);
+        $this->keyPath = $this->oauthConfig['keyPath'] ?? storage_path($this->keyPath);
 
-        if (!\mkdir($this->keyPath, 0777, true) && !\is_dir($this->keyPath)) {
+        if (!@\mkdir($this->keyPath, 0777, true) && !\is_dir($this->keyPath)) {
             throw new \Exception('Permission denied for server keys path create');
         }
     }

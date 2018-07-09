@@ -9,3 +9,4 @@ docker-compose.override.yml
 coverage.xml
 .php_cs.cache
 coverage
+src/storage
