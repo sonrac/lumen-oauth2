@@ -16,7 +16,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use sonrac\lumenRest\tests\BaseModel;
 use sonrac\lumenRest\tests\TestCase;
-use sonrac\lumenRest\traits\UnixTimestampsTrait;
 
 /**
  * Class TimestampsTest
@@ -84,7 +83,7 @@ class TimestampsTest extends TestCase
      */
     public function testAutoFill()
     {
-        $model       = new BaseModel();
+        $model = new BaseModel();
         $model->name = 'third test model';
         $this->assertTrue($model->save());
         foreach ($model->getTimestampAttributes() as $timestampAttribute) {

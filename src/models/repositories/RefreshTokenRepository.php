@@ -29,7 +29,7 @@ class RefreshTokenRepository implements RefreshTokenRepositoryInterface
 
     public function __construct(RefreshTokenEntityInterface $refreshToken)
     {
-        $this->refreshToken                = $refreshToken;
+        $this->refreshToken = $refreshToken;
         $this->refreshToken->refresh_token = Str::random(64);
     }
 

@@ -75,8 +75,8 @@ class GenerateKeys extends Command
      */
     public function handle()
     {
-        $force      = $this->input->getOption('force');
-        $phrase     = $this->input->getOption('passphrase');
+        $force = $this->input->getOption('force');
+        $phrase = $this->input->getOption('passphrase');
         $disableOut = $this->input->getOption('disable-out');
 
         if (!$force) {
@@ -92,7 +92,7 @@ class GenerateKeys extends Command
         if (!\file_exists($this->keyPath.'/'.config('oauth2.privateKeyName')) || $force) {
             if ($phrase) {
                 $configPath = storage_path().'/../.env';
-                $content    = \file_exists($configPath) ? \file_get_contents($configPath) : 'SERVER_PASS_PHRASE=';
+                $content = \file_exists($configPath) ? \file_get_contents($configPath) : 'SERVER_PASS_PHRASE=';
 
                 \file_put_contents(
                     $configPath,

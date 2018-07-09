@@ -27,11 +27,11 @@ class AccessTokenTest extends TestCase
         $token = new AccessToken();
 
         $token->access_token = $key = Str::random(32);
-        $token->client_id    = 1;
-        $token->user_id      = 1;
-        $token->grant_type   = AccessToken::TYPE_CLIENT_CREDENTIALS;
-        $token->expires_at   = \time();
-        $token->created_at   = $date   = new \DateTime();
+        $token->client_id = 1;
+        $token->user_id = 1;
+        $token->grant_type = AccessToken::TYPE_CLIENT_CREDENTIALS;
+        $token->expires_at = \time();
+        $token->created_at = $date = new \DateTime();
         $this->assertTrue($token->save());
 
         $token = \DB::table('access_tokens')->get()->first();

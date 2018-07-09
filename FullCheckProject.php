@@ -41,7 +41,7 @@ class FullCheckProject
      */
     public function __construct($file = null)
     {
-        $file   = $file ?: __DIR__.'/composer.json';
+        $file = $file ?: __DIR__.'/composer.json';
         $config = \json_decode(
             \file_get_contents($file),
             true
