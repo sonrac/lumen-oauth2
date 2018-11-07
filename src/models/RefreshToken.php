@@ -77,7 +77,7 @@ class RefreshToken extends Model implements RefreshTokenEntityInterface
      */
     public function setIdentifier($identifier)
     {
-        $this->access_token = $identifier;
+        $this->refresh_token = $identifier;
     }
 
     /**
