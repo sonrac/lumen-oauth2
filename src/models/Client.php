@@ -42,7 +42,6 @@ class Client extends Model implements ClientEntityInterface
         'secret_key',
     ];
 
-
     /**
      * {@inheritdoc}
      *
