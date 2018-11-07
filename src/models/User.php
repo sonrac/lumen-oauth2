@@ -68,4 +68,14 @@ class User extends Model implements UserEntityInterface, AuthenticatableContract
     {
         return $this->id;
     }
+
+    /**
+     * Determine if the model uses timestamps.
+     *
+     * @return bool
+     */
+    public function usesTimestamps()
+    {
+        return true;
+    }
 }

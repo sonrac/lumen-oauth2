@@ -116,4 +116,14 @@ class RefreshToken extends Model implements RefreshTokenEntityInterface
     {
         return ['created_at', 'updated_at', 'expires_at'];
     }
+
+    /**
+     * Determine if the model uses timestamps.
+     *
+     * @return bool
+     */
+    public function usesTimestamps()
+    {
+        return true;
+    }
 }

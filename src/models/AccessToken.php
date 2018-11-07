@@ -380,4 +380,14 @@ class AccessToken extends Model implements AccessTokenEntityInterface
         static::retrieved($deserializeScopes);
         static::updated($deserializeScopes);
     }
+
+    /**
+     * Determine if the model uses timestamps.
+     *
+     * @return bool
+     */
+    public function usesTimestamps()
+    {
+        return true;
+    }
 }

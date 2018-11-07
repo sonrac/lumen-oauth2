@@ -253,4 +253,14 @@ class AuthCode extends Model implements AuthCodeEntityInterface
     {
         return isset($this->attributes['code_scopes']) ? $this->attributes['code_scopes'] : '';
     }
+
+    /**
+     * Determine if the model uses timestamps.
+     *
+     * @return bool
+     */
+    public function usesTimestamps()
+    {
+        return true;
+    }
 }

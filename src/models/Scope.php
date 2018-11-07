@@ -57,4 +57,14 @@ class Scope extends Model implements ScopeEntityInterface
     {
         $this->attributes['name'] = \is_object($name) ? $name->name : $name;
     }
+
+    /**
+     * Determine if the model uses timestamps.
+     *
+     * @return bool
+     */
+    public function usesTimestamps()
+    {
+        return true;
+    }
 }
