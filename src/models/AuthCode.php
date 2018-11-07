@@ -33,7 +33,6 @@ class AuthCode extends Model implements AuthCodeEntityInterface
 {
     use UnixTimestampsTrait;
 
-
     /**
      * {@inheritdoc}
      *
