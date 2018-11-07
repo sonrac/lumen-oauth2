@@ -103,7 +103,7 @@ class RefreshToken extends Model implements RefreshTokenEntityInterface
     {
         /* @var $accessToken AccessToken|AccessTokenEntityInterface */
         $this->setRelation('token', $accessToken);
-        $this->attributes['access_token'] = $accessToken->access_token;
+        $this->attributes['access_token'] = $accessToken->getIdentifier();
     }
 
     /**
