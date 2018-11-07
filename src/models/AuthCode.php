@@ -33,6 +33,14 @@ class AuthCode extends Model implements AuthCodeEntityInterface
 {
     use UnixTimestampsTrait;
 
+
+    /**
+     * {@inheritdoc}
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    public $unixTimestamps = true;
+
     /**
      * {@inheritdoc}
      */
@@ -252,15 +260,5 @@ class AuthCode extends Model implements AuthCodeEntityInterface
     public function getScopes()
     {
         return isset($this->attributes['code_scopes']) ? $this->attributes['code_scopes'] : '';
-    }
-
-    /**
-     * Determine if the model uses timestamps.
-     *
-     * @return bool
-     */
-    public function usesTimestamps()
-    {
-        return true;
     }
 }

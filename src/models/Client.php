@@ -42,6 +42,14 @@ class Client extends Model implements ClientEntityInterface
         'secret_key',
     ];
 
+
+    /**
+     * {@inheritdoc}
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    public $unixTimestamps = true;
+
     /**
      * {@inheritdoc}
      */
@@ -86,15 +94,5 @@ class Client extends Model implements ClientEntityInterface
     public function user()
     {
         return $this->belongsTo(\get_class(app(UserEntityInterface::class)), 'user_id', 'id');
-    }
-
-    /**
-     * Determine if the model uses timestamps.
-     *
-     * @return bool
-     */
-    public function usesTimestamps()
-    {
-        return true;
     }
 }

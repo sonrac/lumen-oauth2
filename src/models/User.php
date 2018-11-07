@@ -37,6 +37,13 @@ class User extends Model implements UserEntityInterface, AuthenticatableContract
     protected $table = 'users';
 
     /**
+     * {@inheritdoc}
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    public $unixTimestamps = true;
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
@@ -67,15 +74,5 @@ class User extends Model implements UserEntityInterface, AuthenticatableContract
     public function getIdentifier()
     {
         return $this->id;
-    }
-
-    /**
-     * Determine if the model uses timestamps.
-     *
-     * @return bool
-     */
-    public function usesTimestamps()
-    {
-        return true;
     }
 }

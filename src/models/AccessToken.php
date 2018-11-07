@@ -386,8 +386,8 @@ class AccessToken extends Model implements AccessTokenEntityInterface
      *
      * @return bool
      */
-    public function usesTimestamps()
-    {
-        return true;
-    }
+//    public function usesTimestamps()
+//    {
+//        return true;
+//    }
 }

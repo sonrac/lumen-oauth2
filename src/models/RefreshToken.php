@@ -52,6 +52,13 @@ class RefreshToken extends Model implements RefreshTokenEntityInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    public $unixTimestamps = true;
+
+    /**
+     * {@inheritdoc}
      */
     protected $attributes = [
         'revoked' => false,
@@ -115,15 +122,5 @@ class RefreshToken extends Model implements RefreshTokenEntityInterface
     public function getTimestampAttributes()
     {
         return ['created_at', 'updated_at', 'expires_at'];
-    }
-
-    /**
-     * Determine if the model uses timestamps.
-     *
-     * @return bool
-     */
-    public function usesTimestamps()
-    {
-        return true;
     }
 }
